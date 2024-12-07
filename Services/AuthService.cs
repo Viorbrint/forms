@@ -9,12 +9,12 @@ public class IdentityAuthService : IAuthService
         throw new NotImplementedException();
     }
 
-    public Task<SignInResult> SignIn(string email, string password)
+    public async Task<SignInResult> Signin(string email, string password)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IdentityResult> SignUp(string name, string email, string password)
+    public async Task<IdentityResult> Signup(string name, string email, string password)
     {
         throw new NotImplementedException();
     }
