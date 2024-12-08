@@ -10,7 +10,7 @@ public static class ServiceCollectionExtentions
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddSingleton<IAuthService, IdentityAuthService>();
+        services.AddScoped<IAuthService, IdentityAuthService>();
         return services;
     }
 
