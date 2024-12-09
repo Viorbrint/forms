@@ -1,0 +1,30 @@
+@page "/signup"
+
+<PageTitle>Signup</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center">
+    <MudCard Width="100%">
+        <EditForm Model="@signupModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h5" Align="Align.Center">Signup</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextField Label="Name" 
+                              @bind-Value="signupModel.Username" For="@(() => signupModel.Username)"/>
+                <MudTextField Label="Email" Class="mt-3"
+                              @bind-Value="signupModel.Email" For="@(() => signupModel.Email)"/>
+                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                              @bind-Value="signupModel.Password" For="@(() => signupModel.Password)" InputType="InputType.Password"/>
+                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                              @bind-Value="signupModel.ConfirmPassword" For="@(() => signupModel.ConfirmPassword)" InputType="InputType.Password"/>
+            </MudCardContent>
+            <MudCardActions Class="d-flex justify-center">
+                <MudButton Disabled="@IsProcessing" Size="Size.Large" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Register</MudButton>
+                <MudButton Size="Size.Large" Variant="Variant.Text" OnClick="@NavigateToLogin">Login</MudButton>
+            </MudCardActions>
+        </EditForm>
+    </MudCard>
+</MudContainer>
