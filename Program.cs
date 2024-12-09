@@ -1,12 +1,17 @@
 using Forms.Components;
+using Forms.Configuration;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddMudServices();
-
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
-
+builder
+    .Services.AddMudServices()
+    .AddApi()
+    .AddCorsConfig()
+    .ConfigureDbContext()
+    .AddIdentityConfig()
+    .AddCookieConfig()
+    .AddBlazor()
+    .AddServices();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -16,10 +21,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 app.UseAntiforgery();
-
+app.MapControllers();
+app.UseAuth();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
-
 app.Run();
