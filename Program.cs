@@ -20,6 +20,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+await app.InitializeAdminRole();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
