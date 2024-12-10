@@ -20,7 +20,7 @@ public class IdentityAuthService(
         System.Console.WriteLine("Start");
         System.Console.WriteLine(email);
         System.Console.WriteLine(password);
-        var user = await signInManager.UserManager.FindByEmailAsync(email);
+        var user = await userManager.FindByEmailAsync(email);
         if (user == null)
         {
             return SignInResult.Failed;
