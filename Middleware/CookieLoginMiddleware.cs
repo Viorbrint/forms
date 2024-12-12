@@ -1,8 +1,9 @@
+using Forms.Data.Entities;
 using Forms.Services;
 
 public class CookieLoginMiddleware
 {
-    public static Dictionary<Guid, SigninModel> Logins { get; } = [];
+    public static Dictionary<Guid, (User, string)> Logins { get; } = [];
 
     private readonly RequestDelegate _next;
 
@@ -16,12 +17,12 @@ public class CookieLoginMiddleware
         if (context.Request.Path == "/signin" && context.Request.Query.ContainsKey("key"))
         {
             var key = Guid.Parse(context.Request.Query["key"]);
-            var model = Logins[key];
+            var (user, password) = Logins[key];
 
-            var result = await authService.Signin(model.Email, model.Password);
+            var result = await authService.Signin(user, password);
+            Logins.Remove(key);
             if (result.Succeeded)
             {
-                Logins.Remove(key);
                 context.Response.Redirect("/");
             }
             else
