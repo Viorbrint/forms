@@ -15,16 +15,18 @@ public class IdentityAuthService(
         logger.LogInformation("User logged out.");
     }
 
-    public async Task<SignInResult> Signin(string email, string password)
+    public async Task<SignInResult> CheckSignin(User user, string password)
     {
-        System.Console.WriteLine("Start");
-        System.Console.WriteLine(email);
-        System.Console.WriteLine(password);
-        var user = await userManager.FindByEmailAsync(email);
-        if (user == null)
-        {
-            return SignInResult.Failed;
-        }
+        var result = await signInManager.CheckPasswordSignInAsync(
+            user,
+            password,
+            lockoutOnFailure: false
+        );
+        return result;
+    }
+
+    public async Task<SignInResult> Signin(User user, string password)
+    {
         var result = await signInManager.PasswordSignInAsync(
             user,
             password,
