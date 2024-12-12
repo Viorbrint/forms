@@ -38,8 +38,13 @@ public partial class Signup : ComponentBase
             else
             {
                 // TODO: Handle error
-                System.Console.WriteLine("Error signing up");
-                System.Console.WriteLine(result.Errors.FirstOrDefault().Description);
+                Console.WriteLine("Error signing up");
+
+                var error = result.Errors.FirstOrDefault();
+                if (error != null)
+                {
+                    Console.WriteLine(error.Description);
+                }
             }
         }
         finally

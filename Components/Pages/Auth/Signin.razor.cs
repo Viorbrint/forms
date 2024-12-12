@@ -1,6 +1,7 @@
+using Forms.Data.Entities;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace Forms.Components.Pages.Auth;
 
@@ -13,27 +14,28 @@ public partial class Signin : ComponentBase
     private IAuthService AuthService { get; set; } = null!;
 
     [Inject]
-    private ApiClient client { get; set; } = null!;
+    private UserManager<User> UserManager { get; set; } = null!;
 
     public SigninModel signinModel = new();
 
     private async Task HandleValidSubmit()
     {
-        var response = await client.Signin(signinModel);
-
-        if (response.IsSuccessStatusCode)
+        var user = await UserManager.FindByEmailAsync(signinModel.Email);
+        if (user == null)
         {
-            // maybe to user page
-            NavigateToMain();
+            // TODO: Handle error
+            return;
+        }
+        var checkResult = await AuthService.CheckSignin(user, signinModel.Password);
+        if (checkResult.Succeeded)
+        {
+            var key = Guid.NewGuid();
+            CookieLoginMiddleware.Logins.Add(key, (user, signinModel.Password));
+            NavigationManager.NavigateTo($"/signin?key={key}", true);
         }
         else
         {
-            var details = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-            if (details != null)
-            {
-                // TODO: show to user
-                System.Console.WriteLine(details.Detail);
-            }
+            // TODO: Handle error
         }
     }
 
