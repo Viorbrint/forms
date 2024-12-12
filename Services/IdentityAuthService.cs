@@ -33,9 +33,6 @@ public class IdentityAuthService(
     // TODO: fix that login queries db two times
     public async Task<SignInResult> Signin(string email, string password)
     {
-        System.Console.WriteLine("Start");
-        System.Console.WriteLine(email);
-        System.Console.WriteLine(password);
         var user = await userManager.FindByEmailAsync(email);
         if (user == null)
         {
