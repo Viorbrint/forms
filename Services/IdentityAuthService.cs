@@ -15,6 +15,22 @@ public class IdentityAuthService(
         logger.LogInformation("User logged out.");
     }
 
+    public async Task<SignInResult> CheckSignin(string email, string password)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            return SignInResult.Failed;
+        }
+        var result = await signInManager.CheckPasswordSignInAsync(
+            user,
+            password,
+            lockoutOnFailure: false
+        );
+        return result;
+    }
+
+    // TODO: fix that login queries db two times
     public async Task<SignInResult> Signin(string email, string password)
     {
         System.Console.WriteLine("Start");

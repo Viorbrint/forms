@@ -9,6 +9,7 @@ public static class WebApplicationExtentions
     {
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseMiddleware<CookieLoginMiddleware>();
         return app;
     }
 
