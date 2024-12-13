@@ -24,4 +24,17 @@ public static class WebApplicationExtentions
         }
         return app;
     }
+
+    public static WebApplication UseLocalization(this WebApplication app)
+    {
+        app.UseRequestLocalization(options =>
+        {
+            var supportedCultures = new[] { "en-US", "ru-RU" };
+            options
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+        });
+        return app;
+    }
 }

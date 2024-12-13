@@ -1,3 +1,4 @@
+using System.Globalization;
 using Forms.Components;
 using Forms.Configuration;
 using MudBlazor.Services;
@@ -5,6 +6,7 @@ using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder
     .Services.AddMudServices()
+    .AddLocalization()
     .ConfigureDbContext()
     .AddIdentityConfig()
     .AddCookieConfig()
@@ -19,6 +21,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 await app.InitializeAdminRole();
+app.UseLocalization();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
