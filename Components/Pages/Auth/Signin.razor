@@ -1,6 +1,9 @@
 @page "/signin"
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SigninResource> Loc;
 
-<PageTitle>Signin - Forms</PageTitle>
+<PageTitle>@Loc["Title"]</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center">
     <MudCard Width="100%">
@@ -8,18 +11,18 @@
             <DataAnnotationsValidator />
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h5" Align="Align.Center">Signin</MudText>
+                    <MudText Typo="Typo.h5" Align="Align.Center">@Loc["Signin"]</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <MudTextField Label="Email" Class="mt-3"
+                <MudTextField Label="@Loc["Email"]" Class="mt-3"
                               @bind-Value="signinModel.Email" For="@(() => signinModel.Email)"/>
-                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                <MudTextField Label="@Loc["Password"]" HelperText="@Loc["PasswordHelper"]" Class="mt-3"
                               @bind-Value="signinModel.Password" For="@(() => signinModel.Password)" InputType="InputType.Password"/>
             </MudCardContent>
             <MudCardActions Class="d-flex justify-center">
-                <MudButton Size="Size.Large" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Login</MudButton>
-                <MudButton Size="Size.Large" Variant="Variant.Text" OnClick="@NavigateToSignup">Register</MudButton>
+                <MudButton Size="Size.Large" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@Loc["LoginButton"]</MudButton>
+                <MudButton Size="Size.Large" Variant="Variant.Text" OnClick="@NavigateToSignup">@Loc["RegisterButton"]</MudButton>
             </MudCardActions>
         </EditForm>
     </MudCard>
