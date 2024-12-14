@@ -62,6 +62,9 @@ public static class ServiceCollectionExtentions
             options.Cookie.HttpOnly = true;
             options.ExpireTimeSpan = TimeSpan.FromHours(1);
             options.SlidingExpiration = true;
+            options.AccessDeniedPath = "/accessdenied";
+            options.LoginPath = "/signin";
+            options.LogoutPath = "/logout";
         });
         return services;
     }
