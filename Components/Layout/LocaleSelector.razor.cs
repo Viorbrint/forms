@@ -8,9 +8,13 @@ public partial class LocaleSelector : ComponentBase
     [Inject]
     NavigationManager NavigationManager { get; set; } = null!;
 
-    private string SelectedLanguage { get; set; } = CultureInfo.CurrentUICulture.Name;
+    private string SelectedLanguage { get; set; } = languages[CultureInfo.CurrentUICulture.Name];
 
-    private string[] languages = ["en-US", "ru-RU"];
+    private static Dictionary<string, string> languages = new Dictionary<string, string>()
+    {
+        ["en-US"] = "English",
+        ["ru-RU"] = "Russian",
+    };
 
     private bool _isOpen = false;
 

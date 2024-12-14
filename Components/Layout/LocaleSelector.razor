@@ -8,6 +8,6 @@
     Variant="Variant.Filled">
     @foreach (var language in languages)
     {
-        <MudMenuItem OnClick="@(() => ChangeLanguage(language))">@language</MudMenuItem>
+        <MudMenuItem OnClick="@(() => ChangeLanguage(language.Key))">@language.Value</MudMenuItem>
     }
 </MudMenu>
