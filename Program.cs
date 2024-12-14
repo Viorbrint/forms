@@ -1,4 +1,3 @@
-using System.Globalization;
 using Forms.Components;
 using Forms.Configuration;
 using MudBlazor.Services;
