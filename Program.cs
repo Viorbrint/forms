@@ -1,9 +1,11 @@
+using Blazored.LocalStorage;
 using Forms.Components;
 using Forms.Configuration;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder
+    .Services.AddBlazoredLocalStorage()
     .AddCascadingAuthenticationState()
     .AddMudServices()
     .AddLocalization()
