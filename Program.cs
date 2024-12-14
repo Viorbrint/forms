@@ -1,33 +1,11 @@
-using Blazored.LocalStorage;
-using Forms.Components;
 using Forms.Configuration;
-using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder
-    .Services.AddBlazoredLocalStorage()
-    .AddCascadingAuthenticationState()
-    .AddMudServices()
-    .AddLocalization()
-    .ConfigureDbContext()
-    .AddIdentityConfig()
-    .AddCookieConfig()
-    .AddBlazor()
-    .AddServices();
+builder.Services.AddAll();
 var app = builder.Build();
-
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    app.UseHsts();
+    app.UseDev();
 }
-
-await app.InitializeAdminRole();
-app.UseLocalization();
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseAntiforgery();
-app.UseAuth();
-app.UseMiddleware<CultureMiddleware>();
-app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+await app.UseAll();
 app.Run();

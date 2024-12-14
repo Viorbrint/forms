@@ -1,3 +1,4 @@
+using Forms.Components;
 using Forms.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -35,6 +36,26 @@ public static class WebApplicationExtentions
                 .AddSupportedCultures(supportedCultures)
                 .AddSupportedUICultures(supportedCultures);
         });
+        return app;
+    }
+
+    public static WebApplication UseDev(this WebApplication app)
+    {
+        app.UseExceptionHandler("/Error", createScopeForErrors: true);
+        app.UseHsts();
+        return app;
+    }
+
+    public static async Task<WebApplication> UseAll(this WebApplication app)
+    {
+        await app.InitializeAdminRole();
+        app.UseLocalization();
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseAntiforgery();
+        app.UseAuth();
+        app.UseMiddleware<CultureMiddleware>();
+        app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
         return app;
     }
 }
