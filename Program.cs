@@ -4,7 +4,8 @@ using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder
-    .Services.AddMudServices()
+    .AddCascadingAuthenticationState()
+    .AddMudServices()
     .AddLocalization()
     .ConfigureDbContext()
     .AddIdentityConfig()
