@@ -1,3 +1,4 @@
+using Forms.Components;
 using Forms.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -22,6 +23,39 @@ public static class WebApplicationExtentions
             var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             await RoleInitializer.InitializeAsync(userManager, rolesManager);
         }
+        return app;
+    }
+
+    public static WebApplication UseLocalization(this WebApplication app)
+    {
+        app.UseRequestLocalization(options =>
+        {
+            var supportedCultures = new[] { "en-US", "ru-RU" };
+            options
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+        });
+        return app;
+    }
+
+    public static WebApplication UseDev(this WebApplication app)
+    {
+        app.UseExceptionHandler("/Error", createScopeForErrors: true);
+        app.UseHsts();
+        return app;
+    }
+
+    public static async Task<WebApplication> UseAll(this WebApplication app)
+    {
+        await app.InitializeAdminRole();
+        app.UseLocalization();
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseAntiforgery();
+        app.UseAuth();
+        app.UseMiddleware<CultureMiddleware>();
+        app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
         return app;
     }
 }

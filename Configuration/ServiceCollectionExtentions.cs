@@ -1,8 +1,10 @@
+using Blazored.LocalStorage;
 using Forms.Data;
 using Forms.Data.Entities;
 using Forms.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 namespace Forms.Configuration;
 
@@ -61,6 +63,21 @@ public static class ServiceCollectionExtentions
             options.ExpireTimeSpan = TimeSpan.FromHours(1);
             options.SlidingExpiration = true;
         });
+        return services;
+    }
+
+    public static IServiceCollection AddAll(this IServiceCollection services)
+    {
+        services
+            .AddBlazoredLocalStorage()
+            .AddCascadingAuthenticationState()
+            .AddMudServices()
+            .AddLocalization()
+            .ConfigureDbContext()
+            .AddIdentityConfig()
+            .AddCookieConfig()
+            .AddBlazor()
+            .AddServices();
         return services;
     }
 }
