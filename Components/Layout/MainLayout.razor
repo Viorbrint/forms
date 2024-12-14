@@ -65,7 +65,7 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    private async void DarkModeToggle()
+    private async Task DarkModeToggle()
     {
         _isDarkMode = !_isDarkMode;
         await LocalStorage.SetItemAsync(IsDarkModeKey, _isDarkMode);
