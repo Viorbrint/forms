@@ -1,0 +1,85 @@
+<MudPaper >
+    <MudContainer>
+        <MudForm>
+            <MudTextField Label="Title" @bind-Value="Title" Required="true" Variant="Variant.Outlined"/>
+
+            <MudTextField Lines="2" Label="Description" @bind-Value="Description" AutoGrow Variant="Variant.Outlined"/>
+
+            <MudSelect Label="Topic" @bind-Value="SelectedTopic" Required="true" Variant="Variant.Outlined">
+                @foreach (var topic in Topics)
+                {
+                    <MudSelectItem Value="@topic">@topic</MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudToolBar Gutters="false" Class="d-flex gap-3">
+                <MudFileUpload 
+                @ref="_fileUpload" 
+                T="IBrowserFile" 
+                OnFilesChanged="@OnFileChanged" 
+                @bind-Files="Image" 
+                Accept=".jpg, .jpeg, .png">
+                    <ActivatorContent>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Success"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload">
+                            Load Image
+                        </MudButton>
+                    </ActivatorContent>
+                </MudFileUpload>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Clear"
+                           OnClick="@ClearAsync">
+                    Clear Image
+                </MudButton>
+            </MudToolBar>
+
+            @if (Image != null)
+            {
+                <MudListItem T="string" Icon="@Icons.Material.Filled.AttachFile">
+                    @Image.Name
+                </MudListItem>
+            }
+
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudAutocomplete
+                Label="Tags"
+                @bind-Value="TagInput"
+                CoerceValue="true"
+                ResetValueOnEmptyText="true"
+                Variant="Variant.Outlined"/>
+            
+            <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
+            </MudStack>
+            
+            <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text))">
+                @foreach (var tag in SelectedTags)
+                {
+                    <MudChip Color="Color.Primary" Text="@tag" ></MudChip>
+                }
+            </MudChipSet>
+
+            <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="IsPublic"/>
+            @if (!IsPublic)
+            {
+                <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput" Items="FilteredUsers"
+                                 OnKeyUp="FilterUsers"/>
+                <MudTable Items="SelectedUsers" Dense="true" Hover="true">
+                    <HeaderContent>
+                        <MudTh>Username</MudTh>
+                        <MudTh>Email</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        @* <MudTd>@context.Name</MudTd> *@
+                        @* <MudTd>@context.Email</MudTd> *@
+                        <MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => RemoveUser(context)"/>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
+        </MudForm>
+    </MudContainer>
+</MudPaper>
