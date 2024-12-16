@@ -12,7 +12,7 @@
                 }
             </MudSelect>
 
-            <MudToolBar Gutters="false" Class="d-flex gap-3">
+            <MudToolBar Gutters="false" Class="d-flex">
                 <MudFileUpload 
                 @ref="_fileUpload" 
                 T="IBrowserFile" 
@@ -20,27 +20,30 @@
                 @bind-Files="Image" 
                 Accept=".jpg, .jpeg, .png">
                     <ActivatorContent>
-                        <MudButton Variant="Variant.Filled"
-                                   Color="Color.Success"
-                                   StartIcon="@Icons.Material.Filled.CloudUpload">
-                            Load Image
-                        </MudButton>
+                        @if (Image == null)
+                        {
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Success"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                                Load Image
+                            </MudButton>
+                        }
                     </ActivatorContent>
                 </MudFileUpload>
-                <MudButton Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           StartIcon="@Icons.Material.Filled.Clear"
-                           OnClick="@ClearAsync">
-                    Clear Image
-                </MudButton>
+                @if (Image != null)
+                {
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Clear"
+                                   OnClick="@ClearAsync">
+                            Clear Image
+                        </MudButton>
+                        <MudIcon Icon="@Icons.Material.Filled.AttachFile" />
+                        <MudText >@Image.Name</MudText>
+                    </MudStack>
+                }
             </MudToolBar>
-
-            @if (Image != null)
-            {
-                <MudListItem T="string" Icon="@Icons.Material.Filled.AttachFile">
-                    @Image.Name
-                </MudListItem>
-            }
 
             <MudStack Row="true" AlignItems="AlignItems.Center">
             <MudAutocomplete
