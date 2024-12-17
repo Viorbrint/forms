@@ -1,3 +1,4 @@
+using Forms.Data;
 using Forms.Data.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -11,7 +12,7 @@ public partial class Settings : ComponentBase
     private string Title = string.Empty;
     private string Description = string.Empty;
     private string SelectedTopic = string.Empty;
-    private List<string> Topics = new() { "Education", "Quiz", "Other" };
+    private List<string> Topics = [];
     private List<string> SelectedTags = new();
     private List<string> FilteredTags = new();
     private string TagInput = string.Empty;
@@ -28,6 +29,15 @@ public partial class Settings : ComponentBase
     private string UserSearchInput = string.Empty;
     private List<User> SelectedUsers = new();
     private List<User> FilteredUsers = new();
+
+    [Inject]
+    ApplicationDbContext Db { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var topics = Db.Topics.ToList();
+        Topics = topics.Select(x => x.TopicName).ToList();
+    }
 
     void RemoveTag(string tag)
     {
@@ -53,4 +63,3 @@ public partial class Settings : ComponentBase
 
     private List<IBrowserFile> UploadedFiles = new();
 }
-
