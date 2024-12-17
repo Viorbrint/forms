@@ -1,6 +1,6 @@
 namespace forms.Data.Entities;
 
-public class TextAnswer : Answer
+public class SingleLineAnswer : Answer
 {
     public string AnswerText { get; set; } = string.Empty;
 }
