@@ -16,7 +16,7 @@ public class Template
 
     public bool IsPublic { get; set; }
 
-    public bool IsPublished { get; set; }
+    public bool IsPublished { get; set; } = false;
 
     public string AuthorId { get; set; } = null!;
 

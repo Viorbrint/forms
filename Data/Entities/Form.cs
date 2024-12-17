@@ -13,7 +13,8 @@ public class Form
     public string UserId { get; set; } = null!;
     public User User { get; set; } = null!;
 
-    public List<TextAnswer> TextAnswers { get; set; } = [];
+    public List<SingleLineAnswer> SingleLineAnswers { get; set; } = [];
+    public List<MultiLineAnswer> MultiLineAnswers { get; set; } = [];
     public List<NumberAnswer> NumberAnswers { get; set; } = [];
     public List<BooleanAnswer> BooleanAnswers { get; set; } = [];
 }

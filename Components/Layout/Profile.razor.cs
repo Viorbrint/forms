@@ -5,8 +5,7 @@ namespace Forms.Components.Layout;
 
 public partial class Profile : ComponentBase
 {
-    [Inject]
-    IHttpContextAccessor HttpContextAccessor { get; set; }
+    [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = null!;
     
     [Inject]
     NavigationManager NavigationManager { get; set; } = null!;
@@ -17,12 +16,12 @@ public partial class Profile : ComponentBase
         NavigationManager.NavigateTo("/logout", forceLoad: true);
     }
     
-      protected override async Task OnInitializedAsync()
+      protected override void OnInitialized()
       {
           var context = HttpContextAccessor.HttpContext;
-          if (context != null)
+          if (context is { User.Identity.Name: not null })
           {
-              _letter = HttpContextAccessor.HttpContext.User.Identity.Name[0].ToString();
+              _letter = context.User.Identity.Name[0].ToString();
           }
       }
 }

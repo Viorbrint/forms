@@ -17,7 +17,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Question> Questions { get; set; } = null!;
     public DbSet<Topic> Topics { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
-    public DbSet<TextAnswer> TextAnswers { get; set; } = null!;
+    public DbSet<SingleLineAnswer> SingleLineAnswers { get; set; } = null!;
+    public DbSet<SingleLineAnswer> MultiLineAnswers { get; set; } = null!;
     public DbSet<NumberAnswer> NumberAnswers { get; set; } = null!;
     public DbSet<BooleanAnswer> BooleanAnswers { get; set; } = null!;
 
