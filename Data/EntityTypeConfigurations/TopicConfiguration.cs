@@ -27,6 +27,7 @@ public class TopicConfiguration : IEntityTypeConfiguration<Topic>
         "Personal Development",
         "Technology",
         "Sports and Fitness",
+        "Other",
     ];
 
     public void Configure(EntityTypeBuilder<Topic> builder)
