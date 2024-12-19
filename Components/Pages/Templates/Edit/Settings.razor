@@ -56,7 +56,7 @@
             <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
             </MudStack>
             
-            <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text))">
+            <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text!))">
                 @foreach (var tag in SelectedTags)
                 {
                     <MudChip Color="Color.Primary" Text="@tag" ></MudChip>
@@ -66,7 +66,7 @@
             <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="IsPublic"/>
             @if (!IsPublic)
             {
-                <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput" Items="FilteredUsers"
+                <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput" 
                                  OnKeyUp="FilterUsers"/>
                 <MudTable Items="SelectedUsers" Dense="true" Hover="true">
                     <HeaderContent>
