@@ -2,13 +2,13 @@ using Forms.Data;
 using Forms.Data.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 
 namespace Forms.Components.Pages.Templates.Edit;
 
 public partial class Settings : ComponentBase
 {
-    private string AccessSettings = "All";
     private string Title = string.Empty;
     private string Description = string.Empty;
     private string SelectedTopic = string.Empty;
@@ -35,7 +35,7 @@ public partial class Settings : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        var topics = Db.Topics.ToList();
+        var topics = await Db.Topics.ToListAsync();
         Topics = topics.Select(x => x.TopicName).ToList();
     }
 
