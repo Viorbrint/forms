@@ -14,9 +14,12 @@ public class CookieLoginMiddleware
 
     public async Task InvokeAsync(HttpContext context, IAuthService authService)
     {
-        if (context.Request.Path == "/signin" && context.Request.Query.ContainsKey("key"))
+        if (
+            context.Request.Path == "/signin"
+            && context.Request.Query.TryGetValue("key", out var keyValues)
+        )
         {
-            var key = Guid.Parse(context.Request.Query["key"]);
+            var key = Guid.Parse(keyValues!);
             var (user, password) = Logins[key];
 
             var result = await authService.Signin(user, password);
