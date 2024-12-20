@@ -1,13 +1,12 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly">
+﻿@using Forms.Components.Pages
+<Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
     <NotFound>
         <LayoutView Layout="@typeof(Layout.MainLayout)">
-            <MudContainer>
-                <MudText Typo="Typo.h4" Color="Color.Error">404 - Page Not Found</MudText>
-            </MudContainer>
+            <NotFound />
         </LayoutView>
     </NotFound>
 </Router>
