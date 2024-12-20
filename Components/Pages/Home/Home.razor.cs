@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Forms.Components.Pages;
+namespace Forms.Components.Pages.Home;
 
 public partial class Home : ComponentBase
 {
