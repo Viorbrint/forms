@@ -1,23 +1,39 @@
-<MudDropContainer @ref="_dropContainer" T="DropItem" Items="_items" ItemsSelector="@((_, _) => true)" ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
-    <ChildContent>
-        <MudDropZone T="DropItem" Class="flex-grow-1" AllowReorder="true"/>
-    </ChildContent>
-    <ItemRenderer>
-        <MudForm>
-            <MudPaper Class="ma-4 flex-grow-1">
-                <MudContainer>
-                    <MudTextField Required="true" Label="Question" Placeholder="Question" AutoGrow T="string" Variant="Variant.Outlined" Margin="Margin.Normal"/>
-                    <MudSelect Variant="Variant.Outlined" T="int" Required="true" Margin="Margin.Normal">
+<MudForm>
+    <MudDropContainer 
+        @ref="_dropContainer" 
+        T="DropItem" 
+        Items="_items" 
+        ItemsSelector="@((_, _) => true)" 
+        ItemDropped="ItemUpdated" 
+        Class="d-flex flex-wrap flex-grow-1"
+    >
+        <ChildContent>
+            <MudDropZone T="DropItem" Class="flex-grow-1" AllowReorder="true"/>
+        </ChildContent>
+        <ItemRenderer>
+                <MudPaper Class="pa-4 my-4 flex-grow-1">
+                    <MudTextField 
+                        Required="true" 
+                        Label="Question" 
+                        Placeholder="Question" 
+                        AutoGrow 
+                        T="string" 
+                        Variant="Variant.Outlined" 
+                        Margin="Margin.Normal"
+                    />
+                    <MudSelect 
+                        Variant="Variant.Outlined" 
+                        T="int" 
+                        Required="true" 
+                        Margin="Margin.Normal"
+                    >
                         <MudSelectItem Value="1">Single-line</MudSelectItem>
                         <MudSelectItem Value="2">Multi-line</MudSelectItem>
                         <MudSelectItem Value="3">Positive integer</MudSelectItem>
                         <MudSelectItem Value="4">Checkbox</MudSelectItem>
                     </MudSelect>
-                </MudContainer>
-            </MudPaper>
-        </MudForm>
-    </ItemRenderer>
-</MudDropContainer>
-<MudContainer>
-    <MudButton OnClick="@AddQuestion" Variant="Variant.Filled" FullWidth="true" Color="Color.Success"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
-</MudContainer>
+                </MudPaper>
+        </ItemRenderer>
+    </MudDropContainer>
+</MudForm>
+<MudButton OnClick="@AddQuestion" Variant="Variant.Filled" FullWidth="true" Color="Color.Success"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>

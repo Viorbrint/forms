@@ -1,7 +1,7 @@
 @using PSC.Blazor.Components.MarkdownEditor 
 @using PSC.Blazor.Components.MarkdownEditor.EventsArgs
-<MudPaper >
-    <MudContainer>
+<MudContainer Gutters="false">
+    <MudPaper Class="pa-4">
         <MudForm>
             <MudTextField Label="Title" @bind-Value="Title" Required="true" Variant="Variant.Outlined"/>
 
@@ -88,5 +88,5 @@
                 </MudTable>
             }
         </MudForm>
-    </MudContainer>
-</MudPaper>
+    </MudPaper>
+</MudContainer>
