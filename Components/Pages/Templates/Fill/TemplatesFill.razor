@@ -36,7 +36,7 @@
                     }
                     else if (question.Type == QuestionType.Checkbox)
                     {
-                        <MudCheckBox T="bool" @bind-Checked="question.IsChecked" Label="@question.Title" />
+                        <MudCheckBox T="bool" @bind-Value="question.IsChecked" Label="@question.Title" />
                     }
                 </MudPaper>
             </MudItem>
