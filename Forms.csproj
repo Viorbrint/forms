@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0" />
     <PackageReference Include="MudBlazor" Version="7.*" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
+    <PackageReference Include="PSC.Blazor.Components.MarkdownEditor" Version="8.0.5" />
   </ItemGroup>
 
 
