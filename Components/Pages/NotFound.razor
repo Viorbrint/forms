@@ -1,0 +1,22 @@
+@page "/notfound"
+
+<PageTitle>NotFound - Forms</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-12 text-center">
+    <MudPaper Class="pa-6">
+        <MudText Typo="Typo.h4" Color="Color.Warning" GutterBottom="true">
+            Page Not Found
+        </MudText>
+        <MudText Typo="Typo.body1" GutterBottom="true">
+            The page you are looking for does not exist. Please check the URL or navigate back to the homepage.
+        </MudText>
+        <div class="mt-4">
+            <MudButton  Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateBack">
+                Go back
+            </MudButton>
+            <MudButton Variant="Variant.Text" OnClick="NavigateHome">
+                Home
+            </MudButton>
+        </div>
+    </MudPaper>
+</MudContainer>

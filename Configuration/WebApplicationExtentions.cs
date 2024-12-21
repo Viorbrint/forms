@@ -55,6 +55,7 @@ public static class WebApplicationExtentions
         app.UseAntiforgery();
         app.UseAuth();
         app.UseMiddleware<CultureMiddleware>();
+        app.UseStatusCodePagesWithRedirects("/notfound");
         app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
         return app;
     }

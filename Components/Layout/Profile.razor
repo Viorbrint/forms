@@ -1,3 +1,4 @@
+@using Microsoft.AspNetCore.Components.Authorization
 <MudMenu
     AnchorOrigin="Origin.BottomCenter"
     TransformOrigin="Origin.TopCenter">
@@ -7,6 +8,11 @@
         </MudAvatar>
     </ActivatorContent>
     <ChildContent>
+        <AuthorizeView>
+            <Authorized>
+                <MudMenuItem Href="/user">Profile</MudMenuItem>
+            </Authorized>
+        </AuthorizeView>
         <MudMenuItem OnClick="@Logout">Logout</MudMenuItem>
     </ChildContent>
 </MudMenu>

@@ -1,0 +1,58 @@
+﻿@page "/"
+
+<PageTitle>Home - Forms</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
+    <MudGrid Spacing="2">
+        <MudItem xs="12">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h5">Tag Cloud</MudText>
+                <MudChipSet T="string">
+                    @foreach (var tag in Tags)
+                    {
+                        <MudChip Color="Color.Primary" OnClick="() => NavigateToSearch(tag)">@tag</MudChip>
+                    }
+                </MudChipSet>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="8">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h5">Latest Templates</MudText>
+                <MudGrid Spacing="1">
+                    @foreach (var template in LatestTemplates)
+                    {
+                    <MudItem xs="12" sm="6">
+                        <MudCard Class="pa-2">
+                            <MudCardMedia Image="@template.ImageUrl" Style="height: 140px" />
+                            <MudCardContent>
+                                <MudText Typo="Typo.subtitle1">@template.Title</MudText>
+                                <MudText Typo="Typo.body2">@template.Description</MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Href="@($"/templates/fill/{template.Id}")" Variant="Variant.Text">View</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                    }
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h5">Top 5 Popular Templates</MudText>
+                <MudList T="Template">
+                    @foreach (var template in TopPopularTemplates)
+                    {
+                    <MudListItem>
+                        <MudText Typo="Typo.body1">@template.Title</MudText>
+                        <MudText Typo="Typo.body2">Filled Forms: @template.FilledFormsCount</MudText>
+                    </MudListItem>
+                    }
+                </MudList>
+            </MudPaper>
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>

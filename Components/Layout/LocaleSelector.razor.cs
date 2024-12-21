@@ -16,8 +16,6 @@ public partial class LocaleSelector : ComponentBase
         ["ru-RU"] = "Russian",
     };
 
-    private bool _isOpen = false;
-
     private void ChangeLanguage(string language)
     {
         var uri = new Uri(NavigationManager.Uri);

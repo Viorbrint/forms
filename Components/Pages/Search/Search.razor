@@ -1,0 +1,48 @@
+@page "/search"
+
+<PageTitle>Search - Forms</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4">
+    <MudGrid Spacing="2">
+
+        <!-- Search Bar -->
+        <MudItem xs="12">
+            <MudTextField @bind-Value="SearchQuery" Placeholder="Search templates..." DebounceInterval="400"
+                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" 
+                          OnKeyDown="HandleSearchKeyDown" Class="mb-4" />
+        </MudItem>
+
+        <!-- Search Results -->
+        <MudItem xs="12">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h5">Search Results</MudText>
+
+                @if (SearchResults.Any())
+                {
+                    <MudGrid Spacing="1">
+                        @foreach (var template in SearchResults)
+                        {
+                            <MudItem xs="12" sm="6">
+                                <MudCard Class="pa-2">
+                                    <MudCardMedia Image="@template.ImageUrl" Style="height: 140px" />
+                                    <MudCardContent>
+                                        <MudText Typo="Typo.subtitle1">@template.Name</MudText>
+                                        <MudText Typo="Typo.body2">@template.Description</MudText>
+                                    </MudCardContent>
+                                    <MudCardActions>
+                                        <MudButton Href="@($"/templates/fill/{template.Id}")" Variant="Variant.Text">View</MudButton>
+                                    </MudCardActions>
+                                </MudCard>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body1" Class="mt-4">No templates found for "@SearchQuery".</MudText>
+                }
+            </MudPaper>
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>
