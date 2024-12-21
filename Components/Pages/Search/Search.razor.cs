@@ -10,10 +10,15 @@ public partial class Search : ComponentBase
     public string? InitialQuery { get; set; }
 
     private string _searchQuery = string.Empty;
-    private string SearchQuery {get => _searchQuery; set {
-        _searchQuery = value;
-        PerformSearch();
-    }}
+    private string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            _searchQuery = value;
+            PerformSearch();
+        }
+    }
 
     private List<Template> SearchResults = new();
 
@@ -34,17 +39,40 @@ public partial class Search : ComponentBase
     {
         // Simulate search logic
         SearchResults = AllTemplates
-            .Where(t => t.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
-                        t.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase) ||
-                        t.Tags.Any(tag => tag.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)))
+            .Where(t =>
+                t.Name.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)
+                || t.Description.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)
+                || t.Tags.Any(tag => tag.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase))
+            )
             .ToList();
     }
 
     private List<Template> AllTemplates = new()
     {
-        new Template { Id = 1, Name = "Template 1", Description = "A template about education", ImageUrl = "https://via.placeholder.com/150", Tags = new() { "Education", "Quiz" } },
-        new Template { Id = 2, Name = "Template 2", Description = "A template about surveys", ImageUrl = "https://via.placeholder.com/150", Tags = new() { "Survey", "Feedback" } },
-        new Template { Id = 3, Name = "Template 3", Description = "A fun template for polls", ImageUrl = "https://via.placeholder.com/150", Tags = new() { "Poll", "Fun" } },
+        new Template
+        {
+            Id = 1,
+            Name = "Template 1",
+            Description = "A template about education",
+            ImageUrl = "https://via.placeholder.com/150",
+            Tags = new() { "Education", "Quiz" },
+        },
+        new Template
+        {
+            Id = 2,
+            Name = "Template 2",
+            Description = "A template about surveys",
+            ImageUrl = "https://via.placeholder.com/150",
+            Tags = new() { "Survey", "Feedback" },
+        },
+        new Template
+        {
+            Id = 3,
+            Name = "Template 3",
+            Description = "A fun template for polls",
+            ImageUrl = "https://via.placeholder.com/150",
+            Tags = new() { "Poll", "Fun" },
+        },
     };
 
     private class Template
@@ -56,3 +84,4 @@ public partial class Search : ComponentBase
         public List<string> Tags { get; set; } = new();
     }
 }
+
