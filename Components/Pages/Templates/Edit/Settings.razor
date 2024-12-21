@@ -1,10 +1,14 @@
+@using PSC.Blazor.Components.MarkdownEditor 
+@using PSC.Blazor.Components.MarkdownEditor.EventsArgs
 <MudPaper >
     <MudContainer>
         <MudForm>
             <MudTextField Label="Title" @bind-Value="Title" Required="true" Variant="Variant.Outlined"/>
 
-            <MudTextField Lines="2" Label="Description" @bind-Value="Description" AutoGrow Variant="Variant.Outlined"/>
-
+            <MudText>Description</MudText>
+            <MarkdownEditor @bind-Value="Description" />
+            @* TODO: fix black theme *@
+                
             <MudSelect Label="Topic" @bind-Value="SelectedTopic" Required="true" Variant="Variant.Outlined">
                 @foreach (var topic in Topics)
                 {
