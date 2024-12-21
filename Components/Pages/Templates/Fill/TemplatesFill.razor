@@ -1,4 +1,5 @@
 @page "/templates/fill/{templateId}"
+@using Markdig
 
 <PageTitle>Fill out the template - Forms</PageTitle>
 
@@ -13,7 +14,8 @@
         <MudItem xs="12">
             <MudPaper Class="pa-3 mb-4">
                 <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-4">@template.Title</MudText>
-                <MudText Typo="Typo.subtitle1">@template.Description</MudText>
+                @((MarkupString)Markdown.ToHtml(template.Description))
+                @* TODO: maybe this is not safe *@
             </MudPaper>
         </MudItem>
 
@@ -49,3 +51,4 @@
 
     </MudGrid>
 </MudContainer>
+    using Markdig;
