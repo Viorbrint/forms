@@ -2,7 +2,7 @@ namespace Forms.Data.Entities;
 
 public class TemplateAccess
 {
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public string UserId { get; set; } = null!;
     public User User { get; set; } = null!;
