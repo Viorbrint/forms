@@ -1,4 +1,4 @@
-@using forms.Data.Entities
+@using Forms.Data.Entities
 @* is published *@
 @* filled date *@
 @* name of template *@
@@ -10,7 +10,7 @@
         SelectOnRowClick="false">
     <ToolBarContent>
         <div class="d-flex justify-space-between align-center" style="width: 100%">
-            <MudText Typo="Typo.h6">Completed forms</MudText>
+            <MudText Typo="Typo.h6">Your templates</MudText>
             <MudToolBar WrapContent="true" Class="gap-2">
                 <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="EditTemplate" Disabled="@(SelectedTemplates.Count != 1)">Edit</MudButton>
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteTemplate" Disabled="@(!SelectedTemplates.Any())">Delete</MudButton>
