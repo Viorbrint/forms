@@ -26,4 +26,3 @@ public partial class Profile : ComponentBase
         }
     }
 }
-

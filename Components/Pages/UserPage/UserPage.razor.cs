@@ -1,14 +1,16 @@
 using Forms.Data;
-using Microsoft.AspNetCore.Components;
 using Forms.Data.Entities;
+using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 
 namespace Forms.Components.Pages.UserPage;
 
 public partial class UserPage : ComponentBase
 {
-    [Inject] private IHttpContextAccessor HttpContextAccessor { get; set; } = null!;
-    
+    [Inject]
+    private IHttpContextAccessor HttpContextAccessor { get; set; } = null!;
+
+    // TODO: not good
     [Inject]
     private ApplicationDbContext Db { get; set; } = null!;
 
@@ -22,11 +24,14 @@ public partial class UserPage : ComponentBase
             return;
         }
 
-        var user = Db.Users.Include(u => u.Templates).FirstOrDefault(u => u.UserName == context.User.Identity.Name);
+        var user = Db
+            .Users.Include(u => u.Templates)
+            .FirstOrDefault(u => u.UserName == context.User.Identity.Name);
         if (user == null)
-        { 
+        {
             return;
         }
         CurrentUser = user;
     }
 }
+
