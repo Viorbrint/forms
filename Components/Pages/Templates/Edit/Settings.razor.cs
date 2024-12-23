@@ -61,5 +61,11 @@ public partial class Settings : ComponentBase
         SelectedUsers.Remove(user);
     }
 
+    private async Task Save()
+    {
+        await Task.CompletedTask;
+        throw new NotImplementedException();
+    }
+
     private List<IBrowserFile> UploadedFiles = new();
 }

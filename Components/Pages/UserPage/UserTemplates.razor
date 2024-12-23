@@ -1,19 +1,19 @@
 @using Forms.Data.Entities
-@* is published *@
-@* filled date *@
-@* name of template *@
 <MudTable 
         T="Template" 
         MultiSelection="true" 
         Items="@Templates" 
         @bind-SelectedItems="SelectedTemplates"
-        SelectOnRowClick="false">
+        SelectOnRowClick="false"
+        OnRowClick="OnTemplateClick"
+        Hover="true"
+        >
     <ToolBarContent>
         <div class="d-flex justify-space-between align-center" style="width: 100%">
             <MudText Typo="Typo.h6">Your templates</MudText>
             <MudToolBar WrapContent="true" Class="gap-2">
-                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="EditTemplate" Disabled="@(SelectedTemplates.Count != 1)">Edit</MudButton>
-                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteTemplate" Disabled="@(!SelectedTemplates.Any())">Delete</MudButton>
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@EditSelected" Disabled="@(SelectedTemplates.Count != 1)">Edit</MudButton>
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteTemplates" Disabled="@(!SelectedTemplates.Any())">Delete</MudButton>
                 <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="CreateTemplate">Create</MudButton>
             </MudToolBar>
         </div>
@@ -28,7 +28,7 @@
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Title</MudTd>
         <MudTd DataLabel="Topic">@context.Topic</MudTd>
-        <MudTd DataLabel="Likes">@context.Likes</MudTd>
+        <MudTd DataLabel="Likes">@context.Likes.Count</MudTd>
         <MudTd DataLabel="Created At">@context.CreatedAt</MudTd>
         <MudTd DataLabel="Published">@context.IsPublished</MudTd>
     </RowTemplate>

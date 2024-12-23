@@ -1,5 +1,8 @@
 @page "/templates/fill/{templateId}"
 @using Markdig
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 <PageTitle>Fill out the template - Forms</PageTitle>
 
@@ -9,6 +12,13 @@
         <MudItem xs="12">
             <MudImage Elevation="2" Src="@template.ImageUrl" Alt="Template Image" Style="width: 100%; aspect-ratio: 16/9; border-radius: 8px;" />
         </MudItem>
+
+        <div class="d-flex justify-end align-center" style="width: 100%;">
+            <MudIconButton Icon="@Icons.Material.Filled.ThumbUp" />
+            <MudText>12</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Comment" />
+            <MudText>20</MudText>
+        </div>
 
         <!-- Form Title and Description -->
         <MudItem xs="12">
@@ -51,4 +61,3 @@
 
     </MudGrid>
 </MudContainer>
-    using Markdig;

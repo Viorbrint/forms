@@ -13,6 +13,7 @@ public static class ServiceCollectionExtentions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, IdentityAuthService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         return services;
     }
 
