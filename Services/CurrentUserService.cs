@@ -28,4 +28,9 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
     {
         return httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
     }
+
+    public bool IsAdmin()
+    {
+        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value == "admin";
+    }
 }
