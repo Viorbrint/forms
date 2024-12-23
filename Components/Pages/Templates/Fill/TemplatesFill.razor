@@ -1,5 +1,8 @@
 @page "/templates/fill/{templateId}"
 @using Markdig
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 <PageTitle>Fill out the template - Forms</PageTitle>
 
