@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using Forms.Data;
 using Forms.Data.Entities;
+using Forms.Repositories;
 using Forms.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ public static class ServiceCollectionExtentions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, IdentityAuthService>();
+        services.AddScoped<TemplateRepository>();
+        services.AddScoped<TemplateService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         return services;
     }
