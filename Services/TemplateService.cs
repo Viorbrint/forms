@@ -30,6 +30,16 @@ public class TemplateService(TemplateRepository templateRepository)
         await templateRepository.AddAsync(template);
     }
 
+    public async Task DeleteByIdAsync(string id)
+    {
+        await templateRepository.DeleteByIdAsync(id);
+    }
+
+    public async Task DeleteByIdsAsync(IEnumerable<string> ids)
+    {
+        await templateRepository.DeleteByIdsAsync(ids);
+    }
+
     public async Task IsReady(string id)
     {
         // TODO: check all req fields for emptiness

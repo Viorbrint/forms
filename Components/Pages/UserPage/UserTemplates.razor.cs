@@ -5,6 +5,8 @@ using MudBlazor;
 
 namespace Forms.Components.Pages.UserPage;
 
+// TODO: show snackbars
+
 public partial class UserTemplates : ComponentBase
 {
     private List<Template> Templates { get; set; } = [];
@@ -25,13 +27,20 @@ public partial class UserTemplates : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         userId = CurrentUserService.GetUserId()!;
+        await ReloadTemplates();
+    }
+
+    private async Task ReloadTemplates()
+    {
         Templates = await TemplateService.GetByUserAsync(userId);
     }
 
-    private async Task DeleteTemplates()
+    private async Task DeleteSelected()
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        var ids = SelectedTemplates.Select(x => x.Id).ToList();
+        await TemplateService.DeleteByIdsAsync(ids);
+
+        await ReloadTemplates();
     }
 
     private void OnTemplateClick(TableRowClickEventArgs<Template> args)

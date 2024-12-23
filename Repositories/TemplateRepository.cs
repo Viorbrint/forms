@@ -63,12 +63,22 @@ public class TemplateRepository
         await Context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteByIdAsync(string id)
     {
         var template = await GetByIdAsync(id);
         if (template != null)
         {
             Templates.Remove(template);
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    public async Task DeleteByIdsAsync(IEnumerable<string> ids)
+    {
+        var templates = await Templates.Where(t => ids.Contains(t.Id)).ToListAsync();
+        if (templates.Any())
+        {
+            Templates.RemoveRange(templates);
             await Context.SaveChangesAsync();
         }
     }
