@@ -16,6 +16,8 @@ public static class ServiceCollectionExtentions
         services.AddScoped<IAuthService, IdentityAuthService>();
         services.AddScoped<TemplateRepository>();
         services.AddScoped<TemplateService>();
+        services.AddScoped<TopicRepository>();
+        services.AddScoped<TopicService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         return services;
     }
