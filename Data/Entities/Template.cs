@@ -12,7 +12,7 @@ public class Template
 
     public string? ImageUrl { get; set; }
 
-    public bool IsPublic { get; set; }
+    public bool IsPublic { get; set; } = true;
 
     public bool IsPublished { get; set; } = false;
 
