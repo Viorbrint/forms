@@ -1,14 +1,16 @@
-using Forms.Data;
 using Forms.Data.Entities;
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 
 namespace Forms.Components.Pages.Templates.Edit;
 
 public partial class Settings : ComponentBase
 {
+    [Inject]
+    private TopicService TopicService { get; set; } = null!;
+
     private string Title = string.Empty;
     private string Description = string.Empty;
     private string SelectedTopic = string.Empty;
@@ -30,13 +32,9 @@ public partial class Settings : ComponentBase
     private List<User> SelectedUsers = new();
     private List<User> FilteredUsers = new();
 
-    [Inject]
-    ApplicationDbContext Db { get; set; } = null!;
-
     protected override async Task OnInitializedAsync()
     {
-        var topics = await Db.Topics.ToListAsync();
-        Topics = topics.Select(x => x.TopicName).ToList();
+        Topics = await TopicService.GetAllNamesAsync();
     }
 
     void RemoveTag(string tag)
