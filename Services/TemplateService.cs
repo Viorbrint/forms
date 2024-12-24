@@ -58,4 +58,14 @@ public class TemplateService(TemplateRepository templateRepository)
         await Task.CompletedTask;
         throw new NotImplementedException();
     }
+
+    public async Task PublishByIdsAsync(IEnumerable<string> ids)
+    {
+        await templateRepository.PublishByIdsAsync(ids);
+    }
+
+    public async Task HideByIdsAsync(IEnumerable<string> ids)
+    {
+        await templateRepository.HideByIdsAsync(ids);
+    }
 }

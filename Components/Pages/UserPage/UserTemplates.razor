@@ -15,6 +15,8 @@
                 <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="@EditSelected" Disabled="@(SelectedTemplates.Count != 1)">Edit</MudButton>
                 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteSelected" Disabled="@(!SelectedTemplates.Any())">Delete</MudButton>
                 <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="CreateTemplate">Create</MudButton>
+                <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="PublishSelected" Disabled="@(!SelectedTemplates.Any())">Publish</MudButton>
+                <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="HideSelected" Disabled="@(!SelectedTemplates.Any())">Hide</MudButton>
             </MudToolBar>
         </div>
     </ToolBarContent>

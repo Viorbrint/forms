@@ -82,4 +82,26 @@ public class TemplateRepository
             await Context.SaveChangesAsync();
         }
     }
+
+    // TODO: check that all req fields are filled
+
+    public async Task PublishByIdsAsync(IEnumerable<string> ids)
+    {
+        var templates = await Templates.Where(t => ids.Contains(t.Id)).ToListAsync();
+
+        foreach (var template in templates)
+        {
+            template.IsPublished = true;
+        }
+    }
+
+    public async Task HideByIdsAsync(IEnumerable<string> ids)
+    {
+        var templates = await Templates.Where(t => ids.Contains(t.Id)).ToListAsync();
+
+        foreach (var template in templates)
+        {
+            template.IsPublished = false;
+        }
+    }
 }

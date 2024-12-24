@@ -43,6 +43,22 @@ public partial class UserTemplates : ComponentBase
         await ReloadTemplates();
     }
 
+    private async Task PublishSelected()
+    {
+        var ids = SelectedTemplates.Select(x => x.Id).ToList();
+        await TemplateService.PublishByIdsAsync(ids);
+
+        await ReloadTemplates();
+    }
+
+    private async Task HideSelected()
+    {
+        var ids = SelectedTemplates.Select(x => x.Id).ToList();
+        await TemplateService.HideByIdsAsync(ids);
+
+        await ReloadTemplates();
+    }
+
     private void OnTemplateClick(TableRowClickEventArgs<Template> args)
     {
         var template = args.Item;
