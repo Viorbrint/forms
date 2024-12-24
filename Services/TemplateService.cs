@@ -68,4 +68,9 @@ public class TemplateService(TemplateRepository templateRepository)
     {
         await templateRepository.HideByIdsAsync(ids);
     }
+
+    public async Task UpdateAsync(Template template)
+    {
+        await templateRepository.UpdateAsync(template);
+    }
 }

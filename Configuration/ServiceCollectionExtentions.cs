@@ -18,6 +18,7 @@ public static class ServiceCollectionExtentions
         services.AddScoped<TemplateService>();
         services.AddScoped<TopicRepository>();
         services.AddScoped<TopicService>();
+        services.AddScoped<TemplateSettings>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         return services;
     }
