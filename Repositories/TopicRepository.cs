@@ -20,4 +20,9 @@ public class TopicRepository
     {
         return await Topics.ToListAsync();
     }
+
+    public async Task<Topic?> GetByNameAsync(string name)
+    {
+        return await Topics.FirstOrDefaultAsync(t => t.TopicName == name);
+    }
 }

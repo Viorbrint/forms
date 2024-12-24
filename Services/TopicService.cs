@@ -16,4 +16,10 @@ public class TopicService(TopicRepository topicRepository)
         var topics = await GetAllAsync();
         return topics.Select(t => t.TopicName).ToList();
     }
+
+    public async Task<Topic?> GetByNameAsync(string name)
+    {
+        var result = await topicRepository.GetByNameAsync(name);
+        return result;
+    }
 }
