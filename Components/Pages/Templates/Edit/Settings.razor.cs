@@ -11,35 +11,38 @@ public partial class Settings : ComponentBase
     [Inject]
     private TopicService TopicService { get; set; } = null!;
 
-    private string Title = string.Empty;
-    private string Description = string.Empty;
-    private string SelectedTopic = string.Empty;
+    [Inject]
+    private TemplateSettings TemplateSettings { get; set; } = null!;
+
+    [Parameter]
+    public string TemplateId { get; set; } = null!;
+
     private List<string> Topics = [];
-    private List<string> SelectedTags = new();
-    private List<string> FilteredTags = new();
+
     private string TagInput = string.Empty;
 
     private IBrowserFile? Image { get; set; }
 
     private MudFileUpload<IBrowserFile>? _fileUpload;
 
+    private string UserSearchInput = string.Empty;
+
+    private List<IBrowserFile> UploadedFiles = [];
+
     private Task ClearAsync() => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
 
     private void OnFileChanged(InputFileChangeEventArgs e) { }
 
-    private bool IsPublic { get; set; } = true;
-    private string UserSearchInput = string.Empty;
-    private List<User> SelectedUsers = new();
-    private List<User> FilteredUsers = new();
-
     protected override async Task OnInitializedAsync()
     {
         Topics = await TopicService.GetAllNamesAsync();
+        TemplateSettings.Initialize(TemplateId);
+        await TemplateSettings.Load();
     }
 
     void RemoveTag(string tag)
     {
-        SelectedTags.Remove(tag);
+        TemplateSettings.Tags.Remove(tag);
     }
 
     private void AddTag()
@@ -48,7 +51,7 @@ public partial class Settings : ComponentBase
         {
             return;
         }
-        SelectedTags.Add(TagInput);
+        TemplateSettings.Tags.Add(TagInput);
         TagInput = string.Empty;
     }
 
@@ -56,14 +59,11 @@ public partial class Settings : ComponentBase
 
     private void RemoveUser(User user)
     {
-        SelectedUsers.Remove(user);
+        TemplateSettings.UsersWithAccess.Remove(user);
     }
 
     private async Task Save()
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        await TemplateSettings.Save();
     }
-
-    private List<IBrowserFile> UploadedFiles = new();
 }

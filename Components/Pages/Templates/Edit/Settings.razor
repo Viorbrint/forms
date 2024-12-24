@@ -2,13 +2,13 @@
 @using PSC.Blazor.Components.MarkdownEditor.EventsArgs
 <MudPaper Class="pa-4">
     <MudForm>
-        <MudTextField Label="Title" @bind-Value="Title" Required="true" Variant="Variant.Outlined"/>
+        <MudTextField Label="Title" @bind-Value="TemplateSettings.Title" Required="true" Variant="Variant.Outlined"/>
 
         <MudText>Description</MudText>
-        <MarkdownEditor @bind-Value="Description" />
+        <MarkdownEditor @bind-Value="TemplateSettings.Description" />
         @* TODO: fix black theme *@
             
-        <MudSelect Label="Topic" @bind-Value="SelectedTopic" Required="true" Variant="Variant.Outlined">
+        <MudSelect Label="Topic" @bind-Value="TemplateSettings.Topic" Required="true" Variant="Variant.Outlined">
             @foreach (var topic in Topics)
             {
                 <MudSelectItem Value="@topic">@topic</MudSelectItem>
@@ -49,29 +49,29 @@
         </MudToolBar>
 
         <MudStack Row="true" AlignItems="AlignItems.Center">
-        <MudAutocomplete
-            Label="Tags"
-            @bind-Value="TagInput"
-            CoerceValue="true"
-            ResetValueOnEmptyText="true"
-            Variant="Variant.Outlined"/>
-        
-        <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
+            <MudAutocomplete
+                Label="Tags"
+                @bind-Value="TagInput"
+                CoerceValue="true"
+                ResetValueOnEmptyText="true"
+                Variant="Variant.Outlined"/>
+            
+            <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
         </MudStack>
         
         <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text!))">
-            @foreach (var tag in SelectedTags)
+            @foreach (var tag in TemplateSettings.Tags)
             {
                 <MudChip Color="Color.Primary" Text="@tag" ></MudChip>
             }
         </MudChipSet>
 
-        <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="IsPublic"/>
-        @if (!IsPublic)
+        <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="TemplateSettings.IsPublic"/>
+        @if (!TemplateSettings.IsPublic)
         {
             <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput" 
                                 OnKeyUp="FilterUsers"/>
-            <MudTable Items="SelectedUsers" Dense="true" Hover="true">
+            <MudTable Items="TemplateSettings.UsersWithAccess" Dense="true" Hover="true">
                 <HeaderContent>
                     <MudTh>Username</MudTh>
                     <MudTh>Email</MudTh>
