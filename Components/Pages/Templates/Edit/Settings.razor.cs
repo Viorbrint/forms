@@ -17,7 +17,7 @@ public partial class Settings : ComponentBase
     [Parameter]
     public string TemplateId { get; set; } = null!;
 
-    private List<string> Topics = [];
+    private IEnumerable<string> Topics = [];
 
     private string TagInput = string.Empty;
 
