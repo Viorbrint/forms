@@ -15,13 +15,17 @@ public class TemplateService(IRepository<Template> templateRepository)
         );
         // TODO: refactor
         spec.AddInclude(t => t.Topic);
+        spec.AddInclude(t => t.Tags);
         var result = await templateRepository.GetBySpecificationAsync(spec);
         return result;
     }
 
     public async Task<Template?> GetByIdAsync(string templateId)
     {
-        var result = await templateRepository.GetOneByCriteriaAsync(t => t.Id == templateId);
+        var spec = new SpecificationSingle<Template>(t => t.Id == templateId);
+        spec.AddInclude(t => t.Topic);
+        spec.AddInclude(t => t.Tags);
+        var result = await templateRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }
 
@@ -32,7 +36,8 @@ public class TemplateService(IRepository<Template> templateRepository)
 
     public async Task DeleteByIdAsync(string templateId)
     {
-        await templateRepository.DeleteOneByCriteriaAsync(t => t.Id == templateId);
+        var spec = new SpecificationSingle<Template>(t => t.Id == templateId);
+        await templateRepository.DeleteBySpecificationSingleAsync(spec);
     }
 
     public async Task DeleteByIdsAsync(IEnumerable<string> ids)
@@ -55,7 +60,8 @@ public class TemplateService(IRepository<Template> templateRepository)
 
     public async Task PublishByIdAsync(string id)
     {
-        var template = await templateRepository.GetOneByCriteriaAsync(t => t.Id == id);
+        var spec = new SpecificationSingle<Template>(t => t.Id == id);
+        var template = await templateRepository.GetBySpecificationSingleAsync(spec);
         if (template == null)
         {
             return;
@@ -66,7 +72,8 @@ public class TemplateService(IRepository<Template> templateRepository)
 
     public async Task HideByIdAsync(string id)
     {
-        var template = await templateRepository.GetOneByCriteriaAsync(t => t.Id == id);
+        var spec = new SpecificationSingle<Template>(t => t.Id == id);
+        var template = await templateRepository.GetBySpecificationSingleAsync(spec);
         if (template == null)
         {
             return;

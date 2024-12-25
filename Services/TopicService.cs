@@ -20,7 +20,8 @@ public class TopicService(IRepository<Topic> topicRepository)
 
     public async Task<Topic?> GetByNameAsync(string name)
     {
-        var result = await topicRepository.GetOneByCriteriaAsync((t) => t.TopicName == name);
+        var spec = new SpecificationSingle<Topic>(t => t.TopicName == name);
+        var result = await topicRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }
 }

@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Forms.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +18,13 @@ public class Repository<T> : IRepository<T>
 
     public async Task AddAsync(T entity)
     {
-        Entities.Add(entity);
+        await Entities.AddAsync(entity);
+        await Context.SaveChangesAsync();
+    }
+
+    public async Task AddRangeAsync(IEnumerable<T> entities)
+    {
+        await Entities.AddRangeAsync(entities);
         await Context.SaveChangesAsync();
     }
 
@@ -30,9 +35,9 @@ public class Repository<T> : IRepository<T>
         await Context.SaveChangesAsync();
     }
 
-    public async Task DeleteOneByCriteriaAsync(Expression<Func<T, bool>> criteria)
+    public async Task DeleteBySpecificationSingleAsync(ISpecificationSingle<T> specification)
     {
-        var entity = await GetOneByCriteriaAsync(criteria);
+        var entity = await GetBySpecificationSingleAsync(specification);
         if (entity == null)
         {
             return;
@@ -59,9 +64,21 @@ public class Repository<T> : IRepository<T>
         return await result.ToListAsync();
     }
 
-    public async Task<T?> GetOneByCriteriaAsync(Expression<Func<T, bool>> criteria)
+    public async Task<T?> GetBySpecificationSingleAsync(ISpecificationSingle<T> specification)
     {
-        return await Entities.FirstOrDefaultAsync(criteria);
+        var result = Entities.AsQueryable();
+
+        result = specification.Includes.Aggregate(
+            result,
+            (current, include) => current.Include(include)
+        );
+
+        if (specification.Criteria != null)
+        {
+            result = result.Where(specification.Criteria);
+        }
+
+        return await result.FirstOrDefaultAsync();
     }
 
     public async Task UpdateAsync(T entity)
