@@ -26,10 +26,6 @@ public class TagService(IRepository<Tag> tagRepository)
         var spec = new Specification<Tag>(t => t.TagName.Contains(searchQuery));
         var tags = await tagRepository.GetBySpecificationAsync(spec);
         var result = tags.Select(t => t.TagName);
-        foreach (var tag in result)
-        {
-            System.Console.WriteLine(tag);
-        }
         return result;
     }
 }
