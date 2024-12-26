@@ -9,7 +9,7 @@ namespace Forms.Components.Pages.UserPage;
 
 public partial class UserTemplates : ComponentBase
 {
-    private List<Template> Templates { get; set; } = [];
+    private IEnumerable<Template> Templates { get; set; } = [];
 
     private HashSet<Template> SelectedTemplates { get; set; } = [];
 
@@ -43,6 +43,7 @@ public partial class UserTemplates : ComponentBase
         await ReloadTemplates();
     }
 
+    // TODO: fix errors on spam
     private async Task PublishSelected()
     {
         var ids = SelectedTemplates.Select(x => x.Id).ToList();

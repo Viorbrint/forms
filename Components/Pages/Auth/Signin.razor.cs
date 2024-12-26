@@ -39,11 +39,6 @@ public partial class Signin : ComponentBase
         }
     }
 
-    private void NavigateToMain()
-    {
-        NavigationManager.NavigateTo("/");
-    }
-
     private void NavigateToSignup()
     {
         NavigationManager.NavigateTo("/signup");

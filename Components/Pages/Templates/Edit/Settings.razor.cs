@@ -14,10 +14,13 @@ public partial class Settings : ComponentBase
     [Inject]
     private TemplateSettings TemplateSettings { get; set; } = null!;
 
+    [Inject]
+    private TagService TagService { get; set; } = null!;
+
     [Parameter]
     public string TemplateId { get; set; } = null!;
 
-    private List<string> Topics = [];
+    private IEnumerable<string> Topics = [];
 
     private string TagInput = string.Empty;
 
@@ -33,11 +36,18 @@ public partial class Settings : ComponentBase
 
     private void OnFileChanged(InputFileChangeEventArgs e) { }
 
+    // TODO: add validation to Tags , ...
+
     protected override async Task OnInitializedAsync()
     {
         Topics = await TopicService.GetAllNamesAsync();
         TemplateSettings.Initialize(TemplateId);
         await TemplateSettings.Load();
+    }
+
+    private async Task<IEnumerable<string>> SearchTags(string value, CancellationToken _)
+    {
+        return await TagService.SearchTagNames(value);
     }
 
     void RemoveTag(string tag)

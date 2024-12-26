@@ -6,4 +6,6 @@ public class Tag
 
     // unique
     public string TagName { get; set; } = string.Empty;
+
+    public List<Template> Templates { get; set; } = [];
 }

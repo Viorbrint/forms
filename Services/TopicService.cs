@@ -3,15 +3,16 @@ using Forms.Repositories;
 
 namespace Forms.Services;
 
-public class TopicService(TopicRepository topicRepository)
+public class TopicService(IRepository<Topic> topicRepository)
 {
-    public async Task<List<Topic>> GetAllAsync()
+    public async Task<IEnumerable<Topic>> GetAllAsync()
     {
-        var result = await topicRepository.GetAllAsync();
+        var spec = new Specification<Topic>();
+        var result = await topicRepository.GetBySpecificationAsync(spec);
         return result;
     }
 
-    public async Task<List<string>> GetAllNamesAsync()
+    public async Task<IEnumerable<string>> GetAllNamesAsync()
     {
         var topics = await GetAllAsync();
         return topics.Select(t => t.TopicName).ToList();
@@ -19,7 +20,8 @@ public class TopicService(TopicRepository topicRepository)
 
     public async Task<Topic?> GetByNameAsync(string name)
     {
-        var result = await topicRepository.GetByNameAsync(name);
+        var spec = new SpecificationSingle<Topic>(t => t.TopicName == name);
+        var result = await topicRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }
 }

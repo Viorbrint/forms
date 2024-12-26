@@ -54,7 +54,9 @@
                 @bind-Value="TagInput"
                 CoerceValue="true"
                 ResetValueOnEmptyText="true"
-                Variant="Variant.Outlined"/>
+                Variant="Variant.Outlined"
+                SearchFunc="SearchTags"
+            />
             
             <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
         </MudStack>

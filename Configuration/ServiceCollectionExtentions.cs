@@ -14,10 +14,12 @@ public static class ServiceCollectionExtentions
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, IdentityAuthService>();
-        services.AddScoped<TemplateRepository>();
+        services.AddScoped<IRepository<Template>, Repository<Template>>();
         services.AddScoped<TemplateService>();
-        services.AddScoped<TopicRepository>();
+        services.AddScoped<IRepository<Topic>, Repository<Topic>>();
         services.AddScoped<TopicService>();
+        services.AddScoped<IRepository<Tag>, Repository<Tag>>();
+        services.AddScoped<TagService>();
         services.AddScoped<TemplateSettings>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         return services;
