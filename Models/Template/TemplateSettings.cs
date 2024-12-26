@@ -1,7 +1,11 @@
 using Forms.Data.Entities;
 using Forms.Services;
 
-public class TemplateSettings(TemplateService templateService, TopicService topicService)
+public class TemplateSettings(
+    TemplateService templateService,
+    TopicService topicService,
+    TagService tagService
+)
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -26,15 +30,14 @@ public class TemplateSettings(TemplateService templateService, TopicService topi
 
     public async Task Save()
     {
+        // TODO: refactor this
         CheckInit();
-
         var template = await templateService.GetByIdAsync(Id!);
         if (template == null)
         {
             // TODO: do smth
             return;
         }
-
         template.Title = Title;
         template.Description = Description;
         var dbTopic = await topicService.GetByNameAsync(Topic);
@@ -43,8 +46,9 @@ public class TemplateSettings(TemplateService templateService, TopicService topi
             throw new ArgumentException("Topic does not exist in database");
         }
         template.Topic = dbTopic;
-        // TODO: tags...
-
+        await tagService.AddRangeAsync(Tags);
+        var dbTags = await tagService.GetTagsByNamesAsync(Tags);
+        template.Tags = dbTags.ToList();
         await templateService.UpdateAsync(template);
     }
 
