@@ -1,4 +1,4 @@
-using forms.Data.Entities;
+using Forms.Data.Entities;
 using Microsoft.AspNetCore.Components;
 
 namespace Forms.Components.Pages.UserPage;
@@ -21,4 +21,3 @@ public partial class UserForms : ComponentBase
         throw new NotImplementedException();
     }
 }
-

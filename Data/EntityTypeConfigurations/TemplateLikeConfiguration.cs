@@ -1,4 +1,4 @@
-using forms.Data.Entities;
+using Forms.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

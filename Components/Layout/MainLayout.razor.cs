@@ -4,14 +4,16 @@ using MudBlazor;
 
 namespace Forms.Components.Layout;
 
-public partial class MainLayout : LayoutComponentBase {
-    [Inject] private ILocalStorageService LocalStorage { get; set; } = null!;
+public partial class MainLayout : LayoutComponentBase
+{
+    [Inject]
+    private ILocalStorageService LocalStorage { get; set; } = null!;
     private bool _drawerOpen = false;
     private bool _isDarkMode = true;
     private MudTheme? _theme = null;
 
     private const string IsDarkModeKey = "isDarkMode";
-    
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -20,7 +22,7 @@ public partial class MainLayout : LayoutComponentBase {
         {
             PaletteLight = _lightPalette,
             PaletteDark = _darkPalette,
-            LayoutProperties = new LayoutProperties()
+            LayoutProperties = new LayoutProperties(),
         };
     }
 
@@ -81,9 +83,11 @@ public partial class MainLayout : LayoutComponentBase {
         OverlayLight = "#1e1e2d80",
     };
 
-    private string DarkLightModeButtonIcon => _isDarkMode switch
-    {
-        true => Icons.Material.Rounded.AutoMode,
-        false => Icons.Material.Outlined.DarkMode,
-    };
+    private string DarkLightModeButtonIcon =>
+        _isDarkMode switch
+        {
+            true => Icons.Material.Rounded.AutoMode,
+            false => Icons.Material.Outlined.DarkMode,
+        };
 }
+

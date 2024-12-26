@@ -1,47 +1,58 @@
-using Forms.Data;
 using Forms.Data.Entities;
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.EntityFrameworkCore;
 using MudBlazor;
 
 namespace Forms.Components.Pages.Templates.Edit;
 
 public partial class Settings : ComponentBase
 {
-    private string Title = string.Empty;
-    private string Description = string.Empty;
-    private string SelectedTopic = string.Empty;
-    private List<string> Topics = [];
-    private List<string> SelectedTags = new();
-    private List<string> FilteredTags = new();
+    [Inject]
+    private TopicService TopicService { get; set; } = null!;
+
+    [Inject]
+    private TemplateSettings TemplateSettings { get; set; } = null!;
+
+    [Inject]
+    private TagService TagService { get; set; } = null!;
+
+    [Parameter]
+    public string TemplateId { get; set; } = null!;
+
+    private IEnumerable<string> Topics = [];
+
     private string TagInput = string.Empty;
 
     private IBrowserFile? Image { get; set; }
 
     private MudFileUpload<IBrowserFile>? _fileUpload;
 
+    private string UserSearchInput = string.Empty;
+
+    private List<IBrowserFile> UploadedFiles = [];
+
     private Task ClearAsync() => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
 
     private void OnFileChanged(InputFileChangeEventArgs e) { }
 
-    private bool IsPublic { get; set; } = true;
-    private string UserSearchInput = string.Empty;
-    private List<User> SelectedUsers = new();
-    private List<User> FilteredUsers = new();
-
-    [Inject]
-    ApplicationDbContext Db { get; set; } = null!;
+    // TODO: add validation to Tags , ...
 
     protected override async Task OnInitializedAsync()
     {
-        var topics = await Db.Topics.ToListAsync();
-        Topics = topics.Select(x => x.TopicName).ToList();
+        Topics = await TopicService.GetAllNamesAsync();
+        TemplateSettings.Initialize(TemplateId);
+        await TemplateSettings.Load();
+    }
+
+    private async Task<IEnumerable<string>> SearchTags(string value, CancellationToken _)
+    {
+        return await TagService.SearchTagNames(value);
     }
 
     void RemoveTag(string tag)
     {
-        SelectedTags.Remove(tag);
+        TemplateSettings.Tags.Remove(tag);
     }
 
     private void AddTag()
@@ -50,7 +61,7 @@ public partial class Settings : ComponentBase
         {
             return;
         }
-        SelectedTags.Add(TagInput);
+        TemplateSettings.Tags.Add(TagInput);
         TagInput = string.Empty;
     }
 
@@ -58,8 +69,11 @@ public partial class Settings : ComponentBase
 
     private void RemoveUser(User user)
     {
-        SelectedUsers.Remove(user);
+        TemplateSettings.UsersWithAccess.Remove(user);
     }
 
-    private List<IBrowserFile> UploadedFiles = new();
+    private async Task Save()
+    {
+        await TemplateSettings.Save();
+    }
 }

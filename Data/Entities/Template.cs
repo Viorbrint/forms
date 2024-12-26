@@ -1,6 +1,4 @@
-using Forms.Data.Entities;
-
-namespace forms.Data.Entities;
+namespace Forms.Data.Entities;
 
 public class Template
 {
@@ -10,11 +8,11 @@ public class Template
 
     public string Description { get; set; } = string.Empty;
 
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public string? ImageUrl { get; set; }
 
-    public bool IsPublic { get; set; }
+    public bool IsPublic { get; set; } = true;
 
     public bool IsPublished { get; set; } = false;
 

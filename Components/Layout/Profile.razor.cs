@@ -1,3 +1,4 @@
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Forms.Components.Layout;
@@ -5,7 +6,7 @@ namespace Forms.Components.Layout;
 public partial class Profile : ComponentBase
 {
     [Inject]
-    private IHttpContextAccessor HttpContextAccessor { get; set; } = null!;
+    private ICurrentUserService CurrentUserService { get; set; } = null!;
 
     [Inject]
     NavigationManager NavigationManager { get; set; } = null!;
@@ -19,11 +20,15 @@ public partial class Profile : ComponentBase
 
     protected override void OnInitialized()
     {
-        var context = HttpContextAccessor.HttpContext;
-        if (context is { User.Identity.Name: not null })
+        var userName = CurrentUserService.GetUserName()!;
+        if (userName != null)
         {
-            _letter = context.User.Identity.Name[0].ToString();
+            _letter = userName[0].ToString();
+        }
+        else
+        {
+            const string GUESS_LETTER = "U";
+            _letter = GUESS_LETTER;
         }
     }
 }
-

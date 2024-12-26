@@ -31,7 +31,10 @@ public partial class TemplatesFill : ComponentBase
         {
             Id = "1",
             Title = "Job Application Form",
-            Description = "Please fill out the form to apply for the job.",
+            Description = @"# Job Application Form
+
+Welcome to the **Job Application Form**. Please fill out the required fields below to apply for the position. Make sure to provide accurate and up-to-date information.
+",
             Questions = new List<Question>
             {
                 new Question

@@ -1,4 +1,4 @@
-namespace forms.Data.Entities;
+namespace Forms.Data.Entities;
 
 public class QuestionType
 {

@@ -31,5 +31,11 @@ public partial class Questions : ComponentBase
         public string Name { get; init; } = string.Empty;
         public string Selector { get; set; } = string.Empty;
     }
+
+    private async Task Save()
+    {
+        await Task.CompletedTask;
+        throw new NotImplementedException();
+    }
 }
 
