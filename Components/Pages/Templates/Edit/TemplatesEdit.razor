@@ -5,15 +5,22 @@
 
 <PageTitle>Edit Template - Forms</PageTitle>
 
-<MudContainer Gutters="false">
-    <MudTabs Centered="true" >
-        <MudTabPanel Text="Questions">
-            <Questions TemplateId="@TemplateId"></Questions>
-        </MudTabPanel>
-        <MudTabPanel Text="Results"></MudTabPanel>
-        <MudTabPanel Text="Aggregation"></MudTabPanel>
-        <MudTabPanel Text="Settings">
-            <Settings TemplateId="@TemplateId"></Settings>
-        </MudTabPanel>
-    </MudTabs>
-</MudContainer>
+@if (!IsLoading)
+{
+    <MudContainer Gutters="false">
+        <MudTabs Centered="true" >
+            <MudTabPanel Text="Questions">
+                <Questions TemplateId="@TemplateId"></Questions>
+            </MudTabPanel>
+            <MudTabPanel Text="Results"></MudTabPanel>
+            <MudTabPanel Text="Aggregation"></MudTabPanel>
+            <MudTabPanel Text="Settings">
+                <Settings TemplateId="@TemplateId"></Settings>
+            </MudTabPanel>
+        </MudTabs>
+    </MudContainer>
+}
+else
+{
+    <Loading/>
+}

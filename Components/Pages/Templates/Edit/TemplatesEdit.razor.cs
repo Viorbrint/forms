@@ -17,9 +17,13 @@ public partial class TemplatesEdit : ComponentBase
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
 
+    private bool IsLoading { get; set; } = false;
+
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         var template = await TemplateService.GetByIdAsync(TemplateId);
+        IsLoading = false;
         if (template == null)
         {
             NavigationManager.NavigateTo("/notfound");
