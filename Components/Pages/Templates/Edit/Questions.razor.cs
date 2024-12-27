@@ -1,3 +1,4 @@
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -5,6 +6,12 @@ namespace Forms.Components.Pages.Templates.Edit;
 
 public partial class Questions : ComponentBase
 {
+    [Parameter]
+    public string TemplateId { get; set; } = null!;
+
+    [Inject]
+    private QuestionsSettingsService QuestionsSettings { get; set; } = null!;
+
     private MudDropContainer<DropItem> _dropContainer = null!;
 
     private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
@@ -13,6 +20,12 @@ public partial class Questions : ComponentBase
     }
 
     private int _i = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        QuestionsSettings.Initialize(TemplateId);
+        await QuestionsSettings.Load();
+    }
 
     private void AddQuestion()
     {
@@ -38,4 +51,3 @@ public partial class Questions : ComponentBase
         throw new NotImplementedException();
     }
 }
-
