@@ -7,11 +7,11 @@ public class QuestionsSettingsService(TemplateService templateService)
 {
     private string? TemplateId { get; set; }
 
-    public List<QuestionSettings> Questions { get; set; } = [];
+    public List<QuestionSettingsModel> Questions { get; set; } = [];
 
     public void Initialize(string templateId) => TemplateId = templateId;
 
-    public void DeleteQuestion(QuestionSettings question)
+    public void DeleteQuestion(QuestionSettingsModel question)
     {
         Questions.Remove(question);
     }
@@ -47,7 +47,7 @@ public class QuestionsSettingsService(TemplateService templateService)
         var template = await GetTemplateAsync();
         Questions = template
             .Questions.OrderBy(x => x.Order)
-            .Select(x => new QuestionSettings { Text = x.QuestionText, Type = x.Type })
+            .Select(x => new QuestionSettingsModel { Text = x.QuestionText, Type = x.Type })
             .ToList();
     }
 

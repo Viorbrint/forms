@@ -1,14 +1,13 @@
 @using PSC.Blazor.Components.MarkdownEditor 
-@using PSC.Blazor.Components.MarkdownEditor.EventsArgs
 <MudPaper Class="pa-4">
     <MudForm>
-        <MudTextField Label="Title" @bind-Value="TemplateSettings.Title" Required="true" Variant="Variant.Outlined"/>
+        <MudTextField Label="Title" @bind-Value="TemplateSettingsService.settings.Title" Required="true" Variant="Variant.Outlined"/>
 
         <MudText>Description</MudText>
-        <MarkdownEditor @bind-Value="TemplateSettings.Description" />
+        <MarkdownEditor @bind-Value="TemplateSettingsService.settings.Description" />
         @* TODO: fix black theme *@
             
-        <MudSelect Label="Topic" @bind-Value="TemplateSettings.Topic" Required="true" Variant="Variant.Outlined">
+        <MudSelect Label="Topic" @bind-Value="TemplateSettingsService.settings.Topic" Required="true" Variant="Variant.Outlined">
             @foreach (var topic in Topics)
             {
                 <MudSelectItem Value="@topic">@topic</MudSelectItem>
@@ -62,18 +61,18 @@
         </MudStack>
         
         <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text!))">
-            @foreach (var tag in TemplateSettings.Tags)
+            @foreach (var tag in TemplateSettingsService.settings.Tags)
             {
                 <MudChip Color="Color.Primary" Text="@tag" ></MudChip>
             }
         </MudChipSet>
 
-        <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="TemplateSettings.IsPublic"/>
-        @if (!TemplateSettings.IsPublic)
+        <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="TemplateSettingsService.settings.IsPublic"/>
+        @if (!TemplateSettingsService.settings.IsPublic)
         {
             <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput" 
                                 OnKeyUp="FilterUsers"/>
-            <MudTable Items="TemplateSettings.UsersWithAccess" Dense="true" Hover="true">
+            <MudTable Items="TemplateSettingsService.settings.UsersWithAccess" Dense="true" Hover="true">
                 <HeaderContent>
                     <MudTh>Username</MudTh>
                     <MudTh>Email</MudTh>

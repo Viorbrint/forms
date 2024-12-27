@@ -12,11 +12,11 @@ public partial class Questions : ComponentBase
 
     [Inject]
     private QuestionsSettingsService QuestionsSettingsService { get; set; } = null!;
-    private MudDropContainer<QuestionSettings> _dropContainer = null!;
+    private MudDropContainer<QuestionSettingsModel> _dropContainer = null!;
 
     private bool IsLoading = false;
 
-    private void ItemUpdated(MudItemDropInfo<QuestionSettings> dropItem)
+    private void ItemUpdated(MudItemDropInfo<QuestionSettingsModel> dropItem)
     {
         Console.WriteLine(dropItem.IndexInZone);
     }
@@ -39,7 +39,7 @@ public partial class Questions : ComponentBase
         _dropContainer.Refresh();
     }
 
-    private void DeleteQuestion(QuestionSettings item)
+    private void DeleteQuestion(QuestionSettingsModel item)
     {
         QuestionsSettingsService.DeleteQuestion(item);
         _dropContainer.Refresh();

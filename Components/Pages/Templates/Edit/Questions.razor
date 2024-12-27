@@ -15,14 +15,14 @@
     <MudForm>
         <MudDropContainer
             @ref="_dropContainer"
-            T="QuestionSettings"
+            T="QuestionSettingsModel"
             Items="QuestionsSettingsService.Questions"
             ItemsSelector="@((_, _) => true)"
             ItemDropped="ItemUpdated"
             Class="d-flex flex-wrap flex-grow-1"
         >
             <ChildContent>
-                <MudDropZone T="QuestionSettings"  Class="flex-grow-1" AllowReorder="true"/>
+                <MudDropZone T="QuestionSettingsModel"  Class="flex-grow-1" AllowReorder="true"/>
             </ChildContent>
             <ItemRenderer>
                 <MudPaper Class="pa-4 my-4 flex-grow-1">

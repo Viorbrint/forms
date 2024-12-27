@@ -29,34 +29,23 @@ public partial class TemplatesFill : ComponentBase
     {
         new Template
         {
-            Id = "1",
+            Id = "727ce760-c4c5-483c-82a3-7a20b985466a",
             Title = "Job Application Form",
-            Description = @"# Job Application Form
+            Description =
+                @"# Job Application Form
 
 Welcome to the **Job Application Form**. Please fill out the required fields below to apply for the position. Make sure to provide accurate and up-to-date information.
 ",
             Questions = new List<Question>
             {
-                new Question
-                {
-                    Title = "Name",
-                    Type = QuestionType.Text,
-                },
-                new Question
-                {
-                    Title = "Experience",
-                    Type = QuestionType.Integer,
-                },
+                new Question { Title = "Name", Type = QuestionType.Text },
+                new Question { Title = "Experience", Type = QuestionType.Integer },
                 new Question
                 {
                     Title = "Additional Information",
                     Type = QuestionType.MultilineText,
                 },
-                new Question
-                {
-                    Title = "Agree to Terms",
-                    Type = QuestionType.Checkbox,
-                },
+                new Question { Title = "Agree to Terms", Type = QuestionType.Checkbox },
             },
         },
     };
@@ -68,7 +57,7 @@ Welcome to the **Job Application Form**. Please fill out the required fields bel
         public string Description { get; set; } = string.Empty;
         public List<Question> Questions { get; set; } = new();
 
-        public string ImageUrl {get; set;} = "https://via.placeholder.com/150";
+        public string ImageUrl { get; set; } = "https://via.placeholder.com/150";
     }
 
     private class Question

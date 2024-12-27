@@ -1,18 +1,14 @@
-using Forms.Data.Entities;
-using Forms.Services;
+using Forms.Models.Template;
 
-public class TemplateSettings(
+namespace Forms.Services;
+
+public class TemplateSettingsService(
     TemplateService templateService,
     TopicService topicService,
     TagService tagService
 )
 {
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Topic { get; set; } = string.Empty;
-    public List<string> Tags { get; set; } = [];
-    public bool IsPublic { get; set; } = true;
-    public List<User> UsersWithAccess { get; set; } = [];
+    public TemplateSettingsModel settings = new();
 
     private string? TemplateId { get; set; }
 
@@ -30,16 +26,16 @@ public class TemplateSettings(
             // TODO: do smth
             return;
         }
-        template.Title = Title;
-        template.Description = Description;
-        var dbTopic = await topicService.GetByNameAsync(Topic);
+        template.Title = settings.Title;
+        template.Description = settings.Description;
+        var dbTopic = await topicService.GetByNameAsync(settings.Topic);
         if (dbTopic == null)
         {
             throw new ArgumentException("Topic does not exist in database");
         }
         template.Topic = dbTopic;
-        await tagService.AddRangeAsync(Tags);
-        var dbTags = await tagService.GetTagsByNamesAsync(Tags);
+        await tagService.AddRangeAsync(settings.Tags);
+        var dbTags = await tagService.GetTagsByNamesAsync(settings.Tags);
         template.Tags = dbTags.ToList();
         await templateService.UpdateAsync(template);
     }
@@ -56,12 +52,12 @@ public class TemplateSettings(
             return;
         }
 
-        Title = template.Title;
-        Description = template.Description;
-        Topic = template.Topic.TopicName;
-        Tags = template.Tags.Select(t => t.TagName).ToList();
-        IsPublic = template.IsPublic;
-        UsersWithAccess = template.TemplateAccesses.Select(x => x.User).ToList();
+        settings.Title = template.Title;
+        settings.Description = template.Description;
+        settings.Topic = template.Topic.TopicName;
+        settings.Tags = template.Tags.Select(t => t.TagName).ToList();
+        settings.IsPublic = template.IsPublic;
+        settings.UsersWithAccess = template.TemplateAccesses.Select(x => x.User).ToList();
     }
 
     private void CheckInit()

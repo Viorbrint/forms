@@ -12,7 +12,7 @@ public partial class Settings : ComponentBase
     private TopicService TopicService { get; set; } = null!;
 
     [Inject]
-    private TemplateSettings TemplateSettings { get; set; } = null!;
+    private TemplateSettingsService TemplateSettingsService { get; set; } = null!;
 
     [Inject]
     private TagService TagService { get; set; } = null!;
@@ -41,8 +41,8 @@ public partial class Settings : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         Topics = await TopicService.GetAllNamesAsync();
-        TemplateSettings.Initialize(TemplateId);
-        await TemplateSettings.Load();
+        TemplateSettingsService.Initialize(TemplateId);
+        await TemplateSettingsService.Load();
     }
 
     private async Task<IEnumerable<string>> SearchTags(string value, CancellationToken _)
@@ -52,7 +52,7 @@ public partial class Settings : ComponentBase
 
     void RemoveTag(string tag)
     {
-        TemplateSettings.Tags.Remove(tag);
+        TemplateSettingsService.settings.Tags.Remove(tag);
     }
 
     private void AddTag()
@@ -61,7 +61,7 @@ public partial class Settings : ComponentBase
         {
             return;
         }
-        TemplateSettings.Tags.Add(TagInput);
+        TemplateSettingsService.settings.Tags.Add(TagInput);
         TagInput = string.Empty;
     }
 
@@ -69,11 +69,11 @@ public partial class Settings : ComponentBase
 
     private void RemoveUser(User user)
     {
-        TemplateSettings.UsersWithAccess.Remove(user);
+        TemplateSettingsService.settings.UsersWithAccess.Remove(user);
     }
 
     private async Task Save()
     {
-        await TemplateSettings.Save();
+        await TemplateSettingsService.Save();
     }
 }
