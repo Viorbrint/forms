@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Forms.Components.Pages;
+namespace Forms.Components.Pages.NotFound;
 
 public partial class NotFound : ComponentBase
 {
