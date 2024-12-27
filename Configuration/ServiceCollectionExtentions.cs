@@ -22,6 +22,7 @@ public static class ServiceCollectionExtentions
         services.AddScoped<TagService>();
         services.AddScoped<TemplateSettings>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<QuestionsSettingsService>();
         return services;
     }
 

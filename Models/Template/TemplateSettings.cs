@@ -14,25 +14,17 @@ public class TemplateSettings(
     public bool IsPublic { get; set; } = true;
     public List<User> UsersWithAccess { get; set; } = [];
 
-    private string? Id { get; set; }
+    private string? TemplateId { get; set; }
 
     // TODO: image
 
-    public void Initialize(string templateId) => Id = templateId;
-
-    private void CheckInit()
-    {
-        if (Id == null)
-        {
-            throw new ArgumentNullException("Id");
-        }
-    }
+    public void Initialize(string templateId) => TemplateId = templateId;
 
     public async Task Save()
     {
         // TODO: refactor this
         CheckInit();
-        var template = await templateService.GetByIdAsync(Id!);
+        var template = await templateService.GetByIdAsync(TemplateId!);
         if (template == null)
         {
             // TODO: do smth
@@ -56,7 +48,7 @@ public class TemplateSettings(
     {
         CheckInit();
 
-        var template = await templateService.GetByIdAsync(Id!);
+        var template = await templateService.GetByIdAsync(TemplateId!);
 
         if (template == null)
         {
@@ -70,5 +62,13 @@ public class TemplateSettings(
         Tags = template.Tags.Select(t => t.TagName).ToList();
         IsPublic = template.IsPublic;
         UsersWithAccess = template.TemplateAccesses.Select(x => x.User).ToList();
+    }
+
+    private void CheckInit()
+    {
+        if (TemplateId == null)
+        {
+            throw new ArgumentNullException("Id");
+        }
     }
 }

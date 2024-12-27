@@ -25,6 +25,7 @@ public class TemplateService(IRepository<Template> templateRepository)
         var spec = new SpecificationSingle<Template>(t => t.Id == templateId);
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Questions);
         var result = await templateRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }

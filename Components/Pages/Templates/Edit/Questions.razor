@@ -1,42 +1,64 @@
-<MudButton Class="mt-4" Variant="Variant.Filled" FullWidth="true" Color="Color.Success">Save</MudButton>
+@using Forms.Data.Entities
+@using Forms.Models.Template
+@if (!IsLoading)
+{
+    <MudButton
+        Class="mt-4"
+        Variant="Variant.Filled"
+        OnClick="Save"
+        FullWidth="true"
+        Color="Color.Success"
+        ButtonType="ButtonType.Submit">
+        Save
+    </MudButton>
 
-<MudForm>
-    <MudDropContainer 
-        @ref="_dropContainer" 
-        T="DropItem" 
-        Items="_items" 
-        ItemsSelector="@((_, _) => true)" 
-        ItemDropped="ItemUpdated" 
-        Class="d-flex flex-wrap flex-grow-1"
-    >
-        <ChildContent>
-            <MudDropZone T="DropItem" Class="flex-grow-1" AllowReorder="true"/>
-        </ChildContent>
-        <ItemRenderer>
+    <MudForm>
+        <MudDropContainer
+            @ref="_dropContainer"
+            T="QuestionSettings"
+            Items="QuestionsSettingsService.Questions"
+            ItemsSelector="@((_, _) => true)"
+            ItemDropped="ItemUpdated"
+            Class="d-flex flex-wrap flex-grow-1"
+        >
+            <ChildContent>
+                <MudDropZone T="QuestionSettings"  Class="flex-grow-1" AllowReorder="true"/>
+            </ChildContent>
+            <ItemRenderer>
                 <MudPaper Class="pa-4 my-4 flex-grow-1">
-                    <MudTextField 
-                        Required="true" 
-                        Label="Question" 
-                        Placeholder="Question" 
-                        AutoGrow 
-                        T="string" 
-                        Variant="Variant.Outlined" 
+                    <MudTextField
+                        Required="true"
+                        Label="Question"
+                        Placeholder="Question"
+                        AutoGrow
+                        T="string"
+                        Variant="Variant.Outlined"
                         Margin="Margin.Normal"
+                        @bind-Value="context.Text"
                     />
-                    <MudSelect 
-                        Variant="Variant.Outlined" 
-                        T="int" 
-                        Required="true" 
+                    <MudSelect
+                        Variant="Variant.Outlined"
+                        T="QuestionType"
+                        Required="true"
                         Margin="Margin.Normal"
+                        @bind-Value="context.Type"
                     >
-                        <MudSelectItem Value="1">Single-line</MudSelectItem>
-                        <MudSelectItem Value="2">Multi-line</MudSelectItem>
-                        <MudSelectItem Value="3">Positive integer</MudSelectItem>
-                        <MudSelectItem Value="4">Checkbox</MudSelectItem>
+                        <MudSelectItem Value="QuestionType.SingleLine">Single-line</MudSelectItem>
+                        <MudSelectItem Value="QuestionType.MultiLine">Multi-line</MudSelectItem>
+                        <MudSelectItem Value="QuestionType.Number">Positive integer</MudSelectItem>
+                        <MudSelectItem Value="QuestionType.Boolean">Checkbox</MudSelectItem>
                     </MudSelect>
+                    <MudToolBar Gutters="false">
+                        <MudIconButton Color="Color.Error" OnClick="(() => DeleteQuestion(context))" Icon="@Icons.Material.Filled.Delete"></MudIconButton>
+                    </MudToolBar>
                 </MudPaper>
-        </ItemRenderer>
-    </MudDropContainer>
-</MudForm>
+            </ItemRenderer>
+        </MudDropContainer>
+    </MudForm>
 
-<MudButton OnClick="@AddQuestion" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+    <MudButton OnClick="@AddQuestion" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+}
+else
+{
+    <Loading/>
+}

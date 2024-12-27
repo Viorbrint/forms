@@ -1,3 +1,4 @@
+using Forms.Models.Template;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -10,21 +11,22 @@ public partial class Questions : ComponentBase
     public string TemplateId { get; set; } = null!;
 
     [Inject]
-    private QuestionsSettingsService QuestionsSettings { get; set; } = null!;
+    private QuestionsSettingsService QuestionsSettingsService { get; set; } = null!;
+    private MudDropContainer<QuestionSettings> _dropContainer = null!;
 
-    private MudDropContainer<DropItem> _dropContainer = null!;
+    private bool IsLoading = false;
 
-    private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
+    private void ItemUpdated(MudItemDropInfo<QuestionSettings> dropItem)
     {
         Console.WriteLine(dropItem.IndexInZone);
     }
 
-    private int _i = 1;
-
     protected override async Task OnInitializedAsync()
     {
-        QuestionsSettings.Initialize(TemplateId);
-        await QuestionsSettings.Load();
+        QuestionsSettingsService.Initialize(TemplateId);
+        IsLoading = true;
+        await QuestionsSettingsService.Load();
+        IsLoading = false;
     }
 
     private void AddQuestion()
@@ -33,21 +35,18 @@ public partial class Questions : ComponentBase
         {
             return;
         }
-        _items.Add(new DropItem() { Name = "Item 2", Selector = $"{++_i}" });
+        QuestionsSettingsService.AddQuestion();
         _dropContainer.Refresh();
     }
 
-    private List<DropItem> _items = [new DropItem() { Name = "Item 1", Selector = $"1" }];
-
-    public class DropItem
+    private void DeleteQuestion(QuestionSettings item)
     {
-        public string Name { get; init; } = string.Empty;
-        public string Selector { get; set; } = string.Empty;
+        QuestionsSettingsService.DeleteQuestion(item);
+        _dropContainer.Refresh();
     }
 
     private async Task Save()
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        await QuestionsSettingsService.Save();
     }
 }
