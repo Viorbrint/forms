@@ -1,13 +1,11 @@
-using System.Security.Claims;
+using Forms.Data.Entities;
 
 namespace Forms.Services;
 
 public interface ICurrentUserService
 {
-    ClaimsPrincipal? GetCurrentUser();
-    string? GetUserEmail();
-    string? GetUserId();
-    string? GetUserName();
-    bool IsAuthenticated();
-    bool IsAdmin();
+    bool CurrentUserCanEdit(Template template);
+    bool CurrentUserCanFill(Template template);
+    string? UserId { get; }
+    string? UserName { get; }
 }

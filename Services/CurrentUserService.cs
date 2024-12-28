@@ -1,36 +1,58 @@
 using System.Security.Claims;
+using Forms.Data.Entities;
 
 namespace Forms.Services;
 
 public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    public ClaimsPrincipal? GetCurrentUser()
+    private ClaimsPrincipal? CurrentUser => httpContextAccessor.HttpContext?.User;
+
+    public string? UserId =>
+        httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    public string? UserName => httpContextAccessor.HttpContext?.User?.Identity?.Name;
+
+    private string? UserEmail =>
+        httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+
+    private bool UserIsAuthenticated =>
+        httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
+
+    private bool UserIsAdmin =>
+        httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value == "admin";
+
+    public bool CurrentUserCanFill(Template template)
     {
-        return httpContextAccessor.HttpContext?.User;
+        if (
+            UserIsAdmin
+            || template.IsPublic
+            || template.AuthorId == UserId
+            || UserInWhitelist(template)
+        )
+        {
+            return true;
+        }
+        return false;
     }
 
-    public string? GetUserId()
+    public bool CurrentUserCanEdit(Template template)
     {
-        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = UserId;
+        var isAdmin = UserIsAdmin;
+        if (!isAdmin && template.AuthorId != userId)
+        {
+            return false;
+        }
+        return true;
     }
 
-    public string? GetUserName()
+    private bool UserInWhitelist(Template template)
     {
-        return httpContextAccessor.HttpContext?.User?.Identity?.Name;
-    }
-
-    public string? GetUserEmail()
-    {
-        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
-    }
-
-    public bool IsAuthenticated()
-    {
-        return httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
-    }
-
-    public bool IsAdmin()
-    {
-        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value == "admin";
+        var userIdsWithAccess = template.TemplateAccesses.Select(x => x.UserId);
+        if (userIdsWithAccess.Contains(UserId))
+        {
+            return true;
+        }
+        return false;
     }
 }

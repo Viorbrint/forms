@@ -30,9 +30,8 @@ public partial class TemplatesEdit : ComponentBase
             return;
         }
 
-        var userId = CurrentUserService.GetUserId();
-        var isAdmin = CurrentUserService.IsAdmin();
-        if (!isAdmin && template.AuthorId != userId)
+        var canEdit = CurrentUserService.CurrentUserCanEdit(template);
+        if (!canEdit)
         {
             NavigationManager.NavigateTo("/accessdenied");
             return;

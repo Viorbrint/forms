@@ -22,17 +22,17 @@ public partial class UserTemplates : ComponentBase
     [Inject]
     private ICurrentUserService CurrentUserService { get; set; } = null!;
 
-    private string userId = string.Empty;
+    private string UserId { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        userId = CurrentUserService.GetUserId()!;
+        UserId = CurrentUserService.UserId!;
         await ReloadTemplates();
     }
 
     private async Task ReloadTemplates()
     {
-        Templates = await TemplateService.GetByUserAsync(userId);
+        Templates = await TemplateService.GetByUserAsync(UserId);
     }
 
     private async Task DeleteSelected()
@@ -89,7 +89,7 @@ public partial class UserTemplates : ComponentBase
     {
         // TODO: move this
         const string DEFAULT_TOPIC_ID = "20";
-        Template template = new() { AuthorId = userId, TopicId = DEFAULT_TOPIC_ID };
+        Template template = new() { AuthorId = UserId, TopicId = DEFAULT_TOPIC_ID };
         await TemplateService.AddAsync(template);
 
         NavigateToEdit(template.Id);
