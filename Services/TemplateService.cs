@@ -17,6 +17,7 @@ public class TemplateService(IRepository<Template> templateRepository)
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
         spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
+        spec.AddInclude(t => t.Likes);
         var result = await templateRepository.GetBySpecificationAsync(spec);
         return result;
     }
@@ -27,6 +28,7 @@ public class TemplateService(IRepository<Template> templateRepository)
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
         spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
+        spec.AddInclude(t => t.Likes);
         var result = await templateRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }
@@ -51,6 +53,25 @@ public class TemplateService(IRepository<Template> templateRepository)
     public async Task UpdateAsync(Template template)
     {
         await templateRepository.UpdateAsync(template);
+    }
+
+    public async Task ToggleLike(string userId, string templateId)
+    {
+        var template = await GetByIdAsync(templateId);
+        if (template == null)
+        {
+            throw new NullReferenceException("Template not found");
+        }
+        var UserLike = template.Likes.Find(l => l.UserId == userId);
+        if (UserLike == null)
+        {
+            template.Likes.Add(new() { UserId = userId });
+        }
+        else
+        {
+            template.Likes.Remove(UserLike);
+        }
+        await UpdateAsync(template);
     }
 
     private bool IsReady(Template template)

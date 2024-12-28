@@ -12,13 +12,16 @@
     <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
         <MudGrid Spacing="3">
 
-            <MudItem xs="12">
-                <MudImage Elevation="2" Src="@template.ImageUrl" Alt="Template Image" Style="width: 100%; aspect-ratio: 16/9; border-radius: 8px;" />
-            </MudItem>
+            @if (TemplateModel.ImageUrl != null)
+            {
+                <MudItem xs="12">
+                    <MudImage Elevation="2" Src="@TemplateModel.ImageUrl" Alt="Template Image" Style="width: 100%; aspect-ratio: 16/9; border-radius: 8px;"/>
+                </MudItem>
+            }
 
             <MudItem xs="12">
                 <MudChipSet T="string" ReadOnly="true">
-                    @foreach (var tag in template.Tags)
+                    @foreach (var tag in TemplateModel.Tags)
                     {
                         <MudChip Color="Color.Primary" Text="@tag"></MudChip>
                     }
@@ -28,12 +31,12 @@
             <MudItem xs="12">
                 <MudPaper Class="pa-3 mb-4 d-flex justify-space-between align-center" style="width: 100%;">
                     <div class="d-flex flex-column">
-                        <MudText>Topic: <MudText Typo="Typo.h5">@template.Topic</MudText></MudText>
+                        <MudText>Topic: <MudText Typo="Typo.h5">@TemplateModel.Topic</MudText></MudText>
                     </div>
                     
                     <div class="d-flex align-center">
-                        <MudIconButton Icon="@Icons.Material.Filled.ThumbUp"/>
-                        <MudText>12</MudText>
+                        <MudIconButton OnClick="ToggleLike" Color="@(IsUserLikeTemplate ? Color.Dark : Color.Default)" Icon="@Icons.Material.Filled.ThumbUp"/>
+                        <MudText>@TemplateModel.Likes</MudText>
                         <MudIconButton Icon="@Icons.Material.Filled.Comment"/>
                         <MudText>20</MudText>
                     </div>
@@ -43,31 +46,31 @@
 
             <MudItem xs="12">
                 <MudPaper Class="pa-3 mb-4">
-                    <MudText Typo="Typo.h4" Style="font-weight: bold" Align="Align.Center" Class="mb-4">@template.Title</MudText>
-                    @((MarkupString)Markdown.ToHtml(template.Description))
+                    <MudText Typo="Typo.h4" Style="font-weight: bold" Align="Align.Center" Class="mb-4">@TemplateModel.Title</MudText>
+                    @((MarkupString)Markdown.ToHtml(TemplateModel.Description))
                     @* TODO: maybe this is not safe *@
                 </MudPaper>
             </MudItem>
 
-            @foreach (var question in template.Questions)
+            @foreach (var question in TemplateModel.Questions)
             {
                 <MudItem xs="12">
                     <MudPaper Class="pa-3 mb-4">
                         @if (question.Type == QuestionType.SingleLine)
                         {
-                            <MudTextField @bind-Value="question.Answer" Label="@question.Title" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudTextField @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.MultiLine)
                         {
-                            <MudTextField @bind-Value="question.Answer" Label="@question.Title" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudTextField @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.Number)
                         {
-                            <MudNumericField T="int" @bind-Value="question.IntegerAnswer" Label="@question.Title" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudNumericField T="int" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.Boolean)
                         {
-                            <MudCheckBox T="bool" @bind-Value="question.IsChecked" Label="@question.Title" />
+                            <MudCheckBox T="bool" @bind-Value="@question.BooleanAnswer" Label="@question.Text" />
                         }
                     </MudPaper>
                 </MudItem>
