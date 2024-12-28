@@ -1,3 +1,4 @@
+using Forms.Data.Entities;
 using Microsoft.AspNetCore.Components;
 
 namespace Forms.Components.Pages.Templates.Fill;
@@ -38,15 +39,13 @@ Welcome to the **Job Application Form**. Please fill out the required fields bel
 ",
             Questions = new List<Question>
             {
-                new Question { Title = "Name", Type = QuestionType.Text },
-                new Question { Title = "Experience", Type = QuestionType.Integer },
-                new Question
-                {
-                    Title = "Additional Information",
-                    Type = QuestionType.MultilineText,
-                },
-                new Question { Title = "Agree to Terms", Type = QuestionType.Checkbox },
+                new Question { Title = "Name", Type = QuestionType.SingleLine },
+                new Question { Title = "Experience", Type = QuestionType.Number },
+                new Question { Title = "Additional Information", Type = QuestionType.MultiLine },
+                new Question { Title = "Agree to Terms", Type = QuestionType.Boolean },
             },
+            Topic = "Other",
+            Tags = ["awesome", "simple", "template"],
         },
     };
 
@@ -56,6 +55,8 @@ Welcome to the **Job Application Form**. Please fill out the required fields bel
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public List<Question> Questions { get; set; } = new();
+        public List<string> Tags { get; set; } = [];
+        public string Topic { get; set; } = string.Empty;
 
         public string ImageUrl { get; set; } = "https://via.placeholder.com/150";
     }
@@ -67,13 +68,5 @@ Welcome to the **Job Application Form**. Please fill out the required fields bel
         public string Answer { get; set; } = string.Empty;
         public int IntegerAnswer { get; set; }
         public bool IsChecked { get; set; }
-    }
-
-    private enum QuestionType
-    {
-        Text,
-        MultilineText,
-        Integer,
-        Checkbox,
     }
 }
