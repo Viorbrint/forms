@@ -1,3 +1,4 @@
+using Forms.Data.Entities;
 using Forms.Models.TemplateModels;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
@@ -37,7 +38,7 @@ public partial class TemplatesFill : ComponentBase
         }
 
         UserId = CurrentUserService.UserId!;
-        IsUserLikeTemplate = template.Likes.Any(l => l.UserId == UserId);
+        IsUserLikeTemplate = TemplateService.IsUserLikeTemplate(UserId, template);
 
         var canFill = CurrentUserService.CurrentUserCanFill(template);
         if (!canFill)
@@ -53,12 +54,56 @@ public partial class TemplatesFill : ComponentBase
 
     private async Task ToggleLike()
     {
-        await TemplateService.ToggleLike(UserId, TemplateId);
+        var template = await TemplateService.GetByIdAsync(TemplateId);
+        if (template == null)
+        {
+            // TODO:
+            return;
+        }
+        await TemplateService.ToggleLike(UserId, template);
+        IsUserLikeTemplate = TemplateService.IsUserLikeTemplate(UserId, template);
+        TemplateModel.Likes = template.Likes.Count();
     }
 
     private async Task SubmitForm()
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        var form = new Form { UserId = UserId, TemplateId = TemplateId };
+        var numberAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.Number)
+            .Select(q => new NumberAnswer()
+            {
+                AnswerNumber = q.NumberAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        var singleLineAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.SingleLine)
+            .Select(q => new SingleLineAnswer()
+            {
+                AnswerText = q.TextAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        var multiLineAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.MultiLine)
+            .Select(q => new MultiLineAnswer()
+            {
+                AnswerText = q.TextAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        var booleanAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.Number)
+            .Select(q => new BooleanAnswer()
+            {
+                AnswerBoolean = q.BooleanAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        form.NumberAnswers = numberAnswers;
+        form.SingleLineAnswers = singleLineAnswers;
+        form.MultiLineAnswers = multiLineAnswers;
+        form.BooleanAnswers = booleanAnswers;
+        await TemplateService.AddFormAsync(form, TemplateId);
     }
 }
