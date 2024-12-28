@@ -1,4 +1,4 @@
-using Forms.Models.Template;
+using Forms.Models.TemplateModels;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;

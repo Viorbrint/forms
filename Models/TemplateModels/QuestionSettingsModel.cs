@@ -1,6 +1,6 @@
 using Forms.Data.Entities;
 
-namespace Forms.Models.Template;
+namespace Forms.Models.TemplateModels;
 
 public class QuestionSettingsModel
 {

@@ -1,5 +1,5 @@
 using Forms.Data.Entities;
-using Forms.Models.Template;
+using Forms.Models.TemplateModels;
 
 namespace Forms.Services;
 
