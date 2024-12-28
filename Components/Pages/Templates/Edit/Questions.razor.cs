@@ -1,3 +1,4 @@
+using Forms.Data.Entities;
 using Forms.Models.TemplateModels;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +19,34 @@ public partial class Questions : ComponentBase
 
     private void ItemUpdated(MudItemDropInfo<QuestionSettingsModel> dropItem)
     {
-        Console.WriteLine(dropItem.IndexInZone);
+        var question = dropItem.Item!;
+        var requiredIndex = dropItem.IndexInZone;
+        var currentIndex = QuestionsSettingsService.Questions.IndexOf(question);
+        while (currentIndex != requiredIndex)
+        {
+            if (currentIndex < requiredIndex)
+            {
+                (
+                    QuestionsSettingsService.Questions[currentIndex],
+                    QuestionsSettingsService.Questions[currentIndex + 1]
+                ) = (
+                    QuestionsSettingsService.Questions[currentIndex + 1],
+                    QuestionsSettingsService.Questions[currentIndex]
+                );
+                currentIndex++;
+            }
+            else
+            {
+                (
+                    QuestionsSettingsService.Questions[currentIndex],
+                    QuestionsSettingsService.Questions[currentIndex - 1]
+                ) = (
+                    QuestionsSettingsService.Questions[currentIndex - 1],
+                    QuestionsSettingsService.Questions[currentIndex]
+                );
+                currentIndex--;
+            }
+        }
     }
 
     protected override async Task OnInitializedAsync()

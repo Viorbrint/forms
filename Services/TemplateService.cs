@@ -16,6 +16,7 @@ public class TemplateService(IRepository<Template> templateRepository)
         // TODO: refactor
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
         var result = await templateRepository.GetBySpecificationAsync(spec);
         return result;
     }
@@ -25,7 +26,7 @@ public class TemplateService(IRepository<Template> templateRepository)
         var spec = new SpecificationSingle<Template>(t => t.Id == templateId);
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
-        spec.AddInclude(t => t.Questions);
+        spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
         var result = await templateRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }
