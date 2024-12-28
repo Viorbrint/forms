@@ -35,14 +35,18 @@ public partial class Settings : ComponentBase
     private Task ClearAsync() => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
 
     private void OnFileChanged(InputFileChangeEventArgs e) { }
+    
+    private bool IsLoading { get; set; } = false;
 
     // TODO: add validation to Tags , ...
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         Topics = await TopicService.GetAllNamesAsync();
         TemplateSettingsService.Initialize(TemplateId);
         await TemplateSettingsService.Load();
+        IsLoading = false;
     }
 
     private async Task<IEnumerable<string>> SearchTags(string value, CancellationToken _)
