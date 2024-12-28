@@ -1,4 +1,5 @@
 using Forms.Data.Entities;
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Forms.Components.Pages.Templates.Fill;
@@ -6,9 +7,39 @@ namespace Forms.Components.Pages.Templates.Fill;
 public partial class TemplatesFill : ComponentBase
 {
     [Parameter]
-    public string? TemplateId { get; set; }
+    public string TemplateId { get; set; } = null!;
 
     private Template template = new();
+
+    [Inject]
+    private ICurrentUserService CurrentUserService { get; set; } = null!;
+
+    [Inject]
+    private TemplateService TemplateService { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    private bool IsLoading { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+        var template = await TemplateService.GetByIdAsync(TemplateId);
+        IsLoading = false;
+        if (template == null)
+        {
+            NavigationManager.NavigateTo("/notfound");
+            return;
+        }
+
+        var canFill = CurrentUserService.CurrentUserCanFill(template);
+        if (!canFill)
+        {
+            NavigationManager.NavigateTo("/accessdenied");
+            return;
+        }
+    }
 
     protected override void OnInitialized()
     {
