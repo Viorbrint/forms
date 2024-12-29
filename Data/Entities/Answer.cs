@@ -10,5 +10,5 @@ public abstract class Answer
     public string QuestionId { get; set; } = null!;
     public Question Question { get; set; } = null!;
 
-    public QuestionType Type { get; set; }
+    public abstract QuestionType Type { get; set; }
 }
