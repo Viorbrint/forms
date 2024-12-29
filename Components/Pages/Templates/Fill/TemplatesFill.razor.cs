@@ -67,6 +67,7 @@ public partial class TemplatesFill : ComponentBase
 
     private async Task SubmitForm()
     {
+        // TODO: ugly
         var form = new Form { UserId = UserId, TemplateId = TemplateId };
         var numberAnswers = TemplateModel
             .Questions.FindAll(q => q.Type == QuestionType.Number)

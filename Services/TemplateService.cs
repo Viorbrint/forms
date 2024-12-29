@@ -139,6 +139,18 @@ public class TemplateService(IRepository<Template> templateRepository)
         }
         await templateRepository.UpdateRangeAsync(templates);
     }
+
+    public async Task AddFormAsync(Form form, string templateId)
+    {
+        var template = await GetByIdAsync(templateId);
+        if (template == null)
+        {
+            throw new NullReferenceException("Template not found");
+        }
+        template.Forms.Add(form);
+        await templateRepository.UpdateAsync(template);
+    }
+
     public bool IsUserLikeTemplate(string userId, Template template)
     {
         return template.Likes.Any(l => l.UserId == userId);
