@@ -16,6 +16,18 @@ public class TemplateSettingsService(
 
     public void Initialize(string templateId) => TemplateId = templateId;
 
+    public async Task Publish()
+    {
+        CheckInit();
+        await templateService.PublishByIdAsync(TemplateId!);
+    }
+
+    public async Task Hide()
+    {
+        CheckInit();
+        await templateService.HideByIdAsync(TemplateId!);
+    }
+
     public async Task Save()
     {
         // TODO: refactor this
@@ -57,6 +69,7 @@ public class TemplateSettingsService(
         settings.Topic = template.Topic.TopicName;
         settings.Tags = template.Tags.Select(t => t.TagName).ToList();
         settings.IsPublic = template.IsPublic;
+        settings.IsPublished = template.IsPublished;
         settings.UsersWithAccess = template.TemplateAccesses.Select(x => x.User).ToList();
     }
 

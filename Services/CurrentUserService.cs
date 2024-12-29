@@ -23,6 +23,10 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
 
     public bool CurrentUserCanFill(Template template)
     {
+        if (!template.IsPublished)
+        {
+            return false;
+        }
         if (
             UserIsAdmin
             || template.IsPublic

@@ -1,100 +1,107 @@
 @using PSC.Blazor.Components.MarkdownEditor 
 @if (!IsLoading)
 {
-    <MudPaper Class="pa-4">
-        <MudForm>
-            <MudTextField Label="Title" @bind-Value="TemplateSettingsService.settings.Title" Required="true" Variant="Variant.Outlined"/>
+    <MudForm @bind-IsValid="@IsValid">
+        <MudPaper Class="pa-4">
+                <MudTextField Label="Title" @bind-Value="TemplateSettingsService.settings.Title" Required="true" Variant="Variant.Outlined"/>
 
-            <MudText>Description</MudText>
-            <MarkdownEditor @bind-Value="TemplateSettingsService.settings.Description" />
-            @* TODO: fix black theme *@
+                <MudText>Description</MudText>
+                <MarkdownEditor @bind-Value="TemplateSettingsService.settings.Description" />
+                @* TODO: fix black theme *@
 
-            <MudSelect Label="Topic" @bind-Value="TemplateSettingsService.settings.Topic" Required="true" Variant="Variant.Outlined">
-                @foreach (var topic in Topics)
-                {
-                <MudSelectItem Value="@topic">@topic</MudSelectItem>
-                }
-            </MudSelect>
+                <MudSelect Label="Topic" @bind-Value="TemplateSettingsService.settings.Topic" Required="true" Variant="Variant.Outlined">
+                    @foreach (var topic in Topics)
+                    {
+                    <MudSelectItem Value="@topic">@topic</MudSelectItem>
+                    }
+                </MudSelect>
 
-            <MudToolBar Gutters="false" Class="d-flex">
-                <MudFileUpload
-                    @ref="_fileUpload"
-                    T="IBrowserFile"
-                    OnFilesChanged="@OnFileChanged"
-                    @bind-Files="Image"
-                    Accept=".jpg, .jpeg, .png">
-                    <ActivatorContent>
-                        @if (Image == null)
-                        {
+                <MudToolBar Gutters="false" Class="d-flex">
+                    <MudFileUpload
+                        @ref="_fileUpload"
+                        T="IBrowserFile"
+                        OnFilesChanged="@OnFileChanged"
+                        @bind-Files="Image"
+                        Accept=".jpg, .jpeg, .png">
+                        <ActivatorContent>
+                            @if (Image == null)
+                            {
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Success"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                                Load Image
+                            </MudButton>
+                            }
+                        </ActivatorContent>
+                    </MudFileUpload>
+                    @if (Image != null)
+                    {
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
                         <MudButton Variant="Variant.Filled"
-                                   Color="Color.Success"
-                                   StartIcon="@Icons.Material.Filled.CloudUpload">
-                            Load Image
+                                   Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Clear"
+                                   OnClick="@ClearAsync">
+                            Clear Image
                         </MudButton>
-                        }
-                    </ActivatorContent>
-                </MudFileUpload>
-                @if (Image != null)
-                {
+                        <MudIcon Icon="@Icons.Material.Filled.AttachFile" />
+                        <MudText >@Image.Name</MudText>
+                    </MudStack>
+                    }
+                </MudToolBar>
+
                 <MudStack Row="true" AlignItems="AlignItems.Center">
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Error"
-                               StartIcon="@Icons.Material.Filled.Clear"
-                               OnClick="@ClearAsync">
-                        Clear Image
-                    </MudButton>
-                    <MudIcon Icon="@Icons.Material.Filled.AttachFile" />
-                    <MudText >@Image.Name</MudText>
+                    <MudAutocomplete
+                        Label="Tags"
+                        @bind-Value="TagInput"
+                        CoerceValue="true"
+                        ResetValueOnEmptyText="true"
+                        Variant="Variant.Outlined"
+                        SearchFunc="SearchTags"
+                    />
+
+                    <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
                 </MudStack>
-                }
-            </MudToolBar>
 
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudAutocomplete
-                    Label="Tags"
-                    @bind-Value="TagInput"
-                    CoerceValue="true"
-                    ResetValueOnEmptyText="true"
-                    Variant="Variant.Outlined"
-                    SearchFunc="SearchTags"
-                />
+                <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text!))">
+                    @foreach (var tag in TemplateSettingsService.settings.Tags)
+                    {
+                    <MudChip Color="Color.Primary" Text="@tag" ></MudChip>
+                    }
+                </MudChipSet>
 
-                <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
-            </MudStack>
-
-            <MudChipSet T="string" AllClosable OnClose="@((chip) => RemoveTag(chip.Text!))">
-                @foreach (var tag in TemplateSettingsService.settings.Tags)
+                <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="TemplateSettingsService.settings.IsPublic"/>
+                @if (!TemplateSettingsService.settings.IsPublic)
                 {
-                <MudChip Color="Color.Primary" Text="@tag" ></MudChip>
+                <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput"
+                                 OnKeyUp="FilterUsers"/>
+                <MudTable Items="TemplateSettingsService.settings.UsersWithAccess" Dense="true" Hover="true">
+                    <HeaderContent>
+                        <MudTh>Username</MudTh>
+                        <MudTh>Email</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        @* <MudTd>@context.Name</MudTd> *@
+                        @* <MudTd>@context.Email</MudTd> *@
+                        <MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => RemoveUser(context)"/>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
                 }
-            </MudChipSet>
+        </MudPaper>
 
-            <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="TemplateSettingsService.settings.IsPublic"/>
-            @if (!TemplateSettingsService.settings.IsPublic)
-            {
-            <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput"
-                             OnKeyUp="FilterUsers"/>
-            <MudTable Items="TemplateSettingsService.settings.UsersWithAccess" Dense="true" Hover="true">
-                <HeaderContent>
-                    <MudTh>Username</MudTh>
-                    <MudTh>Email</MudTh>
-                    <MudTh></MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    @* <MudTd>@context.Name</MudTd> *@
-                    @* <MudTd>@context.Email</MudTd> *@
-                    <MudTd>
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => RemoveUser(context)"/>
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
-            }
-        </MudForm>
-    </MudPaper>
+        <MudButton OnClick="@Save" Class="mt-4" Variant="Variant.Filled" FullWidth="true" Color="Color.Success">Save</MudButton>
 
-    <MudButton OnClick="@Save" Class="mt-4" Variant="Variant.Filled" FullWidth="true" Color="Color.Success">Save</MudButton>
-
-    <MudButton OnClick="@Save" Class="mt-4" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary">Publish</MudButton>
+        @if (TemplateSettingsService.settings.IsPublished)
+        {
+            <MudButton Class="mt-4" OnClick="Hide"  Variant="Variant.Filled" FullWidth="true" Color="Color.Error">Hide</MudButton>
+        }
+        else
+        {
+            <MudButton Disabled="!IsValid" OnClick="Publish" Class="mt-4" Variant="Variant.Filled" FullWidth="true" Color="Color.Primary">Publish</MudButton>
+        }
+    </MudForm>
 }
 else
 {

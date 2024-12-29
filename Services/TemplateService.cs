@@ -69,13 +69,6 @@ public class TemplateService(IRepository<Template> templateRepository)
         await UpdateAsync(template);
     }
 
-    private bool IsReady(Template template)
-    {
-        // TODO: check all req fields for emptiness
-        // TODO: implement
-        return true;
-    }
-
     public async Task PublishByIdAsync(string id)
     {
         var spec = new SpecificationSingle<Template>(t => t.Id == id);
@@ -102,19 +95,11 @@ public class TemplateService(IRepository<Template> templateRepository)
 
     private void PublishTemplate(Template template)
     {
-        if (!IsReady(template))
-        {
-            return;
-        }
         template.IsPublished = true;
     }
 
     private void HideTemplate(Template template)
     {
-        if (!IsReady(template))
-        {
-            return;
-        }
         template.IsPublished = false;
     }
 

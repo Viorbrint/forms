@@ -9,5 +9,6 @@ public class TemplateSettingsModel
     public string Topic { get; set; } = string.Empty;
     public List<string> Tags { get; set; } = [];
     public bool IsPublic { get; set; } = true;
+    public bool IsPublished { get; set; } = true;
     public List<User> UsersWithAccess { get; set; } = [];
 }

@@ -35,8 +35,10 @@ public partial class Settings : ComponentBase
     private Task ClearAsync() => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
 
     private void OnFileChanged(InputFileChangeEventArgs e) { }
-    
+
     private bool IsLoading { get; set; } = false;
+
+    private bool IsValid { get; set; } = true;
 
     // TODO: add validation to Tags , ...
 
@@ -79,5 +81,17 @@ public partial class Settings : ComponentBase
     private async Task Save()
     {
         await TemplateSettingsService.Save();
+    }
+
+    private async Task Publish()
+    {
+        await TemplateSettingsService.Publish();
+        await TemplateSettingsService.Load();
+    }
+
+    private async Task Hide()
+    {
+        await TemplateSettingsService.Hide();
+        await TemplateSettingsService.Load();
     }
 }
