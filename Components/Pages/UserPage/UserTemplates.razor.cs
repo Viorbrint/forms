@@ -77,10 +77,6 @@ public partial class UserTemplates : ComponentBase
 
     private void EditSelected()
     {
-        if (SelectedTemplates.Count() != 1)
-        {
-            return;
-        }
         var template = SelectedTemplates.First();
         NavigateToEdit(template.Id);
     }

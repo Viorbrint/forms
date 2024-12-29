@@ -16,6 +16,8 @@ public static class ServiceCollectionExtentions
         services.AddScoped<IAuthService, IdentityAuthService>();
         services.AddScoped<IRepository<Template>, Repository<Template>>();
         services.AddScoped<TemplateService>();
+        services.AddScoped<IRepository<Form>, Repository<Form>>();
+        services.AddScoped<FormService>();
         services.AddScoped<IRepository<Topic>, Repository<Topic>>();
         services.AddScoped<TopicService>();
         services.AddScoped<IRepository<Tag>, Repository<Tag>>();
