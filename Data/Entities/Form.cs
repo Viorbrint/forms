@@ -3,7 +3,7 @@ namespace Forms.Data.Entities;
 public class Form
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public string TemplateId { get; set; } = null!;
     public Template Template { get; set; } = null!;
