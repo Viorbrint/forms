@@ -20,28 +20,23 @@ public partial class TemplatesFill : ComponentBase
     private NavigationManager NavigationManager { get; set; } = null!;
 
     private TemplateModel TemplateModel = new();
-
     private bool IsLoading { get; set; } = false;
-
     private string UserId { get; set; } = null!;
-
     private bool IsUserLikeTemplate { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         IsLoading = true;
-        var template = await TemplateService.GetByIdAsync(TemplateId);
+        var template = await GetEnsureTemplate();
         if (template == null)
         {
-            NavigationManager.NavigateTo("/notfound");
             return;
         }
 
         UserId = CurrentUserService.UserId!;
         IsUserLikeTemplate = TemplateService.IsUserLikeTemplate(UserId, template);
 
-        var canFill = CurrentUserService.CurrentUserCanFill(template);
-        if (!canFill)
+        if (!CurrentUserService.CurrentUserCanFill(template))
         {
             // TODO: readonly mode
             NavigationManager.NavigateTo("/accessdenied");
@@ -54,10 +49,9 @@ public partial class TemplatesFill : ComponentBase
 
     private async Task ToggleLike()
     {
-        var template = await TemplateService.GetByIdAsync(TemplateId);
+        var template = await GetEnsureTemplate();
         if (template == null)
         {
-            // TODO:
             return;
         }
         await TemplateService.ToggleLike(UserId, template);
@@ -106,5 +100,15 @@ public partial class TemplatesFill : ComponentBase
         form.MultiLineAnswers = multiLineAnswers;
         form.BooleanAnswers = booleanAnswers;
         await TemplateService.AddFormAsync(form, TemplateId);
+    }
+
+    private async Task<Template?> GetEnsureTemplate()
+    {
+        var template = await TemplateService.GetByIdAsync(TemplateId);
+        if (template == null)
+        {
+            NavigationManager.NavigateTo("/notfound");
+        }
+        return template;
     }
 }
