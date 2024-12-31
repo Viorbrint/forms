@@ -94,7 +94,7 @@ public partial class TemplatesFill : ComponentBase
             })
             .ToList();
         var booleanAnswers = TemplateModel
-            .Questions.FindAll(q => q.Type == QuestionType.Number)
+            .Questions.FindAll(q => q.Type == QuestionType.Boolean)
             .Select(q => new BooleanAnswer()
             {
                 AnswerBoolean = q.BooleanAnswer,
