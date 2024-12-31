@@ -50,6 +50,17 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
         return true;
     }
 
+    public bool CurrentUserCanEditForm(Form form)
+    {
+        var userId = UserId;
+        var isAdmin = UserIsAdmin;
+        if (!isAdmin && form.UserId != userId)
+        {
+            return false;
+        }
+        return true;
+    }
+
     private bool UserInWhitelist(Template template)
     {
         var userIdsWithAccess = template.TemplateAccesses.Select(x => x.UserId);

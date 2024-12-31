@@ -6,6 +6,8 @@ public interface ICurrentUserService
 {
     bool CurrentUserCanEditTemplate(Template template);
     bool CurrentUserCanFill(Template template);
+    bool CurrentUserCanEditForm(Form form);
+
     string? UserId { get; }
     string? UserName { get; }
 }

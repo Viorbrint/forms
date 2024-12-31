@@ -1,0 +1,47 @@
+@page "/forms/edit/{formId}"
+@using Forms.Data.Entities
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
+<PageTitle>Form editor - Forms</PageTitle>
+
+@if (!IsLoading)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
+        <MudGrid Spacing="3">
+            @foreach (var question in Questions)
+            {
+                <MudItem xs="12">
+                    <MudPaper Class="pa-3 mb-4">
+                        @if (question.Type == QuestionType.SingleLine)
+                        {
+                            <MudTextField @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.MultiLine)
+                        {
+                            <MudTextField @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.Number)
+                        {
+                            <MudNumericField T="int" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.Boolean)
+                        {
+                        <MudCheckBox T="bool" Label="@question.Text" @bind-Value="question.BooleanAnswer"/>
+                        }
+                    </MudPaper>
+                </MudItem>
+            }
+
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ChangeForm" FullWidth="true">Change</MudButton>
+            </MudItem>
+
+        </MudGrid>
+    </MudContainer>
+}
+else
+{
+    <Loading/>
+}

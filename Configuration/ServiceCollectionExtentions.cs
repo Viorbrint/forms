@@ -18,6 +18,8 @@ public static class ServiceCollectionExtentions
         services.AddScoped<TemplateService>();
         services.AddScoped<IRepository<Form>, Repository<Form>>();
         services.AddScoped<FormService>();
+        services.AddScoped<IRepository<Answer>, Repository<Answer>>();
+        services.AddScoped<AnswerService>();
         services.AddScoped<IRepository<Topic>, Repository<Topic>>();
         services.AddScoped<TopicService>();
         services.AddScoped<IRepository<Tag>, Repository<Tag>>();
