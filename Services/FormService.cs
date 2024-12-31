@@ -29,6 +29,7 @@ public class FormService(IRepository<Form> formRepository)
         spec.AddInclude(f => f.MultiLineAnswers);
         spec.AddInclude(f => f.BooleanAnswers);
         spec.AddInclude(f => f.NumberAnswers);
+        spec.AddInclude(f => f.Template);
         var result = await formRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }

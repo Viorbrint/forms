@@ -22,6 +22,8 @@ public partial class FormsEdit : ComponentBase
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
 
+    private bool IsReadOnly = true;
+
     private List<QuestionModel> Questions { get; set; } = [];
 
     private bool IsLoading { get; set; } = false;
@@ -37,12 +39,16 @@ public partial class FormsEdit : ComponentBase
             NavigationManager.NavigateTo("/notfound");
             return;
         }
-
+        var canView = CurrentUserService.CurrentUserCanViewForm(form);
         var canEdit = CurrentUserService.CurrentUserCanEditForm(form);
-        if (!canEdit)
+        if (!canEdit && !canView)
         {
             NavigationManager.NavigateTo("/accessdenied");
             return;
+        }
+        if (canEdit)
+        {
+            IsReadOnly = false;
         }
 
         var answers = await AnswerService.GetByFormAsync(FormId);
