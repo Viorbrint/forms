@@ -30,7 +30,7 @@ public partial class TemplatesEdit : ComponentBase
             return;
         }
 
-        var canEdit = CurrentUserService.CurrentUserCanEdit(template);
+        var canEdit = CurrentUserService.CurrentUserCanEditTemplate(template);
         if (!canEdit)
         {
             NavigationManager.NavigateTo("/accessdenied");

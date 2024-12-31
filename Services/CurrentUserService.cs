@@ -39,7 +39,7 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
         return false;
     }
 
-    public bool CurrentUserCanEdit(Template template)
+    public bool CurrentUserCanEditTemplate(Template template)
     {
         var userId = UserId;
         var isAdmin = UserIsAdmin;
