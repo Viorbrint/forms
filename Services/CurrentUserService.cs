@@ -41,9 +41,7 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
 
     public bool CurrentUserCanEditTemplate(Template template)
     {
-        var userId = UserId;
-        var isAdmin = UserIsAdmin;
-        if (!isAdmin && template.AuthorId != userId)
+        if (!UserIsAdmin && template.AuthorId != UserId)
         {
             return false;
         }
@@ -52,9 +50,7 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
 
     public bool CurrentUserCanEditForm(Form form)
     {
-        var userId = UserId;
-        var isAdmin = UserIsAdmin;
-        if (!isAdmin && form.UserId != userId)
+        if (!UserIsAdmin && form.UserId != UserId)
         {
             return false;
         }
