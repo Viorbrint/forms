@@ -18,7 +18,7 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
     private bool UserIsAuthenticated =>
         httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
 
-    private bool UserIsAdmin =>
+    public bool UserIsAdmin =>
         httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value == "admin";
 
     public bool CurrentUserCanFill(Template template)

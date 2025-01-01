@@ -16,6 +16,17 @@ public class FormService(IRepository<Form> formRepository)
         return result;
     }
 
+    public async Task<IEnumerable<Form>> GetByTemplateAsync(string templateId)
+    {
+        var spec = new Specification<Form>(
+            f => f.TemplateId == templateId,
+            q => q.OrderByDescending(t => t.CreatedAt)
+        );
+        spec.AddInclude(f => f.User);
+        var result = await formRepository.GetBySpecificationAsync(spec);
+        return result;
+    }
+
     public async Task DeleteByIdsAsync(IEnumerable<string> ids)
     {
         var spec = new Specification<Form>(t => ids.Contains(t.Id));

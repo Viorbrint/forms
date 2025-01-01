@@ -1,0 +1,36 @@
+@using Forms.Data.Entities
+<MudTable
+    T="Form"
+    MultiSelection="true"
+    Items="@Forms"
+    @bind-SelectedItems="SelectedForms"
+    SelectOnRowClick="false"
+    OnRowClick="OnFormClick"
+    Hover="true"
+>
+    <ToolBarContent>
+        <div class="d-flex justify-space-between align-center" style="width: 100%">
+            <MudText Typo="Typo.h6">Completed forms</MudText>
+            <MudToolBar WrapContent="true" Class="gap-2">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="EditSelected" Disabled="@(SelectedForms.Count != 1)">View</MudButton>
+                @if (@CurrentUserService.UserIsAdmin)
+                {
+                    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteForms" Disabled="@(!SelectedForms.Any())">Delete</MudButton>
+                }
+            </MudToolBar>
+        </div>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>User Name</MudTh>
+        <MudTh>User Email</MudTh>
+        <MudTh>Filling time</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="User Name">@context.User.UserName</MudTd>
+        <MudTd DataLabel="User Email">@context.User.Email</MudTd>
+        <MudTd DataLabel="Filling time">@context.CreatedAt</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager></MudTablePager>
+    </PagerContent>
+</MudTable>
