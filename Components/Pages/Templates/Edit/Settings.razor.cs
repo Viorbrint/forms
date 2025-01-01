@@ -17,6 +17,9 @@ public partial class Settings : ComponentBase
     [Inject]
     private TagService TagService { get; set; } = null!;
 
+    [Inject]
+    private UserService UserService { get; set; } = null!;
+
     [Parameter]
     public string TemplateId { get; set; } = null!;
 
@@ -28,7 +31,16 @@ public partial class Settings : ComponentBase
 
     private MudFileUpload<IBrowserFile>? _fileUpload;
 
-    private string UserSearchInput = string.Empty;
+    private User? _userInput;
+    private User? UserInput
+    {
+        get => _userInput;
+        set
+        {
+            TemplateSettingsService.settings.UsersWithAccess.Add(value);
+            _userInput = null;
+        }
+    }
 
     private List<IBrowserFile> UploadedFiles = [];
 
@@ -39,6 +51,8 @@ public partial class Settings : ComponentBase
     private bool IsLoading { get; set; } = false;
 
     private bool IsValid { get; set; } = true;
+
+    private HashSet<User> SelectedUsers = [];
 
     // TODO: add validation to Tags , ...
 
@@ -56,6 +70,11 @@ public partial class Settings : ComponentBase
         return await TagService.SearchTagNames(value);
     }
 
+    private async Task<IEnumerable<User>> SearchUsers(string value, CancellationToken _)
+    {
+        return await UserService.SearchUsers(value);
+    }
+
     void RemoveTag(string tag)
     {
         TemplateSettingsService.settings.Tags.Remove(tag);
@@ -71,7 +90,12 @@ public partial class Settings : ComponentBase
         TagInput = string.Empty;
     }
 
-    private void FilterUsers() { }
+    private void RemoveAccessFromSelectedUsers()
+    {
+        TemplateSettingsService.settings.UsersWithAccess.RemoveAll(u =>
+            SelectedUsers.Select(u => u.Id).Contains(u.Id)
+        );
+    }
 
     private void RemoveUser(User user)
     {

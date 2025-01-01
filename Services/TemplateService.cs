@@ -1,4 +1,3 @@
-using System.Collections;
 using Forms.Data.Entities;
 using Forms.Models.TemplateModels;
 using Forms.Repositories;
@@ -31,6 +30,7 @@ public class TemplateService(IRepository<Template> templateRepository)
         spec.AddInclude(t => t.Tags);
         spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
         spec.AddInclude(t => t.Likes);
+        spec.AddInclude(t => t.TemplateAccesses);
         var result = await templateRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }

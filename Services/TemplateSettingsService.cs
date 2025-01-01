@@ -1,3 +1,4 @@
+using Forms.Data.Entities;
 using Forms.Models.TemplateModels;
 
 namespace Forms.Services;
@@ -5,7 +6,8 @@ namespace Forms.Services;
 public class TemplateSettingsService(
     TemplateService templateService,
     TopicService topicService,
-    TagService tagService
+    TagService tagService,
+    UserService userService
 )
 {
     public TemplateSettingsModel settings = new();
@@ -40,15 +42,17 @@ public class TemplateSettingsService(
         }
         template.Title = settings.Title;
         template.Description = settings.Description;
-        var dbTopic = await topicService.GetByNameAsync(settings.Topic);
-        if (dbTopic == null)
-        {
-            throw new ArgumentException("Topic does not exist in database");
-        }
+        var dbTopic =
+            await topicService.GetByNameAsync(settings.Topic)
+            ?? throw new ArgumentException("Topic does not exist in database");
         template.Topic = dbTopic;
         await tagService.AddRangeAsync(settings.Tags);
         var dbTags = await tagService.GetTagsByNamesAsync(settings.Tags);
         template.Tags = dbTags.ToList();
+        template.IsPublic = settings.IsPublic;
+        template.TemplateAccesses = settings
+            .UsersWithAccess.Select(u => new TemplateAccess() { Template = template, User = u })
+            .ToList();
         await templateService.UpdateAsync(template);
     }
 
@@ -70,7 +74,7 @@ public class TemplateSettingsService(
         settings.Tags = template.Tags.Select(t => t.TagName).ToList();
         settings.IsPublic = template.IsPublic;
         settings.IsPublished = template.IsPublished;
-        settings.UsersWithAccess = template.TemplateAccesses.Select(x => x.User).ToList();
+        settings.UsersWithAccess = await userService.GetWithAccessToTemplate(template.Id);
     }
 
     private void CheckInit()

@@ -1,3 +1,4 @@
+@using Forms.Data.Entities
 @using PSC.Blazor.Components.MarkdownEditor 
 @if (!IsLoading)
 {
@@ -57,6 +58,7 @@
                         ResetValueOnEmptyText="true"
                         Variant="Variant.Outlined"
                         SearchFunc="SearchTags"
+                        AdornmentIcon="@Icons.Material.Filled.Search"
                     />
 
                     <MudFab Color="Color.Success" OnClick="@AddTag" Size="Size.Medium" StartIcon="@Icons.Material.Filled.Add"/>
@@ -72,20 +74,30 @@
                 <MudSwitch Label="Public" Color="Color.Primary" @bind-Value="TemplateSettingsService.settings.IsPublic"/>
                 @if (!TemplateSettingsService.settings.IsPublic)
                 {
-                <MudAutocomplete T="string" Label="Add User" @bind-Value="UserSearchInput"
-                                 OnKeyUp="FilterUsers"/>
-                <MudTable Items="TemplateSettingsService.settings.UsersWithAccess" Dense="true" Hover="true">
+                <MudAutocomplete 
+                    Variant="Variant.Outlined" 
+                    AdornmentIcon="@Icons.Material.Filled.Search" 
+                    T="User" 
+                    Label="Add 
+                    User" 
+                    @bind-Value="UserInput" 
+                    CoerceText="true"
+                    SearchFunc="SearchUsers" />
+                <MudTable MultiSelection="true" @bind-SelectedItems="SelectedUsers" Items="TemplateSettingsService.settings.UsersWithAccess" Dense="true" Hover="true">
+                    <ToolBarContent>
+                                <MudIconButton 
+                                Color="Color.Error" 
+                                Icon="@Icons.Material.Filled.Delete" 
+                                OnClick="RemoveAccessFromSelectedUsers" 
+                                Disabled="@(SelectedUsers.Count == 0)" />
+                    </ToolBarContent>
                     <HeaderContent>
                         <MudTh>Username</MudTh>
                         <MudTh>Email</MudTh>
-                        <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate>
-                        @* <MudTd>@context.Name</MudTd> *@
-                        @* <MudTd>@context.Email</MudTd> *@
-                        <MudTd>
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => RemoveUser(context)"/>
-                        </MudTd>
+                        <MudTd>@context.UserName</MudTd>
+                        <MudTd>@context.Email</MudTd>
                     </RowTemplate>
                 </MudTable>
                 }
