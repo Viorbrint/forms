@@ -24,11 +24,15 @@ public partial class Home : ComponentBase
     private int NumberOfPopularTemplates { get; } = 5;
     private int NumberOfPopularTags { get; } = 5;
 
+    private bool IsLoading { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         LatestTemplates = await TemplateService.GetLatestTemplatesAsync(NumberOfLatestTemplates);
         PopularTemplates = await TemplateService.GetPopularTemplatesAsync(NumberOfPopularTemplates);
         PopularTags = await TagService.GetPopularTagsAsync(NumberOfPopularTags);
+        IsLoading = false;
     }
 
     private void NavigateToSearch(string tag)
