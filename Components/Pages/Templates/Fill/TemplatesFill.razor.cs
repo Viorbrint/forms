@@ -55,8 +55,8 @@ public partial class TemplatesFill : ComponentBase
             return;
         }
         await TemplateService.ToggleLike(UserId, template);
-        IsUserLikeTemplate = TemplateService.IsUserLikeTemplate(UserId, template);
-        TemplateModel.Likes = template.Likes.Count();
+        IsUserLikeTemplate = CurrentUserService.IsCurrentUserLikesTemplate(template);
+        TemplateModel.Likes = template.Likes.Count;
     }
 
     private async Task SubmitForm()
