@@ -5,14 +5,15 @@ namespace Forms.Services;
 
 public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    private ClaimsPrincipal? CurrentUser => httpContextAccessor.HttpContext?.User;
     public string? UserId => CurrentUser?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     public string? UserName => CurrentUser?.Identity?.Name;
-    public bool UserIsAuthenticated => CurrentUser?.Identity?.IsAuthenticated ?? false;
     public bool UserIsAdmin => CurrentUser?.IsInRole("admin") ?? false;
+    private ClaimsPrincipal? CurrentUser => httpContextAccessor.HttpContext?.User;
+    private bool UserIsAuthenticated => CurrentUser?.Identity?.IsAuthenticated ?? false;
 
     public bool CurrentUserCanFill(Template template) =>
         template.IsPublished
+        && UserIsAuthenticated
         && (
             UserIsAdmin
             || template.IsPublic
