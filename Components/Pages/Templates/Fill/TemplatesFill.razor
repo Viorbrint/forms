@@ -3,8 +3,6 @@
 @using Markdig
 @using Microsoft.AspNetCore.Authorization
 
-@attribute [Authorize]
-
 <PageTitle>Fill out the template - Forms</PageTitle>
 
 @if (!IsLoading)
@@ -35,7 +33,7 @@
                     </div>
                     
                     <div class="d-flex align-center">
-                        <MudIconButton OnClick="ToggleLike" Color="@(IsUserLikeTemplate ? Color.Dark : Color.Default)" Icon="@Icons.Material.Filled.ThumbUp"/>
+                        <MudIconButton OnClick="ToggleLike" Disabled="IsReadOnly" Color="@(IsUserLikeTemplate ? Color.Dark : Color.Default)" Icon="@Icons.Material.Filled.ThumbUp"/>
                         <MudText>@TemplateModel.Likes</MudText>
                         <MudIconButton Icon="@Icons.Material.Filled.Comment"/>
                         <MudText>20</MudText>
@@ -58,28 +56,34 @@
                     <MudPaper Class="pa-3 mb-4">
                         @if (question.Type == QuestionType.SingleLine)
                         {
-                            <MudTextField @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.MultiLine)
                         {
-                            <MudTextField @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.Number)
                         {
-                            <MudNumericField T="int" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudNumericField T="int" ReadOnly="IsReadOnly" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.Boolean)
                         {
-                            <MudCheckBox T="bool" @bind-Value="@question.BooleanAnswer" Label="@question.Text" />
+                            <MudCheckBox T="bool" ReadOnly="IsReadOnly" @bind-Value="@question.BooleanAnswer" Label="@question.Text" />
                         }
                     </MudPaper>
                 </MudItem>
             }
 
             <MudItem xs="12">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm" FullWidth="true">Submit</MudButton>
+                @if (!IsReadOnly)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm" FullWidth="true">Submit</MudButton>
+                }
+                else
+                {
+                    <MudText Align="Align.Center">You do not have sufficient rights to fill out the template.</MudText>
+                }
             </MudItem>
-
         </MudGrid>
     </MudContainer>
 }

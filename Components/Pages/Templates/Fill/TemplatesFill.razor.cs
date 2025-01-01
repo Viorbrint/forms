@@ -23,6 +23,7 @@ public partial class TemplatesFill : ComponentBase
     private bool IsLoading { get; set; } = false;
     private string UserId { get; set; } = null!;
     private bool IsUserLikeTemplate { get; set; }
+    private bool IsReadOnly { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -36,11 +37,9 @@ public partial class TemplatesFill : ComponentBase
         UserId = CurrentUserService.UserId!;
         IsUserLikeTemplate = CurrentUserService.IsCurrentUserLikesTemplate(template);
 
-        if (!CurrentUserService.CurrentUserCanFill(template))
+        if (CurrentUserService.CurrentUserCanFill(template))
         {
-            // TODO: readonly mode
-            NavigationManager.NavigateTo("/accessdenied");
-            return;
+            IsReadOnly = false;
         }
 
         TemplateModel = TemplateModel.MapTemplate(template);
@@ -105,7 +104,7 @@ public partial class TemplatesFill : ComponentBase
     private async Task<Template?> GetEnsureTemplate()
     {
         var template = await TemplateService.GetByIdAsync(TemplateId);
-        if (template == null)
+        if (template == null || !template.IsPublished)
         {
             NavigationManager.NavigateTo("/notfound");
         }
