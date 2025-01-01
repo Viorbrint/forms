@@ -3,7 +3,7 @@ using Forms.Models.TemplateModels;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace Forms.Components.Pages.FormsPage.Edit;
+namespace Forms.Components.Pages.FormsEdit;
 
 public partial class FormsEdit : ComponentBase
 {
