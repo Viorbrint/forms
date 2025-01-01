@@ -1,3 +1,4 @@
+using System.Collections;
 using Forms.Data.Entities;
 using Forms.Repositories;
 
@@ -27,5 +28,14 @@ public class TagService(IRepository<Tag> tagRepository)
         var tags = await tagRepository.GetBySpecificationAsync(spec);
         var result = tags.Select(t => t.TagName);
         return result;
+    }
+
+    public async Task<IEnumerable<string>> GetPopularTagsAsync(int number)
+    {
+        var spec = new Specification<Tag>(null, q => q.OrderByDescending(t => t.Templates.Count));
+        spec.AddInclude(t => t.Templates);
+        spec.ApplyPaging(0, number);
+        var result = await tagRepository.GetBySpecificationAsync(spec);
+        return result.Select(t => t.TagName);
     }
 }

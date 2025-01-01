@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Forms.Models.TemplateModels
 
 <PageTitle>Home - Forms</PageTitle>
 
@@ -8,7 +9,7 @@
             <MudPaper Class="pa-4">
                 <MudText Typo="Typo.h5">Tag Cloud</MudText>
                 <MudChipSet T="string">
-                    @foreach (var tag in Tags)
+                    @foreach (var tag in PopularTags)
                     {
                         <MudChip Color="Color.Primary" OnClick="() => NavigateToSearch(tag)">@tag</MudChip>
                     }
@@ -42,8 +43,8 @@
         <MudItem xs="12" md="4">
             <MudPaper Class="pa-4">
                 <MudText Typo="Typo.h5">Top 5 Popular Templates</MudText>
-                <MudList T="Template">
-                    @foreach (var template in TopPopularTemplates)
+                <MudList T="PresentTemplateModel">
+                    @foreach (var template in PopularTemplates)
                     {
                     <MudListItem>
                         <MudText Typo="Typo.body1">@template.Title</MudText>

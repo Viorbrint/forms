@@ -1,4 +1,6 @@
+using System.Collections;
 using Forms.Data.Entities;
+using Forms.Models.TemplateModels;
 using Forms.Repositories;
 
 namespace Forms.Services;
@@ -139,5 +141,51 @@ public class TemplateService(IRepository<Template> templateRepository)
     public bool IsUserLikeTemplate(string userId, Template template)
     {
         return template.Likes.Any(l => l.UserId == userId);
+    }
+
+    public async Task<IEnumerable<PresentTemplateModel>> GetLatestTemplatesAsync(int number)
+    {
+        var spec = new Specification<Template>(
+            t => t.IsPublished == true,
+            q => q.OrderByDescending(t => t.CreatedAt)
+        );
+        spec.ApplyPaging(0, number);
+        spec.AddInclude(t => t.Forms);
+        spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Likes);
+        spec.AddInclude(t => t.Author);
+        var templates = await templateRepository.GetBySpecificationAsync(spec);
+        return templates.Select(t => new PresentTemplateModel()
+        {
+            Id = t.Id,
+            Title = t.Title,
+            ImageUrl = t.ImageUrl,
+            AuthorName = t.Author.UserName!,
+            Description = t.Description,
+            FilledFormsCount = t.Forms.Count,
+        });
+    }
+
+    public async Task<IEnumerable<PresentTemplateModel>> GetPopularTemplatesAsync(int number)
+    {
+        var spec = new Specification<Template>(
+            t => t.IsPublished == true,
+            q => q.OrderByDescending(t => t.Forms.Count())
+        );
+        spec.ApplyPaging(0, number);
+        spec.AddInclude(t => t.Forms);
+        spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Likes);
+        spec.AddInclude(t => t.Author);
+        var templates = await templateRepository.GetBySpecificationAsync(spec);
+        return templates.Select(t => new PresentTemplateModel()
+        {
+            Id = t.Id,
+            Title = t.Title,
+            ImageUrl = t.ImageUrl,
+            AuthorName = t.Author.UserName!,
+            Description = t.Description,
+            FilledFormsCount = t.Forms.Count,
+        });
     }
 }
