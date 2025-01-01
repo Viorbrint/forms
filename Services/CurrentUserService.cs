@@ -6,76 +6,28 @@ namespace Forms.Services;
 public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
     private ClaimsPrincipal? CurrentUser => httpContextAccessor.HttpContext?.User;
+    public string? UserId => CurrentUser?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    public string? UserName => CurrentUser?.Identity?.Name;
+    public bool UserIsAuthenticated => CurrentUser?.Identity?.IsAuthenticated ?? false;
+    public bool UserIsAdmin => CurrentUser?.IsInRole("admin") ?? false;
 
-    public string? UserId =>
-        httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-    public string? UserName => httpContextAccessor.HttpContext?.User?.Identity?.Name;
-
-    private string? UserEmail =>
-        httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
-
-    private bool UserIsAuthenticated =>
-        httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
-
-    public bool UserIsAdmin =>
-        httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value == "admin";
-
-    public bool CurrentUserCanFill(Template template)
-    {
-        if (!template.IsPublished)
-        {
-            return false;
-        }
-        if (
+    public bool CurrentUserCanFill(Template template) =>
+        template.IsPublished
+        && (
             UserIsAdmin
             || template.IsPublic
             || template.AuthorId == UserId
             || UserInWhitelist(template)
-        )
-        {
-            return true;
-        }
-        return false;
-    }
+        );
 
-    public bool CurrentUserCanEditTemplate(Template template)
-    {
-        if (!UserIsAdmin && template.AuthorId != UserId)
-        {
-            return false;
-        }
-        return true;
-    }
+    public bool CurrentUserCanEditTemplate(Template template) =>
+        UserIsAdmin || template.AuthorId == UserId;
 
-    public bool CurrentUserCanEditForm(Form form)
-    {
-        if (!UserIsAdmin && form.UserId != UserId)
-        {
-            return false;
-        }
-        return true;
-    }
+    public bool CurrentUserCanEditForm(Form form) => UserIsAdmin || form.UserId == UserId;
 
-    public bool CurrentUserCanViewForm(Form form)
-    {
-        if (CurrentUserCanEditForm(form) || form.Template.AuthorId == UserId)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    public bool CurrentUserCanViewForm(Form form) =>
+        CurrentUserCanEditForm(form) || form.Template.AuthorId == UserId;
 
-    private bool UserInWhitelist(Template template)
-    {
-        var userIdsWithAccess = template.TemplateAccesses.Select(x => x.UserId);
-        if (userIdsWithAccess.Contains(UserId))
-        {
-            return true;
-        }
-        return false;
-    }
+    private bool UserInWhitelist(Template template) =>
+        template.TemplateAccesses.Any(x => x.UserId == UserId);
 }
