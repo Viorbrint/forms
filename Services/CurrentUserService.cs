@@ -29,6 +29,9 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
     public bool CurrentUserCanViewForm(Form form) =>
         CurrentUserCanEditForm(form) || form.Template.AuthorId == UserId;
 
+    public bool IsCurrentUserLikesTemplate(Template template) =>
+        template.Likes.Any(l => l.UserId == UserId);
+
     private bool UserInWhitelist(Template template) =>
         template.TemplateAccesses.Any(x => x.UserId == UserId);
 }

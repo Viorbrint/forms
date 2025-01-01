@@ -138,11 +138,6 @@ public class TemplateService(IRepository<Template> templateRepository)
         await templateRepository.UpdateAsync(template);
     }
 
-    public bool IsUserLikeTemplate(string userId, Template template)
-    {
-        return template.Likes.Any(l => l.UserId == userId);
-    }
-
     public async Task<IEnumerable<PresentTemplateModel>> GetLatestTemplatesAsync(int number)
     {
         var spec = new Specification<Template>(

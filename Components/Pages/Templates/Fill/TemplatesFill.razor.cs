@@ -34,7 +34,7 @@ public partial class TemplatesFill : ComponentBase
         }
 
         UserId = CurrentUserService.UserId!;
-        IsUserLikeTemplate = TemplateService.IsUserLikeTemplate(UserId, template);
+        IsUserLikeTemplate = CurrentUserService.IsCurrentUserLikesTemplate(template);
 
         if (!CurrentUserService.CurrentUserCanFill(template))
         {
