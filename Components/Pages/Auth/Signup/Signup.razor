@@ -1,6 +1,8 @@
 @page "/signup"
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SignupResource> Loc;
 
-<PageTitle>Signup - Forms</PageTitle>
+<PageTitle>@Loc["Title"]</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center">
     <MudCard width="100%">

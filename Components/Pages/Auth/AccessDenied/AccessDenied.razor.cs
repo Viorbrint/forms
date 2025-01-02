@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Forms.Components.Pages.Auth;
+namespace Forms.Components.Pages.Auth.AccessDenied;
 
 public partial class AccessDenied : ComponentBase
 {
@@ -21,4 +21,3 @@ public partial class AccessDenied : ComponentBase
         NavigationManager.NavigateTo("/");
     }
 }
-

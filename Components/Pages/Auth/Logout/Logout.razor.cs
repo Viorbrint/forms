@@ -1,7 +1,7 @@
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace Forms.Components.Pages.Auth;
+namespace Forms.Components.Pages.Auth.Logout;
 
 public partial class Logout : ComponentBase
 {

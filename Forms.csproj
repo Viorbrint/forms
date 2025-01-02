@@ -26,27 +26,26 @@
 
 
   <ItemGroup>
-    <EmbeddedResource Include="Components\Pages\Auth\SigninResource.resx">
+    <EmbeddedResource Include="Components\Pages\Auth\Signin\SigninResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SigninResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\Pages\Auth\SigninResource.ru.resx">
+    <EmbeddedResource Include="Components\Pages\Auth\Signin\SigninResource.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SigninResource.ru.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
-
   <ItemGroup>
-    <Compile Update="Components\Pages\Auth\SigninResource.Designer.cs">
+    <Compile Update="Components\Pages\Auth\Signin\SigninResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SigninResource.resx</DependentUpon>
     </Compile>
-    <Compile Update="Components\Pages\Auth\CultureExample2.es.Designer.cs">
+    <Compile Update="Components\Pages\Auth\Signin\SigninResource.ru.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>CultureExample2.es.resx</DependentUpon>
+      <DependentUpon>SigninResource.ru.resx</DependentUpon>
     </Compile>
     <Compile Update="Components\Pages\Auth\SigninResource.ru.Designer.cs">
       <DesignTime>True</DesignTime>

@@ -3,7 +3,7 @@ using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 
-namespace Forms.Components.Pages.Auth;
+namespace Forms.Components.Pages.Auth.Signin;
 
 public partial class Signin : ComponentBase
 {
