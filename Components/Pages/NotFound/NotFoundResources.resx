@@ -58,26 +58,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoginButton" xml:space="preserve">
-    <value>Войти</value>
-  </data>
   <data name="Title" xml:space="preserve">
-    <value>Регистрация - Формы</value>
+    <value>NotFound - Forms</value>
   </data>
-  <data name="Signin" xml:space="preserve">
-    <value>Вход</value>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Page Not Found</value>
   </data>
-  <data name="RegisterButton" xml:space="preserve">
-    <value>Зарегистрироваться</value>
+  <data name="PageHelperText" xml:space="preserve">
+    <value>The page you are looking for does not exist. Please check the URL or navigate back to the homepage.</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Почта</value>
+  <data name="GoBack" xml:space="preserve">
+    <value>Go Back</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="PasswordHelper" xml:space="preserve">
-    <value>Выберите сложный пароль</value>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
   </data>
 </root>
 
