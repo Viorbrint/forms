@@ -45,9 +45,57 @@ namespace Forms.Components.Pages.Admin {
             }
         }
         
-        internal static string a {
+        internal static string Unblock {
             get {
-                return ResourceManager.GetString("a", resourceCulture);
+                return ResourceManager.GetString("Unblock", resourceCulture);
+            }
+        }
+        
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        internal static string RemoveAdminRole {
+            get {
+                return ResourceManager.GetString("RemoveAdminRole", resourceCulture);
+            }
+        }
+        
+        internal static string Block {
+            get {
+                return ResourceManager.GetString("Block", resourceCulture);
+            }
+        }
+        
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        internal static string AddAdminRole {
+            get {
+                return ResourceManager.GetString("AddAdminRole", resourceCulture);
+            }
+        }
+        
+        internal static string UserManagement {
+            get {
+                return ResourceManager.GetString("UserManagement", resourceCulture);
+            }
+        }
+        
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
     }
