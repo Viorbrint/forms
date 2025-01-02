@@ -19,15 +19,15 @@
                     <MudPaper Class="pa-3 mb-4">
                         @if (question.Type == QuestionType.SingleLine)
                         {
-                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="@Loc["MyAnswer"]" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.MultiLine)
                         {
-                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="@Loc["MyAnswer"]" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.Number)
                         {
-                            <MudNumericField ReadOnly="IsReadOnly" T="int" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                            <MudNumericField ReadOnly="IsReadOnly" T="int" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="@Loc["MyAnswer"]" Class="mb-3" FullWidth="true" />
                         }
                         else if (question.Type == QuestionType.Boolean)
                         {

@@ -64,5 +64,8 @@
   <data name="Change" xml:space="preserve">
     <value>Применить</value>
   </data>
+  <data name="MyAnswer" xml:space="preserve">
+    <value>Мой ответ</value>
+  </data>
 </root>
 

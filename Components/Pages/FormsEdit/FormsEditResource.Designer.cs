@@ -56,5 +56,11 @@ namespace Forms.Components.Pages.FormsEdit {
                 return ResourceManager.GetString("Change", resourceCulture);
             }
         }
+        
+        internal static string MyAnswer {
+            get {
+                return ResourceManager.GetString("MyAnswer", resourceCulture);
+            }
+        }
     }
 }
