@@ -2,14 +2,14 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<SearchResource> Loc;
 
-<PageTitle>Search - Forms</PageTitle>
+<PageTitle>@Loc["Title"]</PageTitle>
 
 <MudContainer Gutters="false">
     <MudGrid Spacing="2">
 
         <!-- Search Bar -->
         <MudItem xs="12">
-            <MudTextField @bind-Value="SearchQuery" Placeholder="Search templates..." DebounceInterval="400"
+            <MudTextField @bind-Value="SearchQuery" Placeholder="@Loc["SearchPlaceholder"]" DebounceInterval="400"
                           Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" 
                           OnKeyDown="HandleSearchKeyDown" Class="mb-4" />
         </MudItem>
@@ -17,7 +17,7 @@
         <!-- Search Results -->
         <MudItem xs="12">
             <MudPaper Class="pa-4">
-                <MudText Typo="Typo.h5">Search Results</MudText>
+                <MudText Typo="Typo.h5">@Loc["SearchResults"]</MudText>
 
                 @if (SearchResults.Any())
                 {
@@ -32,7 +32,7 @@
                                         <MudText Typo="Typo.body2">@template.Description</MudText>
                                     </MudCardContent>
                                     <MudCardActions>
-                                        <MudButton Href="@($"/templates/fill/{template.Id}")" Variant="Variant.Text">View</MudButton>
+                                        <MudButton Href="@($"/templates/fill/{template.Id}")" Variant="Variant.Text">@Loc["View"]</MudButton>
                                     </MudCardActions>
                                 </MudCard>
                             </MudItem>
@@ -41,7 +41,7 @@
                 }
                 else
                 {
-                    <MudText Typo="Typo.body1" Class="mt-4">No templates found for "@SearchQuery".</MudText>
+                    <MudText Typo="Typo.body1" Class="mt-4">@Loc["NoTemplates", SearchQuery]</MudText>
                 }
             </MudPaper>
         </MudItem>

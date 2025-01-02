@@ -45,9 +45,51 @@ namespace Forms.Components.Pages.Search {
             }
         }
         
-        internal static string a {
+        internal static string LoginButton {
             get {
-                return ResourceManager.GetString("a", resourceCulture);
+                return ResourceManager.GetString("LoginButton", resourceCulture);
+            }
+        }
+        
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        internal static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        internal static string RegisterButton {
+            get {
+                return ResourceManager.GetString("RegisterButton", resourceCulture);
+            }
+        }
+        
+        internal static string SearchPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        internal static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        internal static string SearchResults {
+            get {
+                return ResourceManager.GetString("SearchResults", resourceCulture);
+            }
+        }
+        
+        internal static string NoTemplates {
+            get {
+                return ResourceManager.GetString("NoTemplates", resourceCulture);
             }
         }
     }
