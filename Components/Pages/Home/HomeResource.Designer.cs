@@ -45,9 +45,9 @@ namespace Forms.Components.Pages.Home {
             }
         }
         
-        internal static string LoginButton {
+        internal static string LatestTemplates {
             get {
-                return ResourceManager.GetString("LoginButton", resourceCulture);
+                return ResourceManager.GetString("LatestTemplates", resourceCulture);
             }
         }
         
@@ -63,27 +63,27 @@ namespace Forms.Components.Pages.Home {
             }
         }
         
-        internal static string RegisterButton {
+        internal static string FilledForms {
             get {
-                return ResourceManager.GetString("RegisterButton", resourceCulture);
+                return ResourceManager.GetString("FilledForms", resourceCulture);
             }
         }
         
-        internal static string Email {
+        internal static string TagCloud {
             get {
-                return ResourceManager.GetString("Email", resourceCulture);
+                return ResourceManager.GetString("TagCloud", resourceCulture);
             }
         }
         
-        internal static string Password {
+        internal static string View {
             get {
-                return ResourceManager.GetString("Password", resourceCulture);
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
         
-        internal static string PasswordHelper {
+        internal static string TopPopularTemplates {
             get {
-                return ResourceManager.GetString("PasswordHelper", resourceCulture);
+                return ResourceManager.GetString("TopPopularTemplates", resourceCulture);
             }
         }
     }
