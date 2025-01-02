@@ -1,8 +1,10 @@
 ﻿@page "/"
 @using Forms.Models.TemplateModels
 @using Forms.Components.Shared.Loading
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<HomeResource> Loc;
 
-<PageTitle>Home - Forms</PageTitle>
+<PageTitle>@Loc["Title"]</PageTitle>
 
 @if (!IsLoading)
 {

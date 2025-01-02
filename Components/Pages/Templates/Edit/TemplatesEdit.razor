@@ -1,6 +1,8 @@
 @page "/templates/edit/{templateId}"
 @using Microsoft.AspNetCore.Authorization
 @using Forms.Components.Shared.Loading
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TemplatesEditResource> Loc;
 
 @attribute [Authorize]
 

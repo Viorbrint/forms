@@ -1,5 +1,7 @@
 @page "/admin"
 @attribute [Authorize(Roles = "admin")]
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<AdminResource> Loc;
 
 <PageTitle>Admin Page - Forms</PageTitle>
 

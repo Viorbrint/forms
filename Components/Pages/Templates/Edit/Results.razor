@@ -1,4 +1,6 @@
 @using Forms.Data.Entities
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TemplatesEditResource> Loc;
 <MudTable
     T="Form"
     MultiSelection="true"

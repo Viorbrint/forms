@@ -1,6 +1,8 @@
 @using Forms.Data.Entities
 @using Forms.Models.TemplateModels
 @using Forms.Components.Shared.Loading
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TemplatesEditResource> Loc;
 @if (!IsLoading)
 {
     <MudButton
