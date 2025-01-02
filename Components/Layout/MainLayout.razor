@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @inherits LayoutComponentBase
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<LayoutResource> Loc;
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
@@ -12,17 +14,17 @@
             </MudHidden>
             <div class="d-flex align-center gap-1">
                 <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.Article" />
-                <MudText Class="me-3" Color="Color.Primary" Typo="Typo.h5">Forms</MudText>
+                <MudText Class="me-3" Color="Color.Primary" Typo="Typo.h5">@Loc["Forms"]</MudText>
             </div>
             <MudHidden Breakpoint="Breakpoint.Xs">
-                <MudButton Style="text-transform:none" Href="/">Home</MudButton>
+                <MudButton Style="text-transform:none" Href="/">@Loc["Home"]</MudButton>
                 <AuthorizeView>
                     <Authorized>
-                        <MudButton Style="text-transform:none" Href="/user">Profile</MudButton>
+                        <MudButton Style="text-transform:none" Href="/user">@Loc["Profile"]</MudButton>
                     </Authorized>
                 </AuthorizeView>
                 <AuthorizeView Roles="admin">
-                    <MudButton Style="text-transform:none" Href="/admin">User Management</MudButton>
+                    <MudButton Style="text-transform:none" Href="/admin">@Loc["UserManagement"]</MudButton>
                 </AuthorizeView>
             </MudHidden>
         </MudToolBar>
@@ -37,7 +39,7 @@
             </MudHidden>
             <AuthorizeView>
                 <Authorized><Profile /></Authorized>
-                <NotAuthorized><MudButton Color="Color.Primary" Variant="Variant.Filled" Href="/signin">Signin</MudButton></NotAuthorized>
+                <NotAuthorized><MudButton Color="Color.Primary" Variant="Variant.Filled" Href="/signin">@Loc["Signin"]</MudButton></NotAuthorized>
             </AuthorizeView>
         </MudToolBar>
     </MudAppBar>

@@ -1,3 +1,6 @@
+using Forms.Data.Entities;
+using Forms.Models.TemplateModels;
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -5,14 +8,54 @@ namespace Forms.Components.Pages.Templates.Edit;
 
 public partial class Questions : ComponentBase
 {
-    private MudDropContainer<DropItem> _dropContainer = null!;
+    [Parameter]
+    public string TemplateId { get; set; } = null!;
 
-    private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
+    [Inject]
+    private QuestionsSettingsService QuestionsSettingsService { get; set; } = null!;
+    private MudDropContainer<QuestionSettingsModel> _dropContainer = null!;
+
+    private bool IsLoading = false;
+
+    private void ItemUpdated(MudItemDropInfo<QuestionSettingsModel> dropItem)
     {
-        Console.WriteLine(dropItem.IndexInZone);
+        var question = dropItem.Item!;
+        var requiredIndex = dropItem.IndexInZone;
+        var currentIndex = QuestionsSettingsService.Questions.IndexOf(question);
+        while (currentIndex != requiredIndex)
+        {
+            if (currentIndex < requiredIndex)
+            {
+                (
+                    QuestionsSettingsService.Questions[currentIndex],
+                    QuestionsSettingsService.Questions[currentIndex + 1]
+                ) = (
+                    QuestionsSettingsService.Questions[currentIndex + 1],
+                    QuestionsSettingsService.Questions[currentIndex]
+                );
+                currentIndex++;
+            }
+            else
+            {
+                (
+                    QuestionsSettingsService.Questions[currentIndex],
+                    QuestionsSettingsService.Questions[currentIndex - 1]
+                ) = (
+                    QuestionsSettingsService.Questions[currentIndex - 1],
+                    QuestionsSettingsService.Questions[currentIndex]
+                );
+                currentIndex--;
+            }
+        }
     }
 
-    private int _i = 1;
+    protected override async Task OnInitializedAsync()
+    {
+        QuestionsSettingsService.Initialize(TemplateId);
+        IsLoading = true;
+        await QuestionsSettingsService.Load();
+        IsLoading = false;
+    }
 
     private void AddQuestion()
     {
@@ -20,22 +63,18 @@ public partial class Questions : ComponentBase
         {
             return;
         }
-        _items.Add(new DropItem() { Name = "Item 2", Selector = $"{++_i}" });
+        QuestionsSettingsService.AddQuestion();
         _dropContainer.Refresh();
     }
 
-    private List<DropItem> _items = [new DropItem() { Name = "Item 1", Selector = $"1" }];
-
-    public class DropItem
+    private void DeleteQuestion(QuestionSettingsModel item)
     {
-        public string Name { get; init; } = string.Empty;
-        public string Selector { get; set; } = string.Empty;
+        QuestionsSettingsService.DeleteQuestion(item);
+        _dropContainer.Refresh();
     }
 
     private async Task Save()
     {
-        await Task.CompletedTask;
-        throw new NotImplementedException();
+        await QuestionsSettingsService.Save();
     }
 }
-

@@ -22,13 +22,15 @@ namespace Forms.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Forms.Data.Entities.BooleanAnswer", b =>
+            modelBuilder.Entity("Forms.Data.Entities.Answer", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<bool>("AnswerBoolean")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
 
                     b.Property<string>("FormId")
                         .IsRequired()
@@ -38,13 +40,18 @@ namespace Forms.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("FormId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("BooleanAnswers");
+                    b.ToTable("Answer");
+
+                    b.HasDiscriminator().HasValue("Answer");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Forms.Data.Entities.Comment", b =>
@@ -53,6 +60,10 @@ namespace Forms.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CommentText")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -94,57 +105,6 @@ namespace Forms.Migrations
                     b.ToTable("Forms");
                 });
 
-            modelBuilder.Entity("Forms.Data.Entities.MultiLineAnswer", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AnswerText")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FormId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuestionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FormId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("MultiLineAnswer");
-                });
-
-            modelBuilder.Entity("Forms.Data.Entities.NumberAnswer", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AnswerNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FormId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuestionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FormId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("NumberAnswers");
-                });
-
             modelBuilder.Entity("Forms.Data.Entities.Question", b =>
                 {
                     b.Property<string>("Id")
@@ -160,64 +120,18 @@ namespace Forms.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("QuestionTypeId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("TemplateId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("QuestionTypeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TemplateId");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("Forms.Data.Entities.QuestionType", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuestionTypeName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionTypeName")
-                        .IsUnique();
-
-                    b.ToTable("QuestionTypes");
-                });
-
-            modelBuilder.Entity("Forms.Data.Entities.SingleLineAnswer", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AnswerText")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FormId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("QuestionId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FormId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("SingleLineAnswer");
                 });
 
             modelBuilder.Entity("Forms.Data.Entities.Tag", b =>
@@ -647,19 +561,67 @@ namespace Forms.Migrations
 
             modelBuilder.Entity("Forms.Data.Entities.BooleanAnswer", b =>
                 {
-                    b.HasOne("Forms.Data.Entities.Form", "Form")
-                        .WithMany("BooleanAnswers")
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Forms.Data.Entities.Answer");
 
+                    b.Property<bool>("AnswerBoolean")
+                        .HasColumnType("boolean");
+
+                    b.HasIndex("FormId");
+
+                    b.HasDiscriminator().HasValue("BooleanAnswer");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.MultiLineAnswer", b =>
+                {
+                    b.HasBaseType("Forms.Data.Entities.Answer");
+
+                    b.Property<string>("AnswerText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasIndex("FormId");
+
+                    b.HasDiscriminator().HasValue("MultiLineAnswer");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.NumberAnswer", b =>
+                {
+                    b.HasBaseType("Forms.Data.Entities.Answer");
+
+                    b.Property<int>("AnswerNumber")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("FormId");
+
+                    b.HasDiscriminator().HasValue("NumberAnswer");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.SingleLineAnswer", b =>
+                {
+                    b.HasBaseType("Forms.Data.Entities.Answer");
+
+                    b.Property<string>("AnswerText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasIndex("FormId");
+
+                    b.ToTable("Answer", t =>
+                        {
+                            t.Property("AnswerText")
+                                .HasColumnName("SingleLineAnswer_AnswerText");
+                        });
+
+                    b.HasDiscriminator().HasValue("SingleLineAnswer");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.Answer", b =>
+                {
                     b.HasOne("Forms.Data.Entities.Question", "Question")
-                        .WithMany("BooleanAnswers")
+                        .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Form");
 
                     b.Navigation("Question");
                 });
@@ -702,80 +664,15 @@ namespace Forms.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Forms.Data.Entities.MultiLineAnswer", b =>
-                {
-                    b.HasOne("Forms.Data.Entities.Form", "Form")
-                        .WithMany("MultiLineAnswers")
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Forms.Data.Entities.Question", "Question")
-                        .WithMany("MultiLineAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Form");
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("Forms.Data.Entities.NumberAnswer", b =>
-                {
-                    b.HasOne("Forms.Data.Entities.Form", "Form")
-                        .WithMany("NumberAnswers")
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Forms.Data.Entities.Question", "Question")
-                        .WithMany("NumberAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Form");
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("Forms.Data.Entities.Question", b =>
                 {
-                    b.HasOne("Forms.Data.Entities.QuestionType", "QuestionType")
-                        .WithMany("Questions")
-                        .HasForeignKey("QuestionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Forms.Data.Entities.Template", "Template")
                         .WithMany("Questions")
                         .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("QuestionType");
-
                     b.Navigation("Template");
-                });
-
-            modelBuilder.Entity("Forms.Data.Entities.SingleLineAnswer", b =>
-                {
-                    b.HasOne("Forms.Data.Entities.Form", "Form")
-                        .WithMany("SingleLineAnswers")
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Forms.Data.Entities.Question", "Question")
-                        .WithMany("SingleLineAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Form");
-
-                    b.Navigation("Question");
                 });
 
             modelBuilder.Entity("Forms.Data.Entities.Template", b =>
@@ -901,6 +798,50 @@ namespace Forms.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Forms.Data.Entities.BooleanAnswer", b =>
+                {
+                    b.HasOne("Forms.Data.Entities.Form", "Form")
+                        .WithMany("BooleanAnswers")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Form");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.MultiLineAnswer", b =>
+                {
+                    b.HasOne("Forms.Data.Entities.Form", "Form")
+                        .WithMany("MultiLineAnswers")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Form");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.NumberAnswer", b =>
+                {
+                    b.HasOne("Forms.Data.Entities.Form", "Form")
+                        .WithMany("NumberAnswers")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Form");
+                });
+
+            modelBuilder.Entity("Forms.Data.Entities.SingleLineAnswer", b =>
+                {
+                    b.HasOne("Forms.Data.Entities.Form", "Form")
+                        .WithMany("SingleLineAnswers")
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Form");
+                });
+
             modelBuilder.Entity("Forms.Data.Entities.Form", b =>
                 {
                     b.Navigation("BooleanAnswers");
@@ -914,18 +855,7 @@ namespace Forms.Migrations
 
             modelBuilder.Entity("Forms.Data.Entities.Question", b =>
                 {
-                    b.Navigation("BooleanAnswers");
-
-                    b.Navigation("MultiLineAnswers");
-
-                    b.Navigation("NumberAnswers");
-
-                    b.Navigation("SingleLineAnswers");
-                });
-
-            modelBuilder.Entity("Forms.Data.Entities.QuestionType", b =>
-                {
-                    b.Navigation("Questions");
+                    b.Navigation("Answers");
                 });
 
             modelBuilder.Entity("Forms.Data.Entities.Template", b =>

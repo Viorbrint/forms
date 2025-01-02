@@ -1,4 +1,5 @@
 using Forms.Data.Entities;
+using Forms.Models.TemplateModels;
 using Forms.Repositories;
 
 namespace Forms.Services;
@@ -16,6 +17,8 @@ public class TemplateService(IRepository<Template> templateRepository)
         // TODO: refactor
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
+        spec.AddInclude(t => t.Likes);
         var result = await templateRepository.GetBySpecificationAsync(spec);
         return result;
     }
@@ -25,6 +28,9 @@ public class TemplateService(IRepository<Template> templateRepository)
         var spec = new SpecificationSingle<Template>(t => t.Id == templateId);
         spec.AddInclude(t => t.Topic);
         spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Questions.OrderBy(q => q.Order));
+        spec.AddInclude(t => t.Likes);
+        spec.AddInclude(t => t.TemplateAccesses);
         var result = await templateRepository.GetBySpecificationSingleAsync(spec);
         return result;
     }
@@ -51,11 +57,18 @@ public class TemplateService(IRepository<Template> templateRepository)
         await templateRepository.UpdateAsync(template);
     }
 
-    private bool IsReady(Template template)
+    public async Task ToggleLike(string userId, Template template)
     {
-        // TODO: check all req fields for emptiness
-        // TODO: implement
-        return true;
+        var UserLike = template.Likes.Find(l => l.UserId == userId);
+        if (UserLike == null)
+        {
+            template.Likes.Add(new() { UserId = userId });
+        }
+        else
+        {
+            template.Likes.Remove(UserLike);
+        }
+        await UpdateAsync(template);
     }
 
     public async Task PublishByIdAsync(string id)
@@ -84,19 +97,11 @@ public class TemplateService(IRepository<Template> templateRepository)
 
     private void PublishTemplate(Template template)
     {
-        if (!IsReady(template))
-        {
-            return;
-        }
         template.IsPublished = true;
     }
 
     private void HideTemplate(Template template)
     {
-        if (!IsReady(template))
-        {
-            return;
-        }
         template.IsPublished = false;
     }
 
@@ -120,5 +125,62 @@ public class TemplateService(IRepository<Template> templateRepository)
             t.IsPublished = false;
         }
         await templateRepository.UpdateRangeAsync(templates);
+    }
+
+    public async Task AddFormAsync(Form form, string templateId)
+    {
+        var template = await GetByIdAsync(templateId);
+        if (template == null)
+        {
+            throw new NullReferenceException("Template not found");
+        }
+        template.Forms.Add(form);
+        await templateRepository.UpdateAsync(template);
+    }
+
+    public async Task<IEnumerable<PresentTemplateModel>> GetLatestTemplatesAsync(int number)
+    {
+        var spec = new Specification<Template>(
+            t => t.IsPublished == true,
+            q => q.OrderByDescending(t => t.CreatedAt)
+        );
+        spec.ApplyPaging(0, number);
+        spec.AddInclude(t => t.Forms);
+        spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Likes);
+        spec.AddInclude(t => t.Author);
+        var templates = await templateRepository.GetBySpecificationAsync(spec);
+        return templates.Select(t => new PresentTemplateModel()
+        {
+            Id = t.Id,
+            Title = t.Title,
+            ImageUrl = t.ImageUrl,
+            AuthorName = t.Author.UserName!,
+            Description = t.Description,
+            FilledFormsCount = t.Forms.Count,
+        });
+    }
+
+    public async Task<IEnumerable<PresentTemplateModel>> GetPopularTemplatesAsync(int number)
+    {
+        var spec = new Specification<Template>(
+            t => t.IsPublished == true,
+            q => q.OrderByDescending(t => t.Forms.Count())
+        );
+        spec.ApplyPaging(0, number);
+        spec.AddInclude(t => t.Forms);
+        spec.AddInclude(t => t.Tags);
+        spec.AddInclude(t => t.Likes);
+        spec.AddInclude(t => t.Author);
+        var templates = await templateRepository.GetBySpecificationAsync(spec);
+        return templates.Select(t => new PresentTemplateModel()
+        {
+            Id = t.Id,
+            Title = t.Title,
+            ImageUrl = t.ImageUrl,
+            AuthorName = t.Author.UserName!,
+            Description = t.Description,
+            FilledFormsCount = t.Forms.Count,
+        });
     }
 }

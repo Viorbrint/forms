@@ -8,16 +8,12 @@ public class Question
 
     public bool IsVisibleInResults { get; set; } = true;
 
-    public string QuestionTypeId { get; set; } = null!;
-    public QuestionType QuestionType { get; set; } = null!;
+    public QuestionType Type { get; set; }
 
     public string TemplateId { get; set; } = null!;
     public Template Template { get; set; } = null!;
 
     public int Order { get; set; }
 
-    public List<SingleLineAnswer> SingleLineAnswers { get; set; } = [];
-    public List<MultiLineAnswer> MultiLineAnswers { get; set; } = [];
-    public List<NumberAnswer> NumberAnswers { get; set; } = [];
-    public List<BooleanAnswer> BooleanAnswers { get; set; } = [];
+    public List<Answer> Answers { get; set; } = [];
 }

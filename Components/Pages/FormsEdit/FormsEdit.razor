@@ -1,0 +1,52 @@
+@page "/forms/edit/{formId}"
+@using Forms.Data.Entities
+@using Microsoft.AspNetCore.Authorization
+@using Forms.Components.Shared.Loading
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<FormsEditResource> Loc;
+
+@attribute [Authorize]
+
+<PageTitle>@Loc["Title"]</PageTitle>
+
+@if (!IsLoading)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
+        <MudGrid Spacing="3">
+            @foreach (var question in Questions)
+            {
+                <MudItem xs="12">
+                    <MudPaper Class="pa-3 mb-4">
+                        @if (question.Type == QuestionType.SingleLine)
+                        {
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="@Loc["MyAnswer"]" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.MultiLine)
+                        {
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="@Loc["MyAnswer"]" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.Number)
+                        {
+                            <MudNumericField ReadOnly="IsReadOnly" T="int" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="@Loc["MyAnswer"]" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.Boolean)
+                        {
+                            <MudCheckBox ReadOnly="IsReadOnly" T="bool" Label="@question.Text" @bind-Value="question.BooleanAnswer"/>
+                        }
+                    </MudPaper>
+                </MudItem>
+            }
+
+            @if (!IsReadOnly)
+            {
+                <MudItem xs="12">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ChangeForm" FullWidth="true">@Loc["Change"]</MudButton>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
+}
+else
+{
+    <Loading/>
+}

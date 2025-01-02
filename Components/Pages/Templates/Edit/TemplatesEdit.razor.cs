@@ -17,18 +17,21 @@ public partial class TemplatesEdit : ComponentBase
     [Inject]
     private NavigationManager NavigationManager { get; set; } = null!;
 
+    private bool IsLoading { get; set; } = false;
+
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         var template = await TemplateService.GetByIdAsync(TemplateId);
+        IsLoading = false;
         if (template == null)
         {
             NavigationManager.NavigateTo("/notfound");
             return;
         }
 
-        var userId = CurrentUserService.GetUserId();
-        var isAdmin = CurrentUserService.IsAdmin();
-        if (!isAdmin && template.AuthorId != userId)
+        var canEdit = CurrentUserService.CurrentUserCanEditTemplate(template);
+        if (!canEdit)
         {
             NavigationManager.NavigateTo("/accessdenied");
             return;

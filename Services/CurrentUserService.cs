@@ -1,36 +1,37 @@
 using System.Security.Claims;
+using Forms.Data.Entities;
 
 namespace Forms.Services;
 
 public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    public ClaimsPrincipal? GetCurrentUser()
-    {
-        return httpContextAccessor.HttpContext?.User;
-    }
+    public string? UserId => CurrentUser?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    public string? UserName => CurrentUser?.Identity?.Name;
+    public bool UserIsAdmin => CurrentUser?.IsInRole("admin") ?? false;
+    private ClaimsPrincipal? CurrentUser => httpContextAccessor.HttpContext?.User;
+    private bool UserIsAuthenticated => CurrentUser?.Identity?.IsAuthenticated ?? false;
 
-    public string? GetUserId()
-    {
-        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    }
+    public bool CurrentUserCanFill(Template template) =>
+        template.IsPublished
+        && UserIsAuthenticated
+        && (
+            UserIsAdmin
+            || template.IsPublic
+            || template.AuthorId == UserId
+            || UserInWhitelist(template)
+        );
 
-    public string? GetUserName()
-    {
-        return httpContextAccessor.HttpContext?.User?.Identity?.Name;
-    }
+    public bool CurrentUserCanEditTemplate(Template template) =>
+        UserIsAdmin || template.AuthorId == UserId;
 
-    public string? GetUserEmail()
-    {
-        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
-    }
+    public bool CurrentUserCanEditForm(Form form) => UserIsAdmin || form.UserId == UserId;
 
-    public bool IsAuthenticated()
-    {
-        return httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
-    }
+    public bool CurrentUserCanViewForm(Form form) =>
+        CurrentUserCanEditForm(form) || form.Template.AuthorId == UserId;
 
-    public bool IsAdmin()
-    {
-        return httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value == "admin";
-    }
+    public bool IsCurrentUserLikesTemplate(Template template) =>
+        template.Likes.Any(l => l.UserId == UserId);
+
+    private bool UserInWhitelist(Template template) =>
+        template.TemplateAccesses.Any(x => x.UserId == UserId);
 }

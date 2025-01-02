@@ -1,3 +1,6 @@
+using Forms.Data.Entities;
+using Forms.Models.TemplateModels;
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Forms.Components.Pages.Templates.Fill;
@@ -5,86 +8,106 @@ namespace Forms.Components.Pages.Templates.Fill;
 public partial class TemplatesFill : ComponentBase
 {
     [Parameter]
-    public string? TemplateId { get; set; }
+    public string TemplateId { get; set; } = null!;
 
-    private Template template = new();
+    [Inject]
+    private ICurrentUserService CurrentUserService { get; set; } = null!;
 
-    protected override void OnInitialized()
+    [Inject]
+    private TemplateService TemplateService { get; set; } = null!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
+    private TemplateModel TemplateModel = new();
+    private bool IsLoading { get; set; } = false;
+    private string UserId { get; set; } = null!;
+    private bool IsUserLikeTemplate { get; set; }
+    private bool IsReadOnly { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
     {
-        // Simulate fetching the form by ID (replace with real data fetching logic)
-        template = MockFormData.FirstOrDefault(f => f.Id == TemplateId) ?? new Template();
-    }
-
-    private void SubmitForm()
-    {
-        // Handle form submission logic
-        Console.WriteLine("Form submitted:");
-        foreach (var question in template.Questions)
+        IsLoading = true;
+        var template = await GetEnsureTemplate();
+        if (template == null)
         {
-            Console.WriteLine($"Question: {question.Title}, Answer: {question.Answer}");
+            return;
         }
-    }
 
-    private List<Template> MockFormData = new()
-    {
-        new Template
+        UserId = CurrentUserService.UserId!;
+        IsUserLikeTemplate = CurrentUserService.IsCurrentUserLikesTemplate(template);
+
+        if (CurrentUserService.CurrentUserCanFill(template))
         {
-            Id = "1",
-            Title = "Job Application Form",
-            Description = @"# Job Application Form
+            IsReadOnly = false;
+        }
 
-Welcome to the **Job Application Form**. Please fill out the required fields below to apply for the position. Make sure to provide accurate and up-to-date information.
-",
-            Questions = new List<Question>
+        TemplateModel = TemplateModel.MapTemplate(template);
+        IsLoading = false;
+    }
+
+    private async Task ToggleLike()
+    {
+        var template = await GetEnsureTemplate();
+        if (template == null)
+        {
+            return;
+        }
+        await TemplateService.ToggleLike(UserId, template);
+        IsUserLikeTemplate = CurrentUserService.IsCurrentUserLikesTemplate(template);
+        TemplateModel.Likes = template.Likes.Count;
+    }
+
+    private async Task SubmitForm()
+    {
+        // TODO: ugly
+        var form = new Form { UserId = UserId, TemplateId = TemplateId };
+        var numberAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.Number)
+            .Select(q => new NumberAnswer()
             {
-                new Question
-                {
-                    Title = "Name",
-                    Type = QuestionType.Text,
-                },
-                new Question
-                {
-                    Title = "Experience",
-                    Type = QuestionType.Integer,
-                },
-                new Question
-                {
-                    Title = "Additional Information",
-                    Type = QuestionType.MultilineText,
-                },
-                new Question
-                {
-                    Title = "Agree to Terms",
-                    Type = QuestionType.Checkbox,
-                },
-            },
-        },
-    };
-
-    private class Template
-    {
-        public string Id { get; set; } = string.Empty;
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public List<Question> Questions { get; set; } = new();
-
-        public string ImageUrl {get; set;} = "https://via.placeholder.com/150";
+                AnswerNumber = q.NumberAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        var singleLineAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.SingleLine)
+            .Select(q => new SingleLineAnswer()
+            {
+                AnswerText = q.TextAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        var multiLineAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.MultiLine)
+            .Select(q => new MultiLineAnswer()
+            {
+                AnswerText = q.TextAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        var booleanAnswers = TemplateModel
+            .Questions.FindAll(q => q.Type == QuestionType.Boolean)
+            .Select(q => new BooleanAnswer()
+            {
+                AnswerBoolean = q.BooleanAnswer,
+                QuestionId = q.QuestionId,
+            })
+            .ToList();
+        form.NumberAnswers = numberAnswers;
+        form.SingleLineAnswers = singleLineAnswers;
+        form.MultiLineAnswers = multiLineAnswers;
+        form.BooleanAnswers = booleanAnswers;
+        await TemplateService.AddFormAsync(form, TemplateId);
     }
 
-    private class Question
+    private async Task<Template?> GetEnsureTemplate()
     {
-        public string Title { get; set; } = string.Empty;
-        public QuestionType Type { get; set; }
-        public string Answer { get; set; } = string.Empty;
-        public int IntegerAnswer { get; set; }
-        public bool IsChecked { get; set; }
-    }
-
-    private enum QuestionType
-    {
-        Text,
-        MultilineText,
-        Integer,
-        Checkbox,
+        var template = await TemplateService.GetByIdAsync(TemplateId);
+        if (template == null || !template.IsPublished)
+        {
+            NavigationManager.NavigateTo("/notfound");
+        }
+        return template;
     }
 }

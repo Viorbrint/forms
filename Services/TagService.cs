@@ -26,10 +26,15 @@ public class TagService(IRepository<Tag> tagRepository)
         var spec = new Specification<Tag>(t => t.TagName.Contains(searchQuery));
         var tags = await tagRepository.GetBySpecificationAsync(spec);
         var result = tags.Select(t => t.TagName);
-        foreach (var tag in result)
-        {
-            System.Console.WriteLine(tag);
-        }
         return result;
+    }
+
+    public async Task<IEnumerable<string>> GetPopularTagsAsync(int number)
+    {
+        var spec = new Specification<Tag>(null, q => q.OrderByDescending(t => t.Templates.Count));
+        spec.AddInclude(t => t.Templates);
+        spec.ApplyPaging(0, number);
+        var result = await tagRepository.GetBySpecificationAsync(spec);
+        return result.Select(t => t.TagName);
     }
 }

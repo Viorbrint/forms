@@ -20,7 +20,7 @@ public partial class Profile : ComponentBase
 
     protected override void OnInitialized()
     {
-        var userName = CurrentUserService.GetUserName()!;
+        var userName = CurrentUserService.UserName!;
         if (userName != null)
         {
             _letter = userName[0].ToString();

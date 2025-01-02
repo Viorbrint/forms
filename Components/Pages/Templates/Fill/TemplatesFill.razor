@@ -1,63 +1,95 @@
 @page "/templates/fill/{templateId}"
+@using Forms.Data.Entities
 @using Markdig
-@using Microsoft.AspNetCore.Authorization
-
-@attribute [Authorize]
+@using Forms.Components.Shared.Loading
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TemplatesFillResource> Loc;
 
 <PageTitle>Fill out the template - Forms</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
-    <MudGrid Spacing="3">
+@if (!IsLoading)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="pa-4">
+        <MudGrid Spacing="3">
 
-        <MudItem xs="12">
-            <MudImage Elevation="2" Src="@template.ImageUrl" Alt="Template Image" Style="width: 100%; aspect-ratio: 16/9; border-radius: 8px;" />
-        </MudItem>
+            @if (TemplateModel.ImageUrl != null)
+            {
+                <MudItem xs="12">
+                    <MudImage Elevation="2" Src="@TemplateModel.ImageUrl" Alt="Template Image" Style="width: 100%; aspect-ratio: 16/9; border-radius: 8px;"/>
+                </MudItem>
+            }
 
-        <div class="d-flex justify-end align-center" style="width: 100%;">
-            <MudIconButton Icon="@Icons.Material.Filled.ThumbUp" />
-            <MudText>12</MudText>
-            <MudIconButton Icon="@Icons.Material.Filled.Comment" />
-            <MudText>20</MudText>
-        </div>
-
-        <!-- Form Title and Description -->
-        <MudItem xs="12">
-            <MudPaper Class="pa-3 mb-4">
-                <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-4">@template.Title</MudText>
-                @((MarkupString)Markdown.ToHtml(template.Description))
-                @* TODO: maybe this is not safe *@
-            </MudPaper>
-        </MudItem>
-
-        <!-- Questions -->
-        @foreach (var question in template.Questions)
-        {
             <MudItem xs="12">
-                <MudPaper Class="pa-3 mb-4">
-                    @if (question.Type == QuestionType.Text)
+                <MudChipSet T="string" ReadOnly="true">
+                    @foreach (var tag in TemplateModel.Tags)
                     {
-                        <MudTextField @bind-Value="question.Answer" Label="@question.Title" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        <MudChip Color="Color.Primary" Text="@tag"></MudChip>
                     }
-                    else if (question.Type == QuestionType.MultilineText)
-                    {
-                        <MudTextField @bind-Value="question.Answer" Label="@question.Title" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
-                    }
-                    else if (question.Type == QuestionType.Integer)
-                    {
-                        <MudNumericField T="int" @bind-Value="question.IntegerAnswer" Label="@question.Title" Placeholder="My answer" Class="mb-3" FullWidth="true" />
-                    }
-                    else if (question.Type == QuestionType.Checkbox)
-                    {
-                        <MudCheckBox T="bool" @bind-Value="question.IsChecked" Label="@question.Title" />
-                    }
+                </MudChipSet>
+            </MudItem>
+            
+            <MudItem xs="12">
+                <MudPaper Class="pa-3 mb-4 d-flex justify-space-between align-center" style="width: 100%;">
+                    <div class="d-flex flex-column">
+                        <MudText>Topic: <MudText Typo="Typo.h5">@TemplateModel.Topic</MudText></MudText>
+                    </div>
+                    
+                    <div class="d-flex align-center">
+                        <MudIconButton OnClick="ToggleLike" Disabled="IsReadOnly" Color="@(IsUserLikeTemplate ? Color.Dark : Color.Default)" Icon="@Icons.Material.Filled.ThumbUp"/>
+                        <MudText>@TemplateModel.Likes</MudText>
+                        <MudIconButton Icon="@Icons.Material.Filled.Comment"/>
+                        <MudText>20</MudText>
+                    </div>
                 </MudPaper>
             </MudItem>
-        }
+            
 
-        <!-- Submit Button -->
-        <MudItem xs="12">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm" FullWidth="true">Submit</MudButton>
-        </MudItem>
+            <MudItem xs="12">
+                <MudPaper Class="pa-3 mb-4">
+                    <MudText Typo="Typo.h4" Style="font-weight: bold" Align="Align.Center" Class="mb-4">@TemplateModel.Title</MudText>
+                    @((MarkupString)Markdown.ToHtml(TemplateModel.Description))
+                    @* TODO: maybe this is not safe *@
+                </MudPaper>
+            </MudItem>
 
-    </MudGrid>
-</MudContainer>
+            @foreach (var question in TemplateModel.Questions)
+            {
+                <MudItem xs="12">
+                    <MudPaper Class="pa-3 mb-4">
+                        @if (question.Type == QuestionType.SingleLine)
+                        {
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.MultiLine)
+                        {
+                            <MudTextField ReadOnly="IsReadOnly" @bind-Value="question.TextAnswer" Label="@question.Text" AutoGrow Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.Number)
+                        {
+                            <MudNumericField T="int" ReadOnly="IsReadOnly" @bind-Value="question.NumberAnswer" Label="@question.Text" Placeholder="My answer" Class="mb-3" FullWidth="true" />
+                        }
+                        else if (question.Type == QuestionType.Boolean)
+                        {
+                            <MudCheckBox T="bool" ReadOnly="IsReadOnly" @bind-Value="@question.BooleanAnswer" Label="@question.Text" />
+                        }
+                    </MudPaper>
+                </MudItem>
+            }
+
+            <MudItem xs="12">
+                @if (!IsReadOnly)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitForm" FullWidth="true">Submit</MudButton>
+                }
+                else
+                {
+                    <MudText Align="Align.Center">You do not have sufficient rights to fill out the template.</MudText>
+                }
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}
+else
+{
+    <Loading/>
+}

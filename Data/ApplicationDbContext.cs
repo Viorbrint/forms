@@ -8,7 +8,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     : IdentityDbContext<User>(options)
 {
     public DbSet<Tag> Tags { get; set; } = null!;
-    public DbSet<QuestionType> QuestionTypes { get; set; } = null!;
     public DbSet<Form> Forms { get; set; } = null!;
     public DbSet<Template> Templates { get; set; } = null!;
     public DbSet<TemplateLike> TemplateLikes { get; set; } = null!;

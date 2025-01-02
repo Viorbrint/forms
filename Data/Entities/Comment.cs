@@ -9,4 +9,6 @@ public class Comment
 
     public string AuthorId { get; set; } = null!;
     public User Author { get; set; } = null!;
+
+    public string CommentText { get; set; } = string.Empty;
 }

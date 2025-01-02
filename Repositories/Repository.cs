@@ -3,18 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Forms.Repositories;
 
-public class Repository<T> : IRepository<T>
+public class Repository<T>(ApplicationDbContext context) : IRepository<T>
     where T : class
 {
-    private ApplicationDbContext Context { get; }
-
-    private DbSet<T> Entities { get; }
-
-    public Repository(ApplicationDbContext context)
-    {
-        Context = context;
-        Entities = context.Set<T>();
-    }
+    private ApplicationDbContext Context { get; } = context;
+    private DbSet<T> Entities { get; } = context.Set<T>();
 
     public async Task AddAsync(T entity)
     {
@@ -61,6 +54,14 @@ public class Repository<T> : IRepository<T>
             result,
             (current, include) => current.Include(include)
         );
+        if (specification.Skip.HasValue)
+        {
+            result = result.Skip(specification.Skip.Value);
+        }
+        if (specification.Take.HasValue)
+        {
+            result = result.Take(specification.Take.Value);
+        }
         return await result.ToListAsync();
     }
 
