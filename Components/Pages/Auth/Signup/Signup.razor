@@ -10,22 +10,23 @@
             <DataAnnotationsValidator />
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h5" Align="Align.Center">Signup</MudText>
+                    <MudText Typo="Typo.h5" Align="Align.Center">@Loc["Signup"]</MudText>
                 </CardHeaderContent>
             </MudCardHeader>
             <MudCardContent>
-                <MudTextField Label="Name" 
+               @* TODO: localize req error  *@
+                <MudTextField Label="@Loc["Name"]" RequiredError="@Loc["NameError"]"
                               @bind-Value="signupModel.Username" For="@(() => signupModel.Username)"/>
-                <MudTextField Label="Email" Class="mt-3"
+                <MudTextField Label="@Loc["Email"]" RequiredError="@Loc["EmailError"]" Class="mt-3"
                               @bind-Value="signupModel.Email" For="@(() => signupModel.Email)"/>
-                <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                <MudTextField Label="@Loc["Password"]" RequiredError="@Loc["PasswordError"]" HelperText="@Loc["PasswordHelper"]" Class="mt-3"
                               @bind-Value="signupModel.Password" For="@(() => signupModel.Password)" InputType="InputType.Password"/>
-                <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                <MudTextField Label="@Loc["Password"]" RequiredError="@Loc["RepeatPasswordError"]" HelperText="@Loc["RepeatPasswordHelper"]" Class="mt-3"
                               @bind-Value="signupModel.ConfirmPassword" For="@(() => signupModel.ConfirmPassword)" InputType="InputType.Password"/>
             </MudCardContent>
             <MudCardActions Class="d-flex justify-center">
-                <MudButton Disabled="@IsProcessing" Size="Size.Large" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Register</MudButton>
-                <MudButton Size="Size.Large" Variant="Variant.Text" OnClick="@NavigateToLogin">Login</MudButton>
+                <MudButton Disabled="@IsProcessing" Size="Size.Large" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">@Loc["RegisterButton"]</MudButton>
+                <MudButton Size="Size.Large" Variant="Variant.Text" OnClick="@NavigateToLogin">@Loc["LoginButton"]</MudButton>
             </MudCardActions>
         </EditForm>
     </MudCard>

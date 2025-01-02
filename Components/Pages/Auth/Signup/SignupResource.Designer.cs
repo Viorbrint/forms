@@ -57,9 +57,9 @@ namespace Forms.Components.Pages.Auth.Signup {
             }
         }
         
-        internal static string Signin {
+        internal static string Signup {
             get {
-                return ResourceManager.GetString("Signin", resourceCulture);
+                return ResourceManager.GetString("Signup", resourceCulture);
             }
         }
         
@@ -84,6 +84,42 @@ namespace Forms.Components.Pages.Auth.Signup {
         internal static string PasswordHelper {
             get {
                 return ResourceManager.GetString("PasswordHelper", resourceCulture);
+            }
+        }
+        
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        internal static string RepeatPasswordHelper {
+            get {
+                return ResourceManager.GetString("RepeatPasswordHelper", resourceCulture);
+            }
+        }
+        
+        internal static string NameError {
+            get {
+                return ResourceManager.GetString("NameError", resourceCulture);
+            }
+        }
+        
+        internal static string EmailError {
+            get {
+                return ResourceManager.GetString("EmailError", resourceCulture);
+            }
+        }
+        
+        internal static string PasswordError {
+            get {
+                return ResourceManager.GetString("PasswordError", resourceCulture);
+            }
+        }
+        
+        internal static string RepeatPasswordError {
+            get {
+                return ResourceManager.GetString("RepeatPasswordError", resourceCulture);
             }
         }
     }
