@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Forms.Data.Entities;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
@@ -20,16 +21,19 @@ public partial class Settings : ComponentBase
     [Inject]
     private UserService UserService { get; set; } = null!;
 
+    [Inject]
+    private IImageService ImageService { get; set; } = null!;
+
     [Parameter]
     public string TemplateId { get; set; } = null!;
 
     private IEnumerable<string> Topics = [];
 
-    private string TagInput = string.Empty;
+    private string TagInput { get; set; } = string.Empty;
 
     private IBrowserFile? Image { get; set; }
 
-    private MudFileUpload<IBrowserFile>? _fileUpload;
+    private MudFileUpload<IBrowserFile>? FileUpload { get; set; }
 
     private User? _userInput;
     private User? UserInput
@@ -44,7 +48,7 @@ public partial class Settings : ComponentBase
 
     private List<IBrowserFile> UploadedFiles = [];
 
-    private Task ClearAsync() => _fileUpload?.ClearAsync() ?? Task.CompletedTask;
+    private Task ClearAsync() => FileUpload?.ClearAsync() ?? Task.CompletedTask;
 
     private void OnFileChanged(InputFileChangeEventArgs e) { }
 
@@ -104,7 +108,32 @@ public partial class Settings : ComponentBase
 
     private async Task Save()
     {
+        await UploadImage();
         await TemplateSettingsService.Save();
+    }
+
+    private async Task UploadImage()
+    {
+        if (Image == null)
+        {
+            return;
+        }
+        const long MAX_SIZE_IN_MB = 10;
+        const long MB_TO_BYTES_MULTIPLIER = 1024 * 1024;
+        const long maxAllowedSize = MAX_SIZE_IN_MB * MB_TO_BYTES_MULTIPLIER;
+        var stream = Image.OpenReadStream(maxAllowedSize);
+        var extension = GetFileExtensionFromName(Image.Name);
+        var ImageName =
+            $"{TemplateSettingsService.settings.Title}-{DateTime.UtcNow:yyyyMMddHHmmss}{extension}";
+        await ImageService.UploadFileAsync(stream, ImageName);
+        var url = ImageService.GetPublicUrl(ImageName);
+        TemplateSettingsService.settings.ImageUrl = url;
+    }
+
+    private string GetFileExtensionFromName(string fileName)
+    {
+        var match = MyRegex().Match(fileName);
+        return match.Success ? $".{match.Groups[1].Value}" : string.Empty;
     }
 
     private async Task Publish()
@@ -118,4 +147,7 @@ public partial class Settings : ComponentBase
         await TemplateSettingsService.Hide();
         await TemplateSettingsService.Load();
     }
+
+    [GeneratedRegex(@"\.(\w+)$")]
+    private static partial Regex MyRegex();
 }

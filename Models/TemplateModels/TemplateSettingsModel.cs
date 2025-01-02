@@ -11,4 +11,5 @@ public class TemplateSettingsModel
     public bool IsPublic { get; set; } = true;
     public bool IsPublished { get; set; } = true;
     public List<User> UsersWithAccess { get; set; } = [];
+    public string? ImageUrl { get; set; }
 }

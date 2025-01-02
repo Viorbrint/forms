@@ -53,6 +53,7 @@ public class TemplateSettingsService(
         template.TemplateAccesses = settings
             .UsersWithAccess.Select(u => new TemplateAccess() { Template = template, User = u })
             .ToList();
+        template.ImageUrl = settings.ImageUrl;
         await templateService.UpdateAsync(template);
     }
 
@@ -75,6 +76,7 @@ public class TemplateSettingsService(
         settings.IsPublic = template.IsPublic;
         settings.IsPublished = template.IsPublished;
         settings.UsersWithAccess = await userService.GetWithAccessToTemplate(template.Id);
+        settings.ImageUrl = template.ImageUrl;
     }
 
     private void CheckInit()
