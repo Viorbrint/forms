@@ -2,14 +2,14 @@
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<LayoutResource> Loc;
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">@Loc["Home"]</MudNavLink>
     <AuthorizeView>
         <Authorized>
-            <MudNavLink Href="/user" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountCircle">Profile</MudNavLink>
+            <MudNavLink Href="/user" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AccountCircle">@Loc["Profile"]</MudNavLink>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView Roles="admin">
-        <MudNavLink Href="/admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ManageAccounts">User Management</MudNavLink>
+        <MudNavLink Href="/admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.ManageAccounts">@Loc["UserManagement"]</MudNavLink>
     </AuthorizeView>
 </MudNavMenu>
 

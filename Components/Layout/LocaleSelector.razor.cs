@@ -13,7 +13,7 @@ public partial class LocaleSelector : ComponentBase
     private static Dictionary<string, string> languages = new Dictionary<string, string>()
     {
         ["en-US"] = "English",
-        ["ru-RU"] = "Russian",
+        ["ru-RU"] = "Русский",
     };
 
     private void ChangeLanguage(string language)

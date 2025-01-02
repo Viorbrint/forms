@@ -45,9 +45,39 @@ namespace Forms.Components.Layout {
             }
         }
         
-        internal static string a {
+        internal static string Home {
             get {
-                return ResourceManager.GetString("a", resourceCulture);
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        internal static string Signin {
+            get {
+                return ResourceManager.GetString("Signin", resourceCulture);
+            }
+        }
+        
+        internal static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        internal static string Forms {
+            get {
+                return ResourceManager.GetString("Forms", resourceCulture);
+            }
+        }
+        
+        internal static string UserManagement {
+            get {
+                return ResourceManager.GetString("UserManagement", resourceCulture);
             }
         }
     }
