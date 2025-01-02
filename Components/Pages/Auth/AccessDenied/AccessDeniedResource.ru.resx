@@ -58,26 +58,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoginButton" xml:space="preserve">
-    <value>Login</value>
+  <data name="Home" xml:space="preserve">
+    <value>На Главную</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Signin - Forms</value>
+    <value>Доступ Запрещен - Формы</value>
   </data>
-  <data name="Signin" xml:space="preserve">
-    <value>Signin</value>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Доступ Запрещен</value>
   </data>
-  <data name="RegisterButton" xml:space="preserve">
-    <value>Register</value>
+  <data name="GoBack" xml:space="preserve">
+    <value>Назад</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="PasswordHelper" xml:space="preserve">
-    <value>Choose a strong password</value>
+  <data name="PageHelperText" xml:space="preserve">
+    <value>У вас нет разрешения на доступ к этой странице. Если вы считаете, что это ошибка, свяжитесь с администратором.</value>
   </data>
 </root>
 
