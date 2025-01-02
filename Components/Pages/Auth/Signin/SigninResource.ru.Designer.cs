@@ -28,7 +28,7 @@ namespace Forms.Components.Pages.Auth.Signin {
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Forms.Components.Pages.Auth.SigninResource_ru", typeof(SigninResource_ru).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Forms.Components.Pages.Auth.Signin.SigninResource_ru", typeof(SigninResource_ru).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -69,12 +69,6 @@ namespace Forms.Components.Pages.Auth.Signin {
             }
         }
         
-        internal static string Email {
-            get {
-                return ResourceManager.GetString("Email", resourceCulture);
-            }
-        }
-        
         internal static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
@@ -84,6 +78,12 @@ namespace Forms.Components.Pages.Auth.Signin {
         internal static string PasswordHelper {
             get {
                 return ResourceManager.GetString("PasswordHelper", resourceCulture);
+            }
+        }
+        
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
     }

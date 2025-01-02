@@ -70,13 +70,13 @@
   <data name="RegisterButton" xml:space="preserve">
     <value>Register</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="PasswordHelper" xml:space="preserve">
     <value>Choose a strong password</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
 </root>
