@@ -45,9 +45,15 @@ namespace Forms.Components.Pages.FormsEdit {
             }
         }
         
-        internal static string a {
+        internal static string Title {
             get {
-                return ResourceManager.GetString("a", resourceCulture);
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        internal static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
             }
         }
     }

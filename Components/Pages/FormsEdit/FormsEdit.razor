@@ -7,7 +7,7 @@
 
 @attribute [Authorize]
 
-<PageTitle>Form Viewer - Forms</PageTitle>
+<PageTitle>@Loc["Title"]</PageTitle>
 
 @if (!IsLoading)
 {
@@ -40,7 +40,7 @@
             @if (!IsReadOnly)
             {
                 <MudItem xs="12">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ChangeForm" FullWidth="true">Change</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ChangeForm" FullWidth="true">@Loc["Change"]</MudButton>
                 </MudItem>
             }
         </MudGrid>
