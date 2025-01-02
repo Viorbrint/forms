@@ -16,7 +16,7 @@
             <MudCardContent>
                 <MudTextField Label="@Loc["Email"]" Class="mt-3"
                               @bind-Value="signinModel.Email" For="@(() => signinModel.Email)"/>
-                <MudTextField Label="@Loc["Password"]" HelperText="@Loc["PasswordHelper"]" Class="mt-3"
+                <MudTextField Label="@Loc["Password"]" Class="mt-3"
                               @bind-Value="signinModel.Password" For="@(() => signinModel.Password)" InputType="InputType.Password"/>
             </MudCardContent>
             <MudCardActions Class="d-flex justify-center">

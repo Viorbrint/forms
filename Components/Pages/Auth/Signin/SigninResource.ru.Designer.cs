@@ -75,12 +75,6 @@ namespace Forms.Components.Pages.Auth.Signin {
             }
         }
         
-        internal static string PasswordHelper {
-            get {
-                return ResourceManager.GetString("PasswordHelper", resourceCulture);
-            }
-        }
-        
         internal static string Email {
             get {
                 return ResourceManager.GetString("Email", resourceCulture);

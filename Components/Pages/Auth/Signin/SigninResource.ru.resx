@@ -73,9 +73,6 @@
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>
   </data>
-  <data name="PasswordHelper" xml:space="preserve">
-    <value>Выберите сложный пароль</value>
-  </data>
   <data name="Email" xml:space="preserve">
     <value>Почта</value>
   </data>
