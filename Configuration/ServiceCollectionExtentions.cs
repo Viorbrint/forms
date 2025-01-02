@@ -48,6 +48,7 @@ public static class ServiceCollectionExtentions
         services.AddScoped<TemplateSettingsService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<QuestionsSettingsService>();
+        services.AddScoped<SnackbarFacade>();
         services.AddImageService();
         return services;
     }
