@@ -1,21 +1,23 @@
 @page "/accessdenied"
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<AccessDeniedResource> Loc;
 
-<PageTitle>Access Denied - Forms</PageTitle>
+<PageTitle>@Loc["Title"]</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-12 text-center">
     <MudPaper Class="pa-6">
         <MudText Typo="Typo.h4" Color="Color.Error" GutterBottom="true">
-            Access Denied
+            @Loc["AccessDenied"]
         </MudText>
         <MudText Typo="Typo.body1" GutterBottom="true">
-            You do not have permission to access this page. If you believe this is an error, please contact the administrator.
+            @Loc["PageHelperText"]
         </MudText>
         <div class="mt-4">
-            <MudButton  Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateBack">
-                Go back
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateBack">
+                @Loc["GoBack"]
             </MudButton>
             <MudButton Variant="Variant.Text" OnClick="NavigateHome">
-                Home
+                @Loc["Home"]
             </MudButton>
         </div>
     </MudPaper>

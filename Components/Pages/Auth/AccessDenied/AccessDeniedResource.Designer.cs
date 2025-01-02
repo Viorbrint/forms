@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Forms.Components.Pages.Auth {
+namespace Forms.Components.Pages.Auth.AccessDenied {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SigninResource_ru {
+    internal class AccessDeniedResource {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SigninResource_ru() {
+        internal AccessDeniedResource() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Forms.Components.Pages.Auth.SigninResource_ru", typeof(SigninResource_ru).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Forms.Components.Pages.Auth.AccessDenied.AccessDeniedResource", typeof(AccessDeniedResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,9 +45,9 @@ namespace Forms.Components.Pages.Auth {
             }
         }
         
-        internal static string LoginButton {
+        internal static string Home {
             get {
-                return ResourceManager.GetString("LoginButton", resourceCulture);
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
@@ -57,33 +57,21 @@ namespace Forms.Components.Pages.Auth {
             }
         }
         
-        internal static string Signin {
+        internal static string AccessDenied {
             get {
-                return ResourceManager.GetString("Signin", resourceCulture);
+                return ResourceManager.GetString("AccessDenied", resourceCulture);
             }
         }
         
-        internal static string RegisterButton {
+        internal static string GoBack {
             get {
-                return ResourceManager.GetString("RegisterButton", resourceCulture);
+                return ResourceManager.GetString("GoBack", resourceCulture);
             }
         }
         
-        internal static string Email {
+        internal static string PageHelperText {
             get {
-                return ResourceManager.GetString("Email", resourceCulture);
-            }
-        }
-        
-        internal static string Password {
-            get {
-                return ResourceManager.GetString("Password", resourceCulture);
-            }
-        }
-        
-        internal static string PasswordHelper {
-            get {
-                return ResourceManager.GetString("PasswordHelper", resourceCulture);
+                return ResourceManager.GetString("PageHelperText", resourceCulture);
             }
         }
     }

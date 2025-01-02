@@ -26,32 +26,156 @@
 
 
   <ItemGroup>
-    <EmbeddedResource Include="Components\Pages\Auth\SigninResource.resx">
+    <EmbeddedResource Include="Components\Layout\LayoutResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LayoutResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Layout\LayoutResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Admin\AdminResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdminResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Admin\AdminResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Auth\AccessDenied\AccessDeniedResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccessDeniedResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Auth\AccessDenied\AccessDeniedResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Auth\Logout\LogoutResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LogoutResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Auth\Logout\LogoutResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Auth\Signin\SigninResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SigninResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\Pages\Auth\SigninResource.ru.resx">
+    <EmbeddedResource Include="Components\Pages\Auth\Signin\SigninResource.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SigninResource.ru.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Auth\Signup\SignupResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SignupResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Auth\Signup\SignupResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\FormsEdit\FormsEditResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormsEditResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\FormsEdit\FormsEditResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Home\HomeResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HomeResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Home\HomeResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\NotFound\NotFoundResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>NotFoundResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\NotFound\NotFoundResources.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Search\SearchResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Search\SearchResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Templates\Edit\TemplatesEditResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TemplatesEditResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Templates\Edit\TemplatesEditResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\Templates\Fill\TemplatesFillResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TemplatesFillResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\Templates\Fill\TemplatesFillResource.ru.resx" />
+    <EmbeddedResource Include="Components\Pages\UserPage\UserPageResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserPageResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Pages\UserPage\UserPageResource.ru.resx" />
+    <EmbeddedResource Include="Components\Shared\Loading\LoadingResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoadingResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Shared\Loading\LoadingResource.ru.resx" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <Compile Update="Components\Pages\Auth\SigninResource.Designer.cs">
+    <Compile Update="Components\Pages\Auth\Signin\SigninResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SigninResource.resx</DependentUpon>
     </Compile>
-    <Compile Update="Components\Pages\Auth\CultureExample2.es.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CultureExample2.es.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Components\Pages\Auth\SigninResource.ru.Designer.cs">
+    <Compile Update="Components\Pages\Auth\Signin\SigninResource.ru.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SigninResource.ru.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Auth\Signup\SignupResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SignupResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Auth\Logout\LogoutResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LogoutResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Auth\AccessDenied\AccessDeniedResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AccessDeniedResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Admin\AdminResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AdminResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\FormsEdit\FormsEditResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FormsEditResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Home\HomeResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HomeResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\NotFound\NotFoundResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NotFoundResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Search\SearchResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SearchResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Templates\Edit\TemplatesEditResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TemplatesEditResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Templates\Fill\TemplatesFillResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TemplatesFillResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\UserPage\UserPageResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserPageResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Shared\Loading\LoadingResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoadingResource.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Layout\LayoutResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LayoutResource.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 

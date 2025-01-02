@@ -1,7 +1,9 @@
 @page "/templates/fill/{templateId}"
 @using Forms.Data.Entities
 @using Markdig
-@using Microsoft.AspNetCore.Authorization
+@using Forms.Components.Shared.Loading
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TemplatesFillResource> Loc;
 
 <PageTitle>Fill out the template - Forms</PageTitle>
 

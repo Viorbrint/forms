@@ -1,5 +1,8 @@
 @using Forms.Data.Entities
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<TemplatesEditResource> Loc;
 @using PSC.Blazor.Components.MarkdownEditor 
+@using Forms.Components.Shared.Loading
 @if (!IsLoading)
 {
     <MudForm @bind-IsValid="@IsValid">
