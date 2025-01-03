@@ -9,9 +9,14 @@ public partial class Signup : ComponentBase
     private NavigationManager NavigationManager { get; set; } = null!;
 
     [Inject]
+    private SnackbarFacade Snackbar { get; set; } = null!;
+
+    [Inject]
     private IAuthService AuthService { get; set; } = null!;
 
     public SignupModel signupModel = new();
+
+    private string ErrorMessage { get; set; } = "";
 
     private bool IsProcessing { get; set; } = false;
 
@@ -34,17 +39,12 @@ public partial class Signup : ComponentBase
             if (result.Succeeded)
             {
                 NavigateToLogin();
+                Snackbar.Success("Signup successful!");
             }
             else
             {
-                // TODO: Handle error
-                Console.WriteLine("Error signing up");
-
-                var error = result.Errors.FirstOrDefault();
-                if (error != null)
-                {
-                    Console.WriteLine(error.Description);
-                }
+                ErrorMessage = result.Errors.FirstOrDefault()?.Description ?? "";
+                Snackbar.Error("Signup error!");
             }
         }
         finally

@@ -8,6 +8,10 @@
     <MudCard width="100%">
         <EditForm Model="@signinModel" OnValidSubmit="@HandleValidSubmit">
             <DataAnnotationsValidator />
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@ErrorMessage</MudAlert>
+            }
             <MudCardHeader>
                 <CardHeaderContent>
                     <MudText Typo="Typo.h5" Align="Align.Center">@Loc["Signin"]</MudText>

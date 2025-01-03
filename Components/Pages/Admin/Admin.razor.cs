@@ -1,15 +1,15 @@
 using Forms.Data.Entities;
+using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MudBlazor;
 
 namespace Forms.Components.Pages.Admin;
 
 public partial class Admin : ComponentBase
 {
     [Inject]
-    ISnackbar Snackbar { get; set; } = null!;
+    private SnackbarFacade Snackbar { get; set; } = null!;
 
     [Inject]
     private UserManager<User> UserManager { get; set; } = null!;
@@ -66,30 +66,6 @@ public partial class Admin : ComponentBase
 
     private HashSet<User> SelectedUsers { get; set; } = [];
 
-    private void ShowSuccessSnackbar(string message)
-    {
-        Snackbar.Add(
-            message,
-            Severity.Success,
-            configure: config =>
-            {
-                config.ShowCloseIcon = false;
-            }
-        );
-    }
-
-    private void ShowErrorSnackbar(string message)
-    {
-        Snackbar.Add(
-            message,
-            Severity.Error,
-            configure: config =>
-            {
-                config.ShowCloseIcon = false;
-            }
-        );
-    }
-
     // TODO: defend this
     private async Task BlockUsers()
     {
@@ -101,11 +77,11 @@ public partial class Admin : ComponentBase
             );
             if (!identityResult.Succeeded)
             {
-                ShowErrorSnackbar($"Error blocking {user.UserName}");
+                Snackbar.Error($"Error blocking {user.UserName}");
             }
             else
             {
-                ShowSuccessSnackbar($"{user.UserName} is blocked");
+                Snackbar.Success($"{user.UserName} is blocked");
             }
         }
         await ReloadUsers();
@@ -118,11 +94,11 @@ public partial class Admin : ComponentBase
             var identityResult = await UserManager.SetLockoutEndDateAsync(user, null);
             if (!identityResult.Succeeded)
             {
-                ShowErrorSnackbar($"Error unblocking {user.UserName}");
+                Snackbar.Error($"Error unblocking {user.UserName}");
             }
             else
             {
-                ShowSuccessSnackbar($"{user.UserName} is unblocked");
+                Snackbar.Success($"{user.UserName} is unblocked");
             }
         }
         await ReloadUsers();
@@ -135,11 +111,11 @@ public partial class Admin : ComponentBase
             var identityResult = await UserManager.DeleteAsync(user);
             if (!identityResult.Succeeded)
             {
-                ShowErrorSnackbar($"Error deleting {user.UserName}");
+                Snackbar.Error($"Error deleting {user.UserName}");
             }
             else
             {
-                ShowSuccessSnackbar($"{user.UserName} is deleted");
+                Snackbar.Success($"{user.UserName} is deleted");
             }
         }
         await ReloadUsers();
@@ -152,11 +128,11 @@ public partial class Admin : ComponentBase
             var identityResult = await UserManager.AddToRoleAsync(user, "Admin");
             if (!identityResult.Succeeded)
             {
-                ShowErrorSnackbar($"Error adding administrator role {user.UserName}");
+                Snackbar.Error($"Error adding administrator role {user.UserName}");
             }
             else
             {
-                ShowSuccessSnackbar($"{user.UserName} is added to admins");
+                Snackbar.Success($"{user.UserName} is added to admins");
             }
         }
         await ReloadUsers();
@@ -169,11 +145,11 @@ public partial class Admin : ComponentBase
             var identityResult = await UserManager.RemoveFromRoleAsync(user, "Admin");
             if (!identityResult.Succeeded)
             {
-                ShowErrorSnackbar($"Error removing administrator role {user.UserName}");
+                Snackbar.Error($"Error removing administrator role {user.UserName}");
             }
             else
             {
-                ShowSuccessSnackbar($"{user.UserName} is removed from admins");
+                Snackbar.Success($"{user.UserName} is removed from admins");
             }
         }
         await ReloadUsers();
