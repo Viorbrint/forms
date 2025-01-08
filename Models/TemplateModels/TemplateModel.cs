@@ -18,7 +18,7 @@ public class TemplateModel
         return new()
         {
             ImageUrl = template.ImageUrl,
-            Likes = template.Likes.Count(),
+            Likes = template.Likes.Count,
             Tags = template.Tags.Select(t => t.TagName).ToList(),
             Topic = template.Topic.TopicName,
             Description = template.Description,

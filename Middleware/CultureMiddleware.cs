@@ -1,16 +1,12 @@
-using Forms.Services;
 using Microsoft.AspNetCore.Localization;
 
-public class CultureMiddleware
+namespace Forms.Middleware;
+
+public class CultureMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate _next = next;
 
-    public CultureMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext context, IAuthService authService)
+    public async Task InvokeAsync(HttpContext context)
     {
         if (
             context.Request.Query.TryGetValue("culture", out var cultureValues)

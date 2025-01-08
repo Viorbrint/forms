@@ -1,4 +1,6 @@
-namespace Forms.Data.Entities;
+using Forms.Data.Entities;
+
+namespace Forms.Models.TemplateModels;
 
 public class CommentModel
 {

@@ -1,4 +1,6 @@
 using Forms.Data.Entities;
+using Forms.Middleware;
+using Forms.Models.Auth;
 using Forms.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace Forms.Models.Auth;
+
 public class SignupModel
 {
     [Required(ErrorMessage = "Username is required")]

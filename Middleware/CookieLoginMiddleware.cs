@@ -1,16 +1,13 @@
 using Forms.Data.Entities;
 using Forms.Services;
 
-public class CookieLoginMiddleware
+namespace Forms.Middleware;
+
+public class CookieLoginMiddleware(RequestDelegate next)
 {
     public static Dictionary<Guid, (User, string)> Logins { get; } = [];
 
-    private readonly RequestDelegate _next;
-
-    public CookieLoginMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
+    private readonly RequestDelegate _next = next;
 
     public async Task InvokeAsync(HttpContext context, IAuthService authService)
     {
