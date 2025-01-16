@@ -1,10 +1,11 @@
+@using System.ComponentModel.DataAnnotations
 <MudDialog>
     <DialogContent>
         <MudForm @bind-IsValid="IsValid">
             <MudTextField @bind-Value="UserModel.AccountName" Label="Account Name" Required="true" />
             <MudTextField @bind-Value="UserModel.FirstName" Label="First Name" Required="true" />
             <MudTextField @bind-Value="UserModel.LastName" Label="Last Name" Required="true" />
-            <MudTextField @bind-Value="UserModel.Email" Label="Email" Required="true" />
+            <MudTextField Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" @bind-Value="UserModel.Email" Label="Email" Required="true" />
         </MudForm>
     </DialogContent>
     <DialogActions>

@@ -7,7 +7,7 @@ namespace Forms.Components.Pages.UserPage;
 public partial class SalesforceFormDialog : ComponentBase
 {
     [Inject]
-    private SalesforceService SalesforceService { get; set; } = null!;
+    private ICurrentUserService CurrentUserService { get; set; } = null!;
 
     [Inject]
     private SnackbarFacade SnackbarFacade { get; set; } = null!;
@@ -21,7 +21,7 @@ public partial class SalesforceFormDialog : ComponentBase
     {
         try
         {
-            await SalesforceService.CreateAccountWithContact(
+            await CurrentUserService.SyncWithSalesforce(
                 UserModel.AccountName,
                 UserModel.FirstName,
                 UserModel.LastName,
@@ -30,10 +30,10 @@ public partial class SalesforceFormDialog : ComponentBase
             Dialog.Close(DialogResult.Ok(true));
             SnackbarFacade.Success("Successfully submitted to Salesforce");
         }
-        catch (Exception ex)
+        catch (SalesforceException ex)
         {
             Dialog.Close(ex);
-            SnackbarFacade.Error("Error submitting to Salesforce");
+            SnackbarFacade.Error(ex.Message);
         }
     }
 

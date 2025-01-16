@@ -42,7 +42,7 @@ public class SalesforceService(
         catch (HttpRequestException ex)
         {
             Logger.LogError(ex, "HTTP request error occurred during authentication.");
-            throw new Exception("Network error while connecting to Salesforce.");
+            throw new SalesforceException("Network error while connecting to Salesforce.");
         }
         catch (Exception ex)
         {
@@ -65,14 +65,22 @@ public class SalesforceService(
             var account = new { Name = accountName };
             var accountResult = await client.CreateAsync("Account", account);
 
-            var contact = new
+            try
             {
-                FirstName = contactFirstName,
-                LastName = contactLastName,
-                Email = contactEmail,
-                AccountId = accountResult.Id,
-            };
-            await client.CreateAsync("Contact", contact);
+                var contact = new
+                {
+                    FirstName = contactFirstName,
+                    LastName = contactLastName,
+                    Email = contactEmail,
+                    AccountId = accountResult.Id,
+                };
+                await client.CreateAsync("Contact", contact);
+            }
+            catch
+            {
+                await client.DeleteAsync("Account", accountResult.Id);
+                throw;
+            }
             Logger.LogInformation(
                 "Account and Contact successfully created for {ContactFirstName} {ContactLastName}.",
                 contactFirstName,
@@ -82,12 +90,14 @@ public class SalesforceService(
         catch (ForceException ex)
         {
             Logger.LogError(ex, "Salesforce API error occurred while creating account or contact.");
-            throw new Exception("Failed to create records in Salesforce. Please try again.");
+            throw new SalesforceException(
+                "Failed to create records in Salesforce. Please try again."
+            );
         }
         catch (HttpRequestException ex)
         {
             Logger.LogError(ex, "HTTP request error occurred while communicating with Salesforce.");
-            throw new Exception("Network error while communicating with Salesforce.");
+            throw new SalesforceException("Network error while communicating with Salesforce.");
         }
         catch (Exception ex)
         {
@@ -96,3 +106,5 @@ public class SalesforceService(
         }
     }
 }
+
+public class SalesforceException(string message) : Exception(message) { }
