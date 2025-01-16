@@ -1,5 +1,6 @@
 using Forms.Components;
 using Forms.Data.Entities;
+using Forms.Middleware;
 using Microsoft.AspNetCore.Identity;
 
 namespace Forms.Configuration;
@@ -26,11 +27,12 @@ public static class WebApplicationExtentions
         return app;
     }
 
+    private static readonly string[] supportedCultures = ["en-US", "ru-RU"];
+
     public static WebApplication UseLocalization(this WebApplication app)
     {
         app.UseRequestLocalization(options =>
         {
-            var supportedCultures = new[] { "en-US", "ru-RU" };
             options
                 .SetDefaultCulture(supportedCultures[0])
                 .AddSupportedCultures(supportedCultures)

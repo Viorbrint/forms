@@ -5,7 +5,9 @@ namespace Forms.Configuration;
 
 public static class RoleInitializer
 {
-    private static (string, string) getAdminCredentials()
+    private static string AdminRoleName { get; } = "admin";
+
+    private static (string, string) GetAdminCredentials()
     {
         string? adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
         string? adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
@@ -18,25 +20,25 @@ public static class RoleInitializer
         return (adminEmail, adminPassword);
     }
 
-    private static async Task ensureAdminRoleExists(RoleManager<IdentityRole> roleManager)
+    private static async Task EnsureAdminRoleExists(RoleManager<IdentityRole> roleManager)
     {
-        if (await roleManager.FindByNameAsync(Constants.AdminRoleName) == null)
+        if (await roleManager.FindByNameAsync(AdminRoleName) == null)
         {
-            await roleManager.CreateAsync(new IdentityRole(Constants.AdminRoleName));
+            await roleManager.CreateAsync(new IdentityRole(AdminRoleName));
         }
     }
 
-    private static async Task ensureAdminExists(UserManager<User> userManager)
+    private static async Task EnsureAdminExists(UserManager<User> userManager)
     {
         const string Name = "ADMIN";
-        (string email, string password) = getAdminCredentials();
+        (string email, string password) = GetAdminCredentials();
         if (await userManager.FindByEmailAsync(email) == null)
         {
-            User admin = new User { Email = email, UserName = Name };
+            User admin = new() { Email = email, UserName = Name };
             IdentityResult result = await userManager.CreateAsync(admin, password);
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(admin, Constants.AdminRoleName);
+                await userManager.AddToRoleAsync(admin, AdminRoleName);
             }
         }
     }
@@ -46,7 +48,7 @@ public static class RoleInitializer
         RoleManager<IdentityRole> roleManager
     )
     {
-        await ensureAdminRoleExists(roleManager);
-        await ensureAdminExists(userManager);
+        await EnsureAdminRoleExists(roleManager);
+        await EnsureAdminExists(userManager);
     }
 }

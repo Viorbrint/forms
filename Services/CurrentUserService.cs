@@ -3,7 +3,11 @@ using Forms.Data.Entities;
 
 namespace Forms.Services;
 
-public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
+public class CurrentUserService(
+    IHttpContextAccessor httpContextAccessor,
+    UserService userService,
+    SalesforceService salesforceService
+) : ICurrentUserService
 {
     public string? UserId => CurrentUser?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     public string? UserName => CurrentUser?.Identity?.Name;
@@ -20,6 +24,27 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
             || template.AuthorId == UserId
             || UserInWhitelist(template)
         );
+
+    public async Task<bool> UserIsSyncedWithSalesforce()
+    {
+        return await userService.IsSyncedWithSalesforceById(UserId!);
+    }
+
+    public async Task SyncWithSalesforce(
+        string accountName,
+        string contactFirstName,
+        string contactLastName,
+        string contactEmail
+    )
+    {
+        await salesforceService.CreateAccountWithContact(
+            accountName,
+            contactFirstName,
+            contactLastName,
+            contactEmail
+        );
+        await userService.SyncWithSalesforce(UserId);
+    }
 
     public bool CurrentUserCanEditTemplate(Template template) =>
         UserIsAdmin || template.AuthorId == UserId;
