@@ -13,4 +13,6 @@ public class User : IdentityUser
     public List<TemplateAccess> TemplateAccesses { get; set; } = [];
 
     public List<Comment> Comments { get; set; } = [];
+
+    public bool IsSyncWithSalesforce { get; set; }
 }

@@ -24,4 +24,28 @@ public class UserService(IRepository<User> userRepository)
         var users = await userRepository.GetBySpecificationAsync(spec);
         return users.ToList();
     }
+
+    public async Task UpdateAsync(User user)
+    {
+        await userRepository.UpdateAsync(user);
+    }
+
+    public async Task<bool> IsSyncedWithSalesforceById(string userId)
+    {
+        var spec = new SpecificationSingle<User>(u => u.Id == userId);
+        var user =
+            await userRepository.GetBySpecificationSingleAsync(spec)
+            ?? throw new ArgumentException("User not found");
+        return user.IsSyncWithSalesforce;
+    }
+
+    public async Task SyncWithSalesforce(string? userId)
+    {
+        var spec = new SpecificationSingle<User>(u => u.Id == userId);
+        var user =
+            await userRepository.GetBySpecificationSingleAsync(spec)
+            ?? throw new ArgumentException("User not found");
+        user.IsSyncWithSalesforce = true;
+        await UpdateAsync(user);
+    }
 }
