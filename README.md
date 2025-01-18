@@ -54,27 +54,6 @@ This application is deployed using Docker and designed for continuous deployment
 ensuring consistent and reliable deployment across different environments.
 You can access the live application [here](https://forms-gjr1.onrender.com).
 
-## Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/Viorbrint/forms
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd forms
-   ```
-
-3. Restore dependencies and run the application:
-
-   ```bash
-   dotnet restore
-   dotnet run
-   ```
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
