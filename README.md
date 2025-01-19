@@ -44,9 +44,9 @@ The application is fully featured with user management, template management, for
 - **Frontend**: Blazor Server with MudBlazor for UI components.
 - **Backend**: .NET with Entity Framework Core for data access.
 - **Database**: PostgreSQL.
-- **Search Engine**: Full-text search implementation.
 - **Authentication**: ASP.NET Core Identity.
 - **Integration**: Salesforce REST API for CRM functionalities.
+- TODO: **Search**: Postgres full-text search. 
 
 ### Deployment
 
